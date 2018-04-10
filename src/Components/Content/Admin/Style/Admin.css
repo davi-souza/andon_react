@@ -1,0 +1,19 @@
+#admin-addemployee-name,
+#admin-addemployee-id,
+#admin-addemployee-password {
+  margin: 1.5rem 0;
+  height: 3rem;
+  font-size: 2rem;
+}
+
+.admin-addemployee-radioinput {
+  text-align: left;
+}
+
+.admin-addemployee-confirm {
+  margin-top: 1rem;
+  width: 60%;
+  height: 3.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
