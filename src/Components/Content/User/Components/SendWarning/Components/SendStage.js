@@ -44,6 +44,7 @@ class SendStage extends Component {
               <h5><b>Tipo:</b> {this.props.state.type}</h5>
               <h5><b>Motivo:</b> {this.props.state.reason}</h5>
               <h5><b>Onde:</b> {this.props.state.where}</h5>
+              <h5><b>Quem:</b> {this.props.state.who.name} ({this.props.state.who.id})</h5>
             </div>
           </div>
         </div>

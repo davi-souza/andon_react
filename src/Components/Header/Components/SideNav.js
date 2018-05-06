@@ -13,9 +13,8 @@ class SideNav extends Component {
         </nav>
         <Route exact path='/' component={HomeSideNav}></Route>
         <Route exact path='/login' component={LoginSideNav}></Route>
-        <Route exact path='/warning/send' component={WarningSideNav}></Route>
-        <Route exact path='/user' component={UserNavLinks}></Route>
-        <Route exact path='/admin' component={AdminNavLinks}></Route>
+        <Route exact path='/user' component={LogOutSideNav}></Route>
+        <Route exact path='/admin' component={LogOutSideNav}></Route>
       </ul>
     );
   }
@@ -35,23 +34,9 @@ const LoginSideNav = () => (
   </div>
 );
 
-const WarningSideNav = () => (
+const LogOutSideNav = () => (
   <div>
     <li><Link to='/' className='sidenav-close'>Sair</Link></li>
-    <li><div className="divider"></div></li>
-  </div>
-);
-
-const UserNavLinks = () => (
-  <div>
-    <li><Link to='/' className='sidenav-close'>Log Out</Link></li>
-    <li><div className="divider"></div></li>
-  </div>
-);
-
-const AdminNavLinks = () => (
-  <div>
-    <li><Link to='/' className='sidenav-close'>Log Out</Link></li>
     <li><div className="divider"></div></li>
   </div>
 );

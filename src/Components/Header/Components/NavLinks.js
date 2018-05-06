@@ -7,9 +7,8 @@ class NavLinks extends Component {
       <ul className='right hide-on-med-and-down'>
         <Route exact path='/' component={HomeNavLinks}></Route>
         <Route exact path='/login' component={LoginNavLinks}></Route>
-        <Route exact path='/warning/send' component={WarningNavLinks}></Route>
-        <Route exact path='/user' component={UserNavLinks}></Route>
-        <Route exact path='/admin' component={AdminNavLinks}></Route>
+        <Route exact path='/user' component={LogOutNavLink}></Route>
+        <Route exact path='/admin' component={LogOutNavLink}></Route>
       </ul>
     );
   }
@@ -23,16 +22,8 @@ const LoginNavLinks = () => (
   <li><Link to='/'>Painel</Link></li>
 );
 
-const WarningNavLinks = () => (
+const LogOutNavLink = () => (
   <li><Link to='/'>Sair</Link></li>
-);
-
-const UserNavLinks = () => (
-  <li><Link to='/'>Log Out</Link></li>
-);
-
-const AdminNavLinks = () => (
-  <li><Link to='/'>Log Out</Link></li>
 );
 
 export default NavLinks;

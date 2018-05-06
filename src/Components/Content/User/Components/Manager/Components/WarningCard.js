@@ -43,8 +43,12 @@ class WarningCard extends Component {
   }
 
   render() {
+    let idName = 'userWarningCard'+this.props.warningId;
+    let d = new Date(String(this.props.warningDate))
+    let utc = d.getTime() + (d.getTimezoneOffset()*60000)
+    let nd = new Date(utc + 3600000*(-6))
     return (
-      <div className='col s12 m6 l4'>
+      <div id={idName} className='col s12 m6 l4'>
         <div className='card'>
           <div className='card-content'>
             {this.props.warningType === 'ALERTA' &&
@@ -58,7 +62,7 @@ class WarningCard extends Component {
               <p><b>Motivo:</b> {this.props.warningReason}</p>
               <p><b>Onde:</b> {this.props.warningWhere}</p>
               <p><b>Quem:</b> {this.props.warningWho}</p>
-              <p><b>Quando:</b> {this.props.warningDate}</p>
+              <p><b>Quando:</b> {nd.toLocaleString('pt-BR',{timeZone:'UTC'})}</p>
             </div>
             <button className='btn green user-manager-resolve' onClick={this.openModal}>RESOLVER</button>
           </div>

@@ -22,7 +22,7 @@ class HomeContent extends Component {
   }
 
   handleLogin() {
-    fetch('/login',{
+    fetch('/api/login',{
       method: 'post',
       headers: {
         'Accept': 'application/json',
@@ -36,7 +36,7 @@ class HomeContent extends Component {
       if(res.ok) {
         res.json().then(resJSON => {
           if(resJSON.response === 'loggedin') {
-            this.props.history.push('/warning/send');
+            this.props.history.push('/warning');
           }
           else if(resJSON.response === 'invalidlogin') {
             toast.error("Matrícula não encontrada!",{

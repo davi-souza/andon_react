@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 class AdminTab extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     var tab = this.props.tab;

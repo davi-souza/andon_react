@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ToastContainer,toast } from 'react-toastify';
 
 class AddEmployee extends Component {
   constructor(props) {
@@ -22,6 +23,52 @@ class AddEmployee extends Component {
     }
   }
 
+  handleCreation = () => {
+    let name = document.getElementById('admin-addemployee-name').value;
+    let login = document.getElementById('admin-addemployee-login').value;
+    let password = '123';
+    if(this.state.password) {
+      password = document.getElementById('admin-addemployee-password').value;
+    }
+
+    let userJson = {
+      login: login,
+      name: name,
+      password: password,
+      access_level: this.state.password?1:0,
+      job_title: this.state.password?'ENCARREGADO':'PEDREIRO'
+    }
+
+    fetch('/api/user/createUser',{
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(userJson)
+    }).then(res => {
+      if(res.ok) {
+        res.json().then(resJson => {
+          if(resJson.response === 1) {
+            toast.success("Funcionáro Criado!",{
+              position: toast.POSITION.BOTTOM_RIGHT,
+              hideProgressBar: true
+            });
+            document.getElementById('admin-addemployee-name').value = '';
+            document.getElementById('admin-addemployee-login').value = '';
+            document.getElementById('admin-addemployee-password').value = '';
+          }
+          else {
+            toast.error("Funcionáro não Criado!",{
+              position: toast.POSITION.BOTTOM_RIGHT,
+              hideProgressBar: true
+            });
+          }
+        });
+      }
+    });
+  }
+
   render() {
     const password = this.state.password;
     var passwordInput;
@@ -34,7 +81,7 @@ class AddEmployee extends Component {
     return (
       <div>
         <input type='text' placeholder='NOME' id='admin-addemployee-name'></input>
-        <input type='text' placeholder='MATRÍCULA' id='admin-addemployee-id'></input>
+        <input type='text' placeholder='MATRÍCULA' id='admin-addemployee-login'></input>
         <div className='container admin-addemployee-radioinput'>
           <p>
             <label onClick={()=>this.radioInputSelected(0)}>
@@ -50,7 +97,8 @@ class AddEmployee extends Component {
           </p>
         </div>
         {passwordInput}
-        <button className='btn green admin-addemployee-confirm'>CRIAR</button>
+        <button className='btn green admin-addemployee-confirm' onClick={this.handleCreation}>CRIAR</button>
+        <ToastContainer />
       </div>
     );
   }

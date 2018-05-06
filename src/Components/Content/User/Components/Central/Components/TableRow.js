@@ -44,8 +44,21 @@ class TableRow extends Component {
   }
 
   render() {
+    let d1 = new Date(String(this.props.warningDate))
+    let utc1 = d1.getTime() + (d1.getTimezoneOffset()*60000)
+    let nd1 = new Date(utc1 + 3600000*(-6))
+
+    let d2;
+    let utc2;
+    let nd2;
+    if(this.props.warningResolved !== null) {
+      d2 = new Date(String(this.props.warningResolved));
+      utc2 = d2.getTime() + (d2.getTimezoneOffset()*60000);
+      nd2 = new Date(utc2 + 3600000*(-6));
+    }
+
     var typeField;
-    if(this.props.warningResolved === '') {
+    if(this.props.warningResolved === null) {
       if(this.props.warningType === 'ALERTA') {
         typeField = <td className='yellow lighten-3'><b>ALERTA</b></td>;
       }
@@ -56,25 +69,28 @@ class TableRow extends Component {
     else{
       typeField = <td className='green lighten-3'><b>{this.props.warningType}</b></td>
     }
+
+    let idName = 'centralWarningRow'+this.props.warningId;
+
     return (
-      <tr>
+      <tr id={idName}>
         {typeField}
         <td>{this.props.warningReason}</td>
         <td>{this.props.warningWhere}</td>
-        <td>{this.props.warningDate}</td>
+        <td>{nd1.toLocaleString('pt-BR',{timeZone:'UTC'})}</td>
         <td>{this.props.warningWho}</td>
-        {this.props.warningResolved === '' &&
+        {this.props.warningResolved === null &&
           <td></td>
         }
-        {this.props.warningResolved === '' &&
+        {this.props.warningResolved === null &&
           <td><button className='btn green' onClick={this.openModal}>
             <i className='material-icons'>done</i>
           </button></td>
         }
-        {this.props.warningResolved !== '' &&
-          <td>{this.props.warningResolved}</td>
+        {this.props.warningResolved !== null &&
+          <td>{nd2.toLocaleString('pt-BR',{timeZone:'UTC'})}</td>
         }
-        {this.props.warningResolved !== '' &&
+        {this.props.warningResolved !== null &&
           <td></td>
         }
         <Modal isOpen={this.state.modalIsOpen} contentLabel='Test' style={customStyles}>

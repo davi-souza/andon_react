@@ -13,56 +13,54 @@ class Central extends Component {
   }
 
   getWarnings() {
-    this.setState({
-      warnings: [
-        {
-          id: '1',
-          type: 'ALERTA',
-          reason: 'reason1',
-          where: 'where1',
-          date: 'date1',
-          who: 'who1',
-          resolved: 'dateR1'
-        },
-        {
-          id: '2',
-          type: 'PARADO',
-          reason: 'reason2',
-          where: 'where2',
-          date: 'date2',
-          who: 'who2',
-          resolved: ''
-        },
-        {
-          id: '3',
-          type: 'PARADO',
-          reason: 'reason3',
-          where: 'where3',
-          date: 'date3',
-          who: 'who3',
-          resolved: 'dateR3'
-        },
-        {
-          id: '4',
-          type: 'ALERTA',
-          reason: 'reason4',
-          where: 'where4',
-          date: 'date4',
-          who: 'who4',
-          resolved: ''
-        }
-      ]
+    fetch('/api/warning/getAllWarnings',{
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        fields: ['id','type','reason','where','emissionDate','resolvedDate','userLogin'],
+      })
+    }).then(res => {
+      if(res.ok) {
+        res.json().then(resJson => {
+          if(resJson.response === 1) {
+            this.setState({
+              warnings: []
+            });
+            for(let warning of resJson.content) {
+              console.log(warning);
+              let warningAux = warning;
+              let warningsAux = this.state.warnings;
+              warningAux.who = warning.user.name
+              warningsAux.push(warningAux);
+              this.setState({
+                warnings: warningsAux
+              });
+            }
+          }
+        });
+      }
     });
   }
 
   resolveWarning(warningId) {
-    console.log(warningId);
+    fetch('/api/warning/resolve/'+warningId,{
+      method: 'put'
+    }).then(res => {
+      if(res.ok) {
+        res.json().then(resJson => {
+          if(resJson.response === 1) {
+            this.getWarnings();
+          }
+        });
+      }
+    });
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.getWarnings();
-    }, 3000);
+    this.getWarnings();
   }
 
   render() {
@@ -90,9 +88,9 @@ class Central extends Component {
                 warningType={warning.type}
                 warningReason={warning.reason}
                 warningWhere={warning.where}
-                warningDate={warning.date}
+                warningDate={warning.emissionDate}
                 warningWho={warning.who}
-                warningResolved={warning.resolved}
+                warningResolved={warning.resolvedDate}
                 resolveWarning={this.resolveWarning}
                 key={warning.id}
               />

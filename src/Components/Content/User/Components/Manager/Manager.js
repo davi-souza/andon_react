@@ -13,13 +13,45 @@ class Manager extends Component {
   }
 
   getWarnings() {
-    fetch('/warning').then(res => {
-      console.log(res);
+    fetch('/api/team/'+this.props.userId+'/getTeamMembers').then(res => {
+      if(res.ok) {
+        res.json().then(resJson => {
+          for(let member of resJson.content) {
+            fetch('/api/user/getUserInfo/'+member.login).then(memberInfo => {
+              if(memberInfo.ok) {
+                memberInfo.json().then(memberInfoJson => {
+                  for(let warning of memberInfoJson.content.myCreatedWarnings) {
+                    if(warning.resolvedDate === null) {
+                      let warningAux = warning;
+                      warningAux.who = member.name;
+                      let warningsAux = this.state.warnings;
+                      warningsAux.push(warningAux);
+                      this.setState({
+                        warnings: warningsAux
+                      });
+                    }
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
     });
   }
 
   resolveWarning(warningId) {
-    console.log(warningId);
+    fetch('/api/warning/resolve/'+warningId,{
+      method: 'put'
+    }).then(res => {
+      if(res.ok) {
+        res.json().then(resJson => {
+          if(resJson.response === 1) {
+            document.getElementById('userWarningCard'+warningId).remove();
+          }
+        });
+      }
+    });
   }
 
   componentDidMount() {
@@ -39,7 +71,7 @@ class Manager extends Component {
             warningType={warning.type}
             warningReason={warning.reason}
             warningWhere={warning.where}
-            warningDate={warning.date}
+            warningDate={warning.emissionDate}
             warningWho={warning.who}
             key={warning.id}/>
         )}

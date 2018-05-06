@@ -8,11 +8,11 @@ class LoginContent extends Component {
 
   constructor(props) {
     super(props);
-    this.confirmId = this.confirmId.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
-  confirmId() {
-    fetch('/login',{
+  handleLogin() {
+    fetch('/api/login',{
       method: 'post',
       headers: {
         'Accept': 'application/json',
@@ -26,7 +26,7 @@ class LoginContent extends Component {
       if(res.ok) {
         res.json().then(resJSON => {
           if(resJSON.response === 'loggedin') {
-            this.props.history.push('/user');
+            this.props.history.push('/user?login='+document.getElementById('login-input-id').value);
           }
           else if(resJSON.response === 'invalidlogin') {
             toast.error("Matrícula não encontrada!",{
@@ -60,7 +60,7 @@ class LoginContent extends Component {
         </div>
         <div className='row'>
           <div className='col s12'>
-            <button className='btn green login-input-confirm' onClick={this.confirmId}>LOG IN</button>
+            <button className='btn green login-input-confirm' onClick={this.handleLogin}>LOG IN</button>
           </div>
         </div>
         <ToastContainer />
