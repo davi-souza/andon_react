@@ -25,16 +25,16 @@ class LoginContent extends Component {
     }).then(res => {
       if(res.ok) {
         res.json().then(resJSON => {
-          if(resJSON.response === 'loggedin') {
+          if(resJSON.response === 1) {
             this.props.history.push('/user?login='+document.getElementById('login-input-id').value);
           }
-          else if(resJSON.response === 'invalidlogin') {
+          else if(resJSON.message === 'User not registered') {
             toast.error("Matrícula não encontrada!",{
               position: toast.POSITION.BOTTOM_RIGHT,
               hideProgressBar: true
             });
           }
-          else if(resJSON.response === 'invalid_password') {
+          else if(resJSON.message === 'Invalid Password') {
             toast.error("Senha incorreta!",{
               position: toast.POSITION.BOTTOM_RIGHT,
               hideProgressBar: true

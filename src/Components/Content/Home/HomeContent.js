@@ -35,10 +35,10 @@ class HomeContent extends Component {
     }).then(res => {
       if(res.ok) {
         res.json().then(resJSON => {
-          if(resJSON.response === 'loggedin') {
-            this.props.history.push('/warning');
+          if(resJSON.response === 1) {
+            this.props.history.push('/user?login='+document.getElementById('home-input-id').value);
           }
-          else if(resJSON.response === 'invalidlogin') {
+          else if(resJSON.response === 0) {
             toast.error("Matrícula não encontrada!",{
               position: toast.POSITION.BOTTOM_RIGHT,
               hideProgressBar: true
