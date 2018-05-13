@@ -13,11 +13,17 @@ class Manager extends Component {
   }
 
   getWarnings() {
-    fetch('/api/team/'+this.props.userId+'/getTeamMembers').then(res => {
+    fetch('/team/'+this.props.userId+'/getTeamMembers',{
+      method: 'post',
+      credentials: 'same-origin',
+    }).then(res => {
       if(res.ok) {
         res.json().then(resJson => {
           for(let member of resJson.content) {
-            fetch('/api/user/getUserInfo/'+member.login).then(memberInfo => {
+            fetch('/user/getUserInfo/'+member.login,{
+              method: 'post',
+              credentials: 'same-origin',
+            }).then(memberInfo => {
               if(memberInfo.ok) {
                 memberInfo.json().then(memberInfoJson => {
                   for(let warning of memberInfoJson.content.myCreatedWarnings) {
@@ -41,8 +47,9 @@ class Manager extends Component {
   }
 
   resolveWarning(warningId) {
-    fetch('/api/warning/resolve/'+warningId,{
-      method: 'put'
+    fetch('/warning/resolve/'+warningId,{
+      method: 'put',
+      credentials: 'same-origin',
     }).then(res => {
       if(res.ok) {
         res.json().then(resJson => {

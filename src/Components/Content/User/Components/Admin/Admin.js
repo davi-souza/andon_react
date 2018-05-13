@@ -6,7 +6,7 @@ import ManageTeams from './Components/ManageTeams';
 
 import './Style/Admin.css';
 
-class AdminContent extends Component {
+class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,4 +41,4 @@ class AdminContent extends Component {
   }
 }
 
-export default AdminContent;
+export default Admin;

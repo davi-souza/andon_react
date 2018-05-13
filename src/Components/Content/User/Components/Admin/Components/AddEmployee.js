@@ -39,8 +39,9 @@ class AddEmployee extends Component {
       job_title: this.state.password?'ENCARREGADO':'PEDREIRO'
     }
 
-    fetch('/api/user/createUser',{
+    fetch('/user/createUser',{
       method: 'post',
+      credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
         'Content-Type':'application/json'

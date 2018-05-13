@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import BrandLogo from './BrandLogo';
+import LogOutSideNav from './LogOutSideNav';
 
 class SideNav extends Component {
   render() {
@@ -30,13 +31,6 @@ const HomeSideNav = () => (
 const LoginSideNav = () => (
   <div>
     <li><Link to='/' className='sidenav-close'>Painel</Link></li>
-    <li><div className="divider"></div></li>
-  </div>
-);
-
-const LogOutSideNav = () => (
-  <div>
-    <li><Link to='/' className='sidenav-close'>Sair</Link></li>
     <li><div className="divider"></div></li>
   </div>
 );

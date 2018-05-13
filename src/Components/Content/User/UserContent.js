@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 // import { Route } from 'react-router-dom';
 import Loader from './Components/Loader';
+import SendWarning from './Components/SendWarning/SendWarning';
 import Manager from './Components/Manager/Manager';
 import Central from './Components/Central/Central';
-import SendWarning from './Components/SendWarning/SendWarning';
+import Admin from './Components/Admin/Admin';
 import queryString from 'query-string';
 
 import './Style/User.css';
@@ -24,7 +25,14 @@ class UserContent extends Component {
       this.props.history.push('/');
     }
     let login = search.login;
-    fetch('/api/user/getUserInfo/'+login).then(res => {
+    fetch('/user/getUserInfo/'+login,{
+      method: 'post',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type':'application/json',
+      },
+    }).then(res => {
       if(res.ok) {
         res.json().then(resJson => {
           if(resJson.response === 1) {
@@ -53,6 +61,9 @@ class UserContent extends Component {
         }
         {this.state.accessLevel === 3 &&
           <Central />
+        }
+        {this.state.accessLevel === 4 &&
+          <Admin />
         }
       </div>
     );

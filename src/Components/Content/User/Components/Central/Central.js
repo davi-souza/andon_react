@@ -13,8 +13,9 @@ class Central extends Component {
   }
 
   getWarnings() {
-    fetch('/api/warning/getAllWarnings',{
+    fetch('/warning/getAllWarnings',{
       method: 'post',
+      credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
         'Content-Type':'application/json'
@@ -46,8 +47,9 @@ class Central extends Component {
   }
 
   resolveWarning(warningId) {
-    fetch('/api/warning/resolve/'+warningId,{
-      method: 'put'
+    fetch('/warning/resolve/'+warningId,{
+      method: 'put',
+      credentials: 'same-origin',
     }).then(res => {
       if(res.ok) {
         res.json().then(resJson => {

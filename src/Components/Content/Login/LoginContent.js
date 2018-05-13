@@ -12,11 +12,12 @@ class LoginContent extends Component {
   }
 
   handleLogin() {
-    fetch('/api/login',{
+    fetch('/login',{
       method: 'post',
+      credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
-        'Content-Type':'application/json'
+        'Content-Type':'application/json',
       },
       body: JSON.stringify({
         login: document.getElementById('login-input-id').value,

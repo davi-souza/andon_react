@@ -66,8 +66,9 @@ class SendWarning extends Component {
   }
 
   sendWarning() {
-    fetch('/api/warning/createWarning',{
+    fetch('/warning/createWarning',{
       method: 'post',
+      credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
         'Content-Type':'application/json'
