@@ -22,21 +22,23 @@ class HomeContent extends Component {
   }
 
   handleLogin() {
-    fetch('/api/login',{
+    let inputId = document.getElementById('home-input-id').value;
+    fetch('/login',{
       method: 'post',
+      credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
         'Content-Type':'application/json'
       },
       body: JSON.stringify({
-        login: document.getElementById('home-input-id').value,
+        login: inputId,
         password: '123'
       })
     }).then(res => {
       if(res.ok) {
         res.json().then(resJSON => {
           if(resJSON.response === 1) {
-            this.props.history.push('/user?login='+document.getElementById('home-input-id').value);
+            this.props.history.push('/user?login='+inputId);
           }
           else if(resJSON.response === 0) {
             toast.error("Matrícula não encontrada!",{
