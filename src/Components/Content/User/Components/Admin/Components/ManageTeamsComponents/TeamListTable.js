@@ -50,7 +50,7 @@ class TeamListTable extends Component {
   }
 
   handleAddTeamMemberModal = () => {
-    ('/user/getAllUsers',{
+    fetch('/user/getAllUsers',{
       method: 'post',
       credentials: 'same-origin',
       headers: {
