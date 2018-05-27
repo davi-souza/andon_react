@@ -71,8 +71,6 @@ class EmployeeList extends Component {
   }
 
   confirmDeleteEmployee = () => {
-    console.log(this.state.employeeToDelete.login);
-
     fetch('/user/deleteUser',{
       method: 'delete',
       credentials: 'same-origin',

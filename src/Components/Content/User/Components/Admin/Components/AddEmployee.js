@@ -58,6 +58,38 @@ class AddEmployee extends Component {
             document.getElementById('admin-addemployee-name').value = '';
             document.getElementById('admin-addemployee-login').value = '';
             document.getElementById('admin-addemployee-password').value = '';
+            if(this.state.password) {
+              fetch('/team/createTeam/'+login,{
+                method: 'post',
+                credentials: 'same-origin',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type':'application/json'
+                },
+                body: JSON.stringify(userJson)
+              }).then(resTeam => {
+                if(resTeam.ok) {
+                  resTeam.json().then(resTeamJson => {
+                    if(resTeamJson.response === 1) {
+                      toast.success("Time Criado!",{
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        hideProgressBar: true
+                      });
+                    }
+                    else {
+                      toast.error("Time não criado!",{
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        hideProgressBar: true
+                      });
+                      toast.error("Entre em contato com o responsável.",{
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        hideProgressBar: true
+                      });
+                    }
+                  })
+                }
+              })
+            }
           }
           else {
             toast.error("Funcionáro não Criado!",{
@@ -68,6 +100,7 @@ class AddEmployee extends Component {
         });
       }
     });
+
   }
 
   render() {

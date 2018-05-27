@@ -17,3 +17,7 @@
   font-size: 2rem;
   font-weight: bold;
 }
+
+.ReactModal__Body--open {
+  overflow-y: hidden;
+}

@@ -153,7 +153,7 @@ class SendWarning extends Component {
           <div style={finalStageStyle}>
             <h2>{this.state.sendWarningMessages[0]}</h2>
             <h3>{this.state.sendWarningMessages[1]}</h3>
-            <Link to='/logout' className='btn green'>VOLTAR</Link>
+            <Link to='/' className='btn green'>VOLTAR</Link>
           </div>
         }
         <ToastContainer />
