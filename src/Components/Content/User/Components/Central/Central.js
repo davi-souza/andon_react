@@ -20,9 +20,9 @@ class Central extends Component {
         'Accept': 'application/json',
         'Content-Type':'application/json'
       },
-      body: JSON.stringify({
-        fields: ['id','type','reason','where','emissionDate','resolvedDate','userLogin'],
-      })
+      // body: JSON.stringify({
+      //   fields: ['id','type','reason','where','emissionDate','resolvedDate','userLogin'],
+      // })
     }).then(res => {
       if(res.ok) {
         res.json().then(resJson => {
@@ -80,6 +80,7 @@ class Central extends Component {
               <th>Quando</th>
               <th>Autor</th>
               <th>Resolvido</th>
+              <th>Tempo de Resolução</th>
               <th>Resolver</th>
             </tr>
           </thead>

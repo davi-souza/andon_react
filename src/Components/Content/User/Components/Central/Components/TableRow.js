@@ -51,13 +51,24 @@ class TableRow extends Component {
     let d2;
     let utc2;
     let nd2;
+    let d3 = null;
     if(this.props.warningResolved !== null) {
       d2 = new Date(String(this.props.warningResolved));
       utc2 = d2.getTime() + (d2.getTimezoneOffset()*60000);
       nd2 = new Date(utc2 + 3600000*(-6));
+      d3 = (nd2-nd1)/1000/60;
+      if(d3 >= 60) {
+        d3 = d3/60;
+        d3 = d3.toFixed(2);
+        d3 = d3 + ' horas';
+      }
+      else {
+        d3 = d3.toFixed(2);
+        d3 = d3 + ' minutos';
+      }
     }
 
-    var typeField;
+    let typeField;
     if(this.props.warningResolved === null) {
       if(this.props.warningType === 'ALERTA') {
         typeField = <td className='yellow lighten-3'><b>ALERTA</b></td>;
@@ -83,12 +94,18 @@ class TableRow extends Component {
           <td></td>
         }
         {this.props.warningResolved === null &&
+          <td></td>
+        }
+        {this.props.warningResolved === null &&
           <td><button className='btn green' onClick={this.openModal}>
             <i className='material-icons'>done</i>
           </button></td>
         }
         {this.props.warningResolved !== null &&
           <td>{nd2.toLocaleString('pt-BR',{timeZone:'UTC'})}</td>
+        }
+        {this.props.warningResolved !== null &&
+          <td>{d3}</td>
         }
         {this.props.warningResolved !== null &&
           <td></td>
