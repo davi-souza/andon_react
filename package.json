@@ -2,7 +2,7 @@
   "name": "andon-front",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://ab:8000",
+  "proxy": "http://new-andon:8000",
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
