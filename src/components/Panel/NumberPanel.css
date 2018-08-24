@@ -1,0 +1,7 @@
+.ds-component-number-panel-grid-item {
+  text-align: center;
+}
+.ds-component-number-panel-grid-item button {
+  margin-bottom: 0.5rem;
+  width: 90%;
+}

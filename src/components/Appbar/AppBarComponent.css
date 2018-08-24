@@ -1,0 +1,10 @@
+.ds-app-bar-toolbar {
+  padding: 0 !important;
+}
+.ds-app-bar-menu-button {
+  margin-left: -0.75rem !important;
+  margin-right: 1.25rem !important;
+}
+.ds-app-bar-title {
+  flex-grow: 1;
+}
