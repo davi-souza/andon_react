@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {Switch, Route} from 'react-router-dom';
 import './App.css';
-// import texts from './texts/texts.json';
 
 import UserContext from './contexts/UserContext';
 import LanguageContext from './contexts/LanguageContext';

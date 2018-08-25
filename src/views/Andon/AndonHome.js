@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import GridPage from '../../components/Grid/GridPage';
+import SimpleCard from '../../components/Card/SimpleCard';
 import AppBarComponent from '../../components/Appbar/AppBarComponent';
 import NumberPanel from '../../components/Panel/NumberPanel';
 
@@ -32,19 +33,23 @@ class AndonHome extends Component {
       numberPanelValue: aux,
     });
   }
+  handleLogIn = () => {
+    this.props.history.push('/andon/warning/send')
+  }
   render() {
-    let buttonsHeight = 5.5;
+    let buttonsHeight = 6;
     let style = {
       loginButton: {
         width:'90%',
         height:String(buttonsHeight-1.5)+'rem',
         backgroundColor: '#4CAF50',
+        color: '#fff',
         letterSpacing: '0.1rem',
       },
       eraseButton: {
         width:'90%',
         height:String(buttonsHeight-1.5)+'rem',
-        backgroundColor: '#f44336',
+        // color: '#f44336',
         letterSpacing: '0.1rem',
       }
     }
@@ -52,18 +57,22 @@ class AndonHome extends Component {
       <div className='ds-view' id='ds-view-test'>
         <AppBarComponent position='fixed' title='ANDON' drawerLinks={[{to:'/',name:'Sair',icon:'exit_to_app'}]}/>
         <GridPage viewContent appBarFixed>
-          <div style={{height:'5rem',textAlign:'center'}}>
-            <Typography variant='display3'>{this.state.numberPanelValue}</Typography>
-          </div>
-          <Grid container style={{margin: '0.5rem auto'}}>
-            <Grid item xs={6} style={{textAlign:'center'}}>
-              <Button disabled={this.state.numberPanelValue===''} variant='contained' onClick={()=>{this.props.history.push('/andon/warning/send')}} style={style.loginButton}>entrar</Button>
+          <SimpleCard rounded>
+            <Grid container style={{margin: '0.5rem auto'}}>
+              <Grid item xs={2}></Grid>
+              <Grid item xs={8}>
+                <div style={{height:'5rem',textAlign:'center'}}>
+                  <Typography variant='display3'>{this.state.numberPanelValue}</Typography>
+                </div>
+              </Grid>
+              <Grid item xs={2} style={{textAlign:'center'}}>
+                <Button disabled={this.state.numberPanelValue===''} onClick={this.handleEraseNumber} style={style.eraseButton}>
+                  <i className='material-icons'>backspace</i>
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={6} style={{textAlign:'center'}}>
-              <Button disabled={this.state.numberPanelValue===''} variant='contained' onClick={this.handleEraseNumber} style={style.eraseButton}>apagar</Button>
-            </Grid>
-          </Grid>
-          <NumberPanel buttonClick={this.handleNumberPanelButtonClick} size={buttonsHeight} color='dark'/>
+            <NumberPanel buttonClick={this.handleNumberPanelButtonClick} confirmClick={this.handleLogIn} confirmDisabled={this.state.numberPanelValue===''} size={buttonsHeight}/>
+          </SimpleCard>
         </GridPage>
       </div>
     );

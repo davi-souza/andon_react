@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './GridPage.css';
-
 const GridPage = (props) => {
   let className = '';
   if(props.viewContent) {

@@ -2,14 +2,13 @@ import React, {Component} from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridPage from '../../components/Grid/GridPage';
 import AppBarComponent from '../../components/Appbar/AppBarComponent';
-import NumberPanel from '../../components/Panel/NumberPanel';
 import SimpleCard from '../../components/Card/SimpleCard';
-
-import './AndonSendWarning.css';
 
 let countdown;
 
@@ -19,7 +18,7 @@ class AndonSendWarning extends Component {
     this.state = {
       type: null,
       reason: null,
-      where: null,
+      where: '',
       who: {},
       step: 0,
 
@@ -35,7 +34,17 @@ class AndonSendWarning extends Component {
       [key]:value,
       step: nextStep,
     });
-    if(nextStep === 4) {
+    if(nextStep === 3) {
+      this.handleSendWarningCountdown();
+    }
+  }
+  handleInfoWhereSelect = (e) => {
+    let nextStep = this.state.step+1;
+    this.setState((prevState,props) => ({
+      where: String(e.target.value),
+      step: nextStep,
+    }));
+    if(nextStep === 3) {
       this.handleSendWarningCountdown();
     }
   }
@@ -120,37 +129,18 @@ class AndonSendWarning extends Component {
           {
             this.state.step===2 &&
             <div className='ds-andon-send-warning-step-2'>
-              <Typography variant='headline'>Bloco</Typography>
-              <Grid container>
-                <Grid item xs={2} className='ds-andon-send-warning-step-2-grid-item'>
-                  <Button className='ds-andon-send-warning-step-2-button-backspace' disabled={this.state.numberPanelValue===''} onClick={this.handleEraseNumber}>
-                    <i className='material-icons'>backspace</i>
-                  </Button>
-                </Grid>
-                <Grid item xs={8} className='ds-andon-send-warning-step-2-grid-item'>
-                  <Typography variant='display2'>
-                    {this.state.numberPanelValue}
-                  </Typography>
-                </Grid>
-                <Grid item xs={2} className='ds-andon-send-warning-step-2-grid-item'>
-                  <Button className='ds-andon-send-warning-step-2-button-send' disabled={this.state.numberPanelValue===''} onClick={()=>{this.handleInfoClick('where','Bloco '+this.state.numberPanelValue,this.state.step+1)}}>
-                    <i className='material-icons'>send</i>
-                  </Button>
-                </Grid>
-              </Grid>
-              <NumberPanel buttonClick={this.handleNumberPanelButtonClick} size={5.5} color='dark' />
+              <SimpleCard rounded>
+                <Select value={this.state.where} onChange={this.handleInfoWhereSelect} inputProps={{name:'where'}}>
+                  <MenuItem value=''><em>None</em></MenuItem>
+                  {[1,2,3,4,5].map(n=>(
+                    <MenuItem value={n} key={n}>{n}</MenuItem>
+                  ))}
+                </Select>
+              </SimpleCard>
             </div>
           }
           {
-            this.state.step===3 &&
-            <div className='ds-andon-send-warning-step-3'>
-              {['Térreo','1º andar','2º andar','3º andar'].map(f => (
-                <Button className='ds-andon-send-warning-step-3-button' onClick={()=>{this.handleInfoClick('where',this.state.where+', '+f,this.state.step+1)}} key={f}>{f}</Button>
-              ))}
-            </div>
-          }
-          {
-            this.state.step===4 && this.state.sendSuccess===null &&
+            this.state.step===3 && this.state.sendSuccess===null &&
             <div className='ds-andon-send-warning-step-4'>
               <SimpleCard rounded>
                 <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Autor:</span> {this.state.who.name}</Typography>
@@ -174,7 +164,7 @@ class AndonSendWarning extends Component {
             </div>
           }
           {
-            this.state.step===4 && this.state.sendSuccess!==null && 
+            this.state.step===3 && this.state.sendSuccess!==null && 
             <div className='ds-andon-send-warning-step-4 ds-andon-send-warning-step-4-sent-warning-result'>
               <SimpleCard rounded>
                 <div className='ds-andon-send-warning-step-4-result-div'>
@@ -189,7 +179,7 @@ class AndonSendWarning extends Component {
             </div>
           }
           {
-            this.state.step <=3 &&
+            this.state.step <=2 &&
             <div id='ds-andon-send-warning-mobile-stepper'>
               <MobileStepper backButton={
                 <Button onClick={this.handleStepperBackButtonClick}>
@@ -199,7 +189,7 @@ class AndonSendWarning extends Component {
                 <Button onClick={this.handleStepperBackButtonClick} disabled>
                   <i className='material-icons'>navigate_next</i>
                 </Button>
-              } steps={4} activeStep={this.state.step} variant='progress'/>
+              } steps={3} activeStep={this.state.step} variant='progress'/>
             </div>
           }
         </GridPage>

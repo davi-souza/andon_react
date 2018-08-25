@@ -1,36 +1,31 @@
 .ds-component-grid-page {
   margin: auto;
   width: 95%;
+  &.view-content {
+    margin-top: 0.5rem;
+    &.app-bar-fixed {
+      margin-top: 4rem;
+    }
+  }
 }
-.ds-component-grid-page.view-content{
-  margin-top: 0.5rem;
-}
-
-.ds-component-grid-page.view-content.app-bar-fixed {
-  margin-top: 4rem;
-}
-
 @media all and (min-width: 37.5rem) {
   .ds-component-grid-page {
     width: 85%;
-  }
-  .ds-component-grid-page.view-content.app-bar-fixed {
-    margin-top: 4.5rem;
+    &.view-content.app-bar-fixed {
+      margin-top: 4.5rem;
+    }
   }
 }
-
 @media all and (min-width: 60rem) {
   .ds-component-grid-page {
     width: 75%;
   }
 }
-
 @media all and (min-width: 80rem) {
   .ds-component-grid-page {
     width: 65%;
   }
 }
-
 @media all and (min-width: 120rem) {
   .ds-component-grid-page {
     width: 60%;

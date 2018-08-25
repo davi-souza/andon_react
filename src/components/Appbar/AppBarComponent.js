@@ -6,8 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 
-import './AppBarComponent.css';
-
 import GridPage from '../Grid/GridPage';
 import DrawerAppBar from '../Drawer/DrawerAppBar';
 
