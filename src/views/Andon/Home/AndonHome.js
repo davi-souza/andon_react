@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import GridPage from '../../components/Grid/GridPage';
-import SimpleCard from '../../components/Card/SimpleCard';
-import AppBarComponent from '../../components/Appbar/AppBarComponent';
-import NumberPanel from '../../components/Panel/NumberPanel';
+import GridPage from '../../../components/Grid/GridPage';
+import SimpleCard from '../../../components/Card/SimpleCard';
+import AppBarComponent from '../../../components/Appbar/AppBarComponent';
+import NumberPanel from '../../../components/Panel/NumberPanel';
 
 class AndonHome extends Component {
   constructor(props) {
@@ -71,7 +71,7 @@ class AndonHome extends Component {
                 </Button>
               </Grid>
             </Grid>
-            <NumberPanel buttonClick={this.handleNumberPanelButtonClick} confirmClick={this.handleLogIn} confirmDisabled={this.state.numberPanelValue===''} size={buttonsHeight}/>
+            <NumberPanel color='dark' buttonClick={this.handleNumberPanelButtonClick} confirmClick={this.handleLogIn} confirmDisabled={this.state.numberPanelValue===''} size={buttonsHeight}/>
           </SimpleCard>
         </GridPage>
       </div>

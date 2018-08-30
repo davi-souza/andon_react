@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 
-const PaperSimple = (props) => {
+const SimplePaper = (props) => {
   let style = {
     padding: '0.5rem',
   };
@@ -9,12 +9,12 @@ const PaperSimple = (props) => {
     style.borderRadius = '0.5rem';
   }
   return (
-    <div className='ds-component-paper-simple'>
-      <Paper style={style} elevation={1}>
+    <div>
+      <Paper style={style} elevation={1} className={props.className}>
         {props.children}
       </Paper>
     </div>
   );
 }
 
-export default PaperSimple;
+export default SimplePaper;

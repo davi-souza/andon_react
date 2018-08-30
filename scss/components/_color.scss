@@ -1,0 +1,34 @@
+.ds-color {
+  &-primary {
+    &-light {
+      background-color: $primary-light !important;
+      color: $primary-contrast-text !important;
+    }
+    &-main {
+      background-color: $primary-main !important;
+      color: $primary-contrast-text !important;
+    }
+    &-dark {
+      background-color: $primary-dark !important;
+      color: $primary-contrast-text !important;
+    }
+  }
+  &-secondary {
+    &-light {
+      background-color: $secondary-light !important;
+      color: $primary-contrast-text !important;
+    }
+    &-main {
+      background-color: $secondary-main !important;
+      color: $primary-contrast-text !important;
+    }
+    &-dark {
+      background-color: $secondary-dark !important;
+      color: $secondary-contrast-text !important;
+    }
+  }
+  &-dark {
+    background-color: $dark !important;
+    color: #fff !important;
+  }
+}

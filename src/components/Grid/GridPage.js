@@ -9,7 +9,7 @@ const GridPage = (props) => {
     className += ' app-bar-fixed';
   }
   return (
-    <div className={'ds-component-grid-page' + className}>
+    <div className={'ds-grid-page' + className}>
       {props.children}
     </div>
   );

@@ -25,7 +25,7 @@ class AppBarComponent extends Component {
 
   render() {
     return (
-      <div className='ds-component-app-bar-component'>
+      <div>
         <AppBar position={this.props.position?this.props.position:'static'}>
           <GridPage>
             <Toolbar className='ds-app-bar-toolbar'>
@@ -37,7 +37,7 @@ class AppBarComponent extends Component {
                 :
                 null
               }
-              <Typography variant='title' color='inherit' className='ds-app-bar-title'>{ this.props.title?this.props.title:'DS' }</Typography>
+              <Typography variant='title' color='inherit' className='ds-app-bar-title'>{ this.props.title?this.props.title:'ANDON' }</Typography>
               {
                 this.props.toolbarLinks?
                 this.props.toolbarLinks.map(link => (

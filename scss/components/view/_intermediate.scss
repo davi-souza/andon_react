@@ -1,0 +1,10 @@
+.ds-intermediate-warning-card {
+  text-align: center;
+  height: 10rem;
+  &-type-alert {
+    background-color: $yellow-light !important;
+  }
+  &-type-stopped {
+    background-color: $red-light !important;
+  }
+}

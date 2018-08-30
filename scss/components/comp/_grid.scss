@@ -1,4 +1,4 @@
-.ds-component-grid-page {
+.ds-grid-page {
   margin: auto;
   width: 95%;
   &.view-content {
@@ -9,7 +9,7 @@
   }
 }
 @media all and (min-width: 37.5rem) {
-  .ds-component-grid-page {
+  .ds-grid-page {
     width: 85%;
     &.view-content.app-bar-fixed {
       margin-top: 4.5rem;
@@ -17,17 +17,17 @@
   }
 }
 @media all and (min-width: 60rem) {
-  .ds-component-grid-page {
+  .ds-grid-page {
     width: 75%;
   }
 }
 @media all and (min-width: 80rem) {
-  .ds-component-grid-page {
+  .ds-grid-page {
     width: 65%;
   }
 }
 @media all and (min-width: 120rem) {
-  .ds-component-grid-page {
+  .ds-grid-page {
     width: 60%;
   }
 }

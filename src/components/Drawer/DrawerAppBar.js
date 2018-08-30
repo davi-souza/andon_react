@@ -11,31 +11,19 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 const DrawerAppBar = (props) => {
-  let style = {
-    menuButton: {
-      marginLeft: -12,
-      marginRight: 20,
-    },
-    List: {
-      minWidth: '18.75rem',
-    },
-    Toolbar: {
-      // minHeight: '10rem',
-    }
-  };
   return (
-    <div className='ds-component-drawer-app-bar'>
+    <div>
       <Drawer open={props.open} onClose={()=>props.handleOpenCloseDrawer(false)}>
         <div tabIndex={0} role="button" onClick={()=>props.handleOpenCloseDrawer(false)} onKeyDown={()=>props.handleOpenCloseDrawer(false)}>
           <AppBar position='static' color='primary'>
-            <Toolbar id='ds-component-drawer-app-bar-tool-bar' style={style.Toolbar}>
-              <IconButton style={style.menuButton} color="inherit" aria-label="Menu" onClick={()=>props.handleOpenCloseDrawer(false)}>
+            <Toolbar className='ds-app-bar-drawer-toolbar'>
+              <IconButton className='ds-app-bar-drawer-toolbar-menu' color="inherit" aria-label="Menu" onClick={()=>props.handleOpenCloseDrawer(false)}>
                 <i className='material-icons'>menu</i>
               </IconButton>
               <Typography variant='title' color='inherit'>{ props.title?props.title:'DS' }</Typography>
             </Toolbar>
           </AppBar>
-          <List component="nav" style={style.List}>
+          <List component="nav" className='ds-app-bar-drawer-list'>
             {
               props.drawerLinks.map(link => (
                 <ListItem button component={Link} to={link.to} key={link.name}>

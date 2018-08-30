@@ -3,13 +3,13 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
 const SimpleCard = (props) => {
-  let style = {};
+  let className = props.className + ' ds-simple-card';
   if(props.rounded) {
-    style.borderRadius = '0.5rem';
+    className += ' rounded';
   }
   return (
-    <div className='ds-component-simple-card'>
-      <Card style={style}>
+    <div>
+      <Card className={className}>
         <CardContent>
           {props.children}
         </CardContent>
