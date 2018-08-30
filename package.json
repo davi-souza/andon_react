@@ -1,21 +1,25 @@
 {
-  "name": "andon-front",
+  "name": "project",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://new-andon:8000",
   "dependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-modal": "^3.3.2",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.1",
-    "react-toastify": "^3.4.3"
+    "@material-ui/core": "^1.4.1",
+    "node-sass": "^4.9.3",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.4"
   },
   "scripts": {
-    "start": "PORT=3000 react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sass": "node-sass --include-path scss scss/main.scss public/bundle.css",
+    "watch-sass": "nodemon -e scss -x \"yarn run sass\""
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
   }
 }
