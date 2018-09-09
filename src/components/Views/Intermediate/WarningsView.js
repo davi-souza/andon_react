@@ -7,8 +7,8 @@ const WarningViews = (props) => {
   return (
     <div className='ds-intermediate-warnings'>
       <Grid container spacing={8}>
-        {props.warnings.filter(w=>{return !w.resolved}).sort((a,b)=>a.when-b.when).map(w=>(
-          <WarningCard rounded warning={w} key={w.id}/>
+        {props.warnings.filter(w=>{return !w.resolvedDate}).sort((a,b)=>a.createdDate-b.createdDate).map(w=>(
+          <WarningCard handleResolveWarning={props.handleResolveWarning} rounded warning={w} key={w.id}/>
         ))}
       </Grid>
     </div>

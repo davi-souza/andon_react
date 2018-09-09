@@ -7,7 +7,7 @@ html, head, body {
   font-size: 16px; }
 
 body {
-  background-color: #eee; }
+  background-color: #efefef; }
 
 .ds-hide-when-small {
   display: none !important; }
@@ -20,6 +20,11 @@ body {
     display: inline-flex !important; }
   .ds-hide-when-not-small {
     display: none !important; } }
+
+.ds-circular-progress-centered {
+  width: 100%;
+  text-align: center;
+  margin-top: 6rem; }
 
 .ds-space-for-fixed-footer {
   width: 100%;
@@ -99,11 +104,37 @@ body {
 .ds-simple-card.rounded {
   border-radius: 0.5rem; }
 
+.ds-simple-card.centered {
+  text-align: center; }
+
 .ds-number-panel-grid-item {
   text-align: center; }
   .ds-number-panel-grid-item button {
     margin-bottom: 0.5rem;
     width: 90%; }
+
+.ds-password-dialog-button {
+  border-radius: 5rem !important; }
+
+.ds-andon-login-grid {
+  text-align: center;
+  margin-bottom: 1.75rem !important; }
+  .ds-andon-login-grid-last {
+    text-align: center; }
+
+.ds-andon-login-input div input {
+  font-size: 1.25rem !important; }
+
+.ds-andon-login-button {
+  width: 75%;
+  margin-top: 1.5rem !important;
+  border-radius: 10rem !important;
+  height: 2.5rem !important;
+  font-size: 1.1rem !important; }
+
+@media all and (min-width: 37.5rem) {
+  .ds-andon-login-button {
+    width: 50%; } }
 
 .ds-send-warning-step-0-button {
   display: block;
@@ -181,11 +212,24 @@ button.ds-andon-send-warning-step-3-button {
   .ds-andon-send-warning-step-4-result-div i.fail {
     font-size: 6rem;
     color: #f44336; }
+  .ds-andon-send-warning-step-4-result-div h1 {
+    margin-top: 1.5rem; }
+  .ds-andon-send-warning-step-4-result-div a {
+    height: 3rem;
+    width: 30%;
+    font-size: 1rem;
+    border-radius: 5rem;
+    margin-top: 1.5rem; }
 
 .ds-intermediate-warning-card {
-  text-align: center;
-  height: 10rem; }
-  .ds-intermediate-warning-card-type-alert {
-    background-color: #FFF59D !important; }
-  .ds-intermediate-warning-card-type-stopped {
-    background-color: #EF9A9A !important; }
+  border-radius: 0.5rem !important; }
+  .ds-intermediate-warning-card h2 {
+    margin-bottom: 0.8rem; }
+  .ds-intermediate-warning-card-content {
+    height: 8rem; }
+  .ds-intermediate-warning-card-actions {
+    justify-content: space-around;
+    margin-bottom: 0.5rem; }
+    .ds-intermediate-warning-card-actions button {
+      width: 60%;
+      border-radius: 10rem; }

@@ -7,7 +7,7 @@ html,head,body {
   font-size: 16px;
 }
 body {
-  background-color: #eee;
+  background-color: #efefef;
 }
 .ds-hide-when-small {
   display: none !important;
@@ -22,6 +22,11 @@ body {
   .ds-hide-when-not-small {
     display: none !important;
   }
+}
+.ds-circular-progress-centered {
+  width: 100%;
+  text-align: center;
+  margin-top: 6rem;
 }
 .ds-space-for-fixed-footer {
   width: 100%;

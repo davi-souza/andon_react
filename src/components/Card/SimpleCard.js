@@ -7,6 +7,9 @@ const SimpleCard = (props) => {
   if(props.rounded) {
     className += ' rounded';
   }
+  if(props.centered) {
+    className += ' centered';
+  }
   return (
     <div>
       <Card className={className}>
