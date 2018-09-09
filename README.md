@@ -2,11 +2,11 @@
 ## SCSS (precisa organizar)
 * O arquivo "main.scss" é onde acontece todas as importações.
 * Dentro da pasta "components" temos:
-  * pasta "comp" onde tem os .scss de components
-  * pasta "variable" onde tem variáveis
-  * pasta "view" onde tem os .scss de views
-  * "_color.scss" onde .scss de atribuição de cor
-  * "_reset.scss" para setar estilos iniciais
+    * pasta "comp" onde tem os .scss de components
+    * pasta "variable" onde tem variáveis
+    * pasta "view" onde tem os .scss de views
+    * "_color.scss" onde .scss de atribuição de cor
+    * "_reset.scss" para setar estilos iniciais
 
 ## Components
 Onde se encontram os components usados nas views
