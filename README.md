@@ -25,5 +25,7 @@ Onde se encontra os arquivos de contexto da API Context do React.JS
 
 ## Questionamentos válidos
 No final do ano passado, teve uma start app que usava React teve problemas com o facebook em relação a licença
+
 Parece que o facebook mudou a licença e agora todos podem usar, mas eu ainda ficaria com o pé atrás
+
 Eu aprendi e estou usando no estágio o Vue.JS, pode ser uma opção.
