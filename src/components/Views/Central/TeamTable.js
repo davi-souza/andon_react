@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-class UserTable extends Component {
+class TeamTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -135,4 +135,4 @@ class UserTable extends Component {
   }
 }
 
-export default UserTable;
+export default TeamTable;

@@ -101,6 +101,7 @@ class AndonCentralUsersContext extends Component {
                 }
                 deleteUser={this.props.central.deleteUser}
                 editUser={this.props.central.editUser}
+                teams={this.props.central.teams.map(team => team['ID'])}
               />
             </div>
           }

@@ -59,18 +59,29 @@ class UserTable extends Component {
                     <TableCell className='txt-align-center'>
                       <TextField
                         name='Título'
-                        value={this.state.userSelectedToEdit['Título']}
+                        value={this.state.userSelectedToEdit['Título'] || ''}
                         onChange={this.HandleSelectedUserChanges}
                       />
                     </TableCell>
                     <TableCell className='txt-align-center'>
                       <TextField
                         name='Senha'
-                        value={this.state.userSelectedToEdit['Senha']}
+                        value={this.state.userSelectedToEdit['Senha'] || ''}
                         onChange={this.HandleSelectedUserChanges}
                       />
                     </TableCell>
-                    <TableCell className='txt-align-center'>{user.Times.map(time => String(time)+' ')}</TableCell>
+                    <TableCell className='txt-align-center'>
+                      <TextField
+                        select
+                        name='Times'
+                        value={this.state.userSelectedToEdit['Times'][0]}    
+                        onChange={this.HandleSelectedUserChanges}                   
+                      >
+                        {this.props.teams.map(team => (
+                          <option key={team} value={team}>{team}</option>
+                        ))}
+                      </TextField>
+                    </TableCell>
                     <TableCell className='txt-align-center'>
                       <Button onClick={this.ConfirmUserEdit}>
                         <i className='material-icons'>done</i>
@@ -126,7 +137,11 @@ class UserTable extends Component {
   }
   HandleSelectedUserChanges = (event) => {
     let UserData = this.state.userSelectedToEdit;
-    UserData[event.target.name] = event.target.value;
+    if(event.target.name === 'Times') {
+      UserData['Times'][0] = event.target.value;
+    } else {
+      UserData[event.target.name] = event.target.value;
+    }
     this.setState({
       userSelectedToEdit: UserData,
     });
