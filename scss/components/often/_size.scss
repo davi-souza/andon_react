@@ -1,0 +1,9 @@
+.height {
+  $i: 10;
+  @while $i > 0 {
+    &-#{$i} {
+      height: $i * 1rem !important;
+    }
+    $i: $i - 1;
+  }
+}

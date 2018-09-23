@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 
-import GridPage from '../Grid/GridPage';
+import FullGridPage from '../Grid/FullGridPage';
 import DrawerAppBar from '../Drawer/DrawerAppBar';
 
 class AppBarComponent extends Component {
@@ -27,7 +27,7 @@ class AppBarComponent extends Component {
     return (
       <div>
         <AppBar position={this.props.position?this.props.position:'static'}>
-          <GridPage>
+          <FullGridPage>
             <Toolbar className='ds-app-bar-toolbar'>
               {
                 this.props.drawerLinks?
@@ -37,7 +37,7 @@ class AppBarComponent extends Component {
                 :
                 null
               }
-              <Typography variant='title' color='inherit' className='ds-app-bar-title'>{ this.props.title?this.props.title:'ANDON' }</Typography>
+              <Typography variant='title' color='inherit' className='ds-app-bar-title'>{ this.props.title || '' }</Typography>
               {
                 this.props.toolbarLinks?
                 this.props.toolbarLinks.map(link => (
@@ -54,7 +54,7 @@ class AppBarComponent extends Component {
                 null
               }
             </Toolbar>
-          </GridPage>
+          </FullGridPage>
         </AppBar>
         {
           this.props.drawerLinks?

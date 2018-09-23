@@ -105,7 +105,7 @@ class AndonHomeContext extends Component {
           drawerLinks={[
             {to:'/andon',name:'Painel',icon:'dialpad'},
             {to:'/andon/login',name:'Log In',icon:'person'},
-            {to:'/',name:'Sair',icon:'exit_to_app'}
+            {to:'/',name:'Sair',icon:'exit_to_app',divider:true}
           ]}
         />
         <GridPage viewContent appBarFixed>

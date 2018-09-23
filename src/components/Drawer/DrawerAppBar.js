@@ -9,6 +9,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 
 const DrawerAppBar = (props) => {
   return (
@@ -26,17 +27,20 @@ const DrawerAppBar = (props) => {
           <List component="nav" className='ds-app-bar-drawer-list'>
             {
               props.drawerLinks.map(link => (
-                <ListItem button component={Link} to={link.to} key={link.name}>
-                  {
-                    link.icon?
-                    <ListItemIcon>
-                      <i className='material-icons'>{link.icon}</i>
-                    </ListItemIcon>
-                    :
-                    null
-                  }
-                  <ListItemText primary={link.name} />
-                </ListItem>
+                <div key={link.name}>
+                  {link.divider? <Divider /> : null}
+                  <ListItem button component={Link} to={link.to}>
+                    {
+                      link.icon?
+                      <ListItemIcon>
+                        <i className='material-icons'>{link.icon}</i>
+                      </ListItemIcon>
+                      :
+                      null
+                    }
+                    <ListItemText primary={link.name} />
+                  </ListItem>
+                </div>
               ))
             }
           </List>

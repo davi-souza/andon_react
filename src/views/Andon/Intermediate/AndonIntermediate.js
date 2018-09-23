@@ -16,29 +16,35 @@ class AndonIntermediateContext extends Component {
       loadingWarnings: true,
     };
   }
-  componentDidMount () {
-    console.log(this.props.user);
-    for(let team of this.props.user.teams) {
-      fetch(`/api/warning/team/${team}`,{
-        method: 'get',
-        credentials: 'same-origin',
-      }).then(response => {
-        if(response.status !== 200) {
-          throw new Error("Houve um erro.");
-        } else {
-          return response.json();
-        }
-      }).then(res => {
-        console.log(res);
-        let oldWarningsState = this.state.warnings;
-        this.setState({
-          warnings: oldWarningsState.concat(res.data),
-          loadingWarnings: false,
-        });
-      }).catch(err => {
-        alert(err);
-      });
+  componentWillReceiveProps(nextProps) {
+    if(this.props.user.id !== null) {
+      this.HandleGetWarnings();
     }
+  }
+  render() {
+    if(!this.props.user.loadingUser && this.props.user.id === null) {
+      return <Redirect to='/andon/login' />;
+    }
+    return (
+      <div className='ds-view' id='ds-view-andon-intermediate'>
+        <AppBarComponent
+          title={this.props.user.firstname || 'ANDON'}
+          position='fixed'
+          toolbarLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]}
+        />
+        <GridPage viewContent appBarFixed>
+          {
+            this.state.loadingWarnings && 
+            <div className='ds-circular-progress-centered'>
+              <CircularProgress size={80} color='secondary' />
+            </div>
+          }
+          {
+            !this.state.loadingWarnings && <WarningsView handleResolveWarning={this.handleResolveWarning} warnings={this.state.warnings} />
+          }
+        </GridPage>
+      </div>
+    );
   }
   handleResolveWarning = (warningId) => {
     if(window.confirm('Tem certeza que o aviso foi resolvido?')) {
@@ -68,26 +74,28 @@ class AndonIntermediateContext extends Component {
       });
     }
   }
-  render() {
-    if(this.props.user.id === null) {
-      return <Redirect to='/andon/login' />;
+  HandleGetWarnings = () => {
+    for(let team of this.props.user.teams) {
+      fetch(`/api/warning/team/${team}`,{
+        method: 'get',
+        credentials: 'same-origin',
+      }).then(response => {
+        if(response.status !== 200) {
+          throw new Error("Houve um erro.");
+        } else {
+          return response.json();
+        }
+      }).then(res => {
+        console.log(res);
+        let oldWarningsState = this.state.warnings;
+        this.setState({
+          warnings: oldWarningsState.concat(res.data),
+          loadingWarnings: false,
+        });
+      }).catch(err => {
+        alert(err);
+      });
     }
-    return (
-      <div className='ds-view' id='ds-view-andon-intermediate'>
-        <AppBarComponent position='fixed' toolbarLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]}/>
-        <GridPage viewContent appBarFixed>
-          {
-            this.state.loadingWarnings && 
-            <div className='ds-circular-progress-centered'>
-              <CircularProgress size={80} color='secondary' />
-            </div>
-          }
-          {
-            !this.state.loadingWarnings && <WarningsView handleResolveWarning={this.handleResolveWarning} warnings={this.state.warnings} />
-          }
-        </GridPage>
-      </div>
-    );
   }
 }
 

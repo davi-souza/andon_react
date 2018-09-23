@@ -8,6 +8,7 @@
     }
   }
 }
+
 @media all and (min-width: 37.5rem) {
   .ds-grid-page {
     width: 85%;
@@ -29,5 +30,23 @@
 @media all and (min-width: 120rem) {
   .ds-grid-page {
     width: 60%;
+  }
+}
+
+.ds-grid-page-full {
+  margin: auto;
+  width: 95%;
+  &.view-content {
+    margin-top: 0.5rem;
+    &.app-bar-fixed {
+      margin-top: 4rem;
+    }
+  }
+}
+@media all and (min-width: 37.5rem) {
+  .ds-grid-page-full {
+    &.view-content.app-bar-fixed {
+      margin-top: 4.5rem;
+    }
   }
 }

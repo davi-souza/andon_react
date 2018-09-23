@@ -4,10 +4,13 @@ import {Switch, Route} from 'react-router-dom';
 import AndonHome from './Andon/Home/AndonHome';
 import AndonLogout from './Andon/Logout/AndonLogout';
 import AndonLogin from './Andon/Home/AndonLogin';
-import AndonSendWarning from './Andon/SendWarning/AndonSendWarning';
+import AndonSendWarning from './Andon/Leaf/AndonSendWarning';
 import AndonIntermediate from './Andon/Intermediate/AndonIntermediate';
+import AndonCentralIndex from './Andon/Central/AndonCentralIndex';
 
 import UserContext from '../contexts/UserContext';
+
+import { FetchGetSession } from '../lib/FetchAndonRoot';
 
 class AndonView extends Component {
   constructor(props) {
@@ -15,18 +18,20 @@ class AndonView extends Component {
     this.state = {
       id: null,
       login: null,
-      name: null,
-      title: null,
+      firstname: null,
+      lastname: null,
+      jobTitle: null,
       access: null,
       projectId: null,
       teams: null,
       lastLocation: null,
-      handleLogin: ({id,login,name,title,access,teams,projectId,lastLocation}) => {
+      handleLogin: ({id,login,firstname,lastname,jobTitle,access,teams,projectId,lastLocation}) => {
         this.setState({
           id,
           login,
-          name,
-          title,
+          firstname,
+          lastname,
+          jobTitle,
           access,
           teams,
           projectId,
@@ -37,15 +42,25 @@ class AndonView extends Component {
         this.setState({
           id: null,
           login: null,
-          name: null,
-          title: null,
+          firstname: null,
+          lastname: null,
+          jobTitle: null,
           access: null,
           teams: null,
           projectId: null,
           lastLocation: null,
         });
-      }
+      },
+      handleLoadingUser: (status) => {
+        this.setState({
+          loadingUser: status,
+        });
+      },
+      loadingUser: true,
     };
+  }
+  componentWillMount() {
+    this.CheckSession();
   }
   render() {
     return (
@@ -56,9 +71,31 @@ class AndonView extends Component {
           <Route exact path='/andon/logout' component={AndonLogout} />
           <Route exact path='/andon/warning/send' component={AndonSendWarning} />
           <Route exact path='/andon/intermediate' component={AndonIntermediate} />
+          <Route path='/andon/central' component={AndonCentralIndex} />
         </Switch>
       </UserContext.Provider>
     );
+  }
+
+  CheckSession = () => {
+    if(!this.state.id) {
+      console.log('[ANDON] Checking if there is a session.');
+      FetchGetSession().then(response => response.json())
+      .then(res => {
+        if(res.data) {
+          console.log('[ANDON] There is a session.');
+          // console.log(res.data);
+          this.state.handleLogin(res.data);
+        } else {
+          console.log('[ANDON] There is not a session.');
+        }
+        this.state.handleLoadingUser(false);
+      }).catch(err => {
+        console.log(err);
+      });
+    } else {
+      console.log('[ANDON] Already logged in.');
+    }
   }
 }
 
