@@ -124,6 +124,7 @@ class AndonCentralWarningsContext extends Component {
                 }
                 return true;
               })}
+              resolveWarning={this.props.central.resolveWarning}
             />
           }
         </FullGridPage>

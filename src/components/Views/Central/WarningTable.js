@@ -54,7 +54,11 @@ class WarningTable extends Component {
                 }</TableCell>
                 <TableCell>{warning['Resolvido por']}</TableCell>
                 <TableCell>
-                  <Button color='secondary'>
+                  <Button
+                    color='secondary'
+                    onClick={()=>{this.HandleResolveWarning(warning.id)}}
+                    disabled={warning['Resolvido em']!==null}
+                  >
                     <i className='material-icons'>done</i>
                   </Button>
                 </TableCell>
@@ -69,6 +73,11 @@ class WarningTable extends Component {
         </Table>
       </Paper>
     );
+  }
+  HandleResolveWarning = (warningId) => {
+    if(window.confirm('Confirma a resolução do aviso?')) {
+      this.props.resolveWarning(warningId);
+    }
   }
 }
 

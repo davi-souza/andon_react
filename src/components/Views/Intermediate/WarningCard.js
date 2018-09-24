@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const WarningCard = (props) => {
   let cardMediaOptions = {
@@ -48,7 +49,11 @@ const WarningCard = (props) => {
           </div>
         </CardContent>
         <CardActions className='ds-intermediate-warning-card-actions'>
-          <Button variant='contained' color='secondary' onClick={()=>{props.handleResolveWarning(props.warning.id)}}>Resolvido</Button>
+          {
+            props.loadingResolveWarning?
+            <CircularProgress color='secondary' size={40} /> :
+            <Button variant='contained' color='secondary' onClick={()=>{props.handleResolveWarning(props.warning.id)}}>Resolvido</Button>
+          }
         </CardActions>
       </Card>
     </Grid>

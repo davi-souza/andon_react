@@ -14,10 +14,16 @@ class AndonIntermediateContext extends Component {
     this.state = {
       warnings: [],
       loadingWarnings: true,
+      loadingResolveWarning: false,
     };
   }
   componentWillReceiveProps(nextProps) {
-    if(this.props.user.id !== null) {
+    if(nextProps.user.id !== null) {
+      this.HandleGetWarnings();
+    }
+  }
+  componentDidMount() {
+    if(this.props.user.id) {
       this.HandleGetWarnings();
     }
   }
@@ -40,7 +46,7 @@ class AndonIntermediateContext extends Component {
             </div>
           }
           {
-            !this.state.loadingWarnings && <WarningsView handleResolveWarning={this.handleResolveWarning} warnings={this.state.warnings} />
+            !this.state.loadingWarnings && <WarningsView loadingResolveWarning={this.state.loadingResolveWarning} handleResolveWarning={this.handleResolveWarning} warnings={this.state.warnings} />
           }
         </GridPage>
       </div>
@@ -48,6 +54,9 @@ class AndonIntermediateContext extends Component {
   }
   handleResolveWarning = (warningId) => {
     if(window.confirm('Tem certeza que o aviso foi resolvido?')) {
+      this.setState({
+        loadingResolveWarning: true,
+      });
       fetch('/api/warning/resolve',{
         method: 'put',
         credentials: 'same-origin',
@@ -65,16 +74,25 @@ class AndonIntermediateContext extends Component {
           return response.json();
         }
       }).then(res => {
+        this.setState({
+          loadingResolveWarning: false,
+        });
         let newWarnings = this.state.warnings.filter(w => w.id===warningId?null:w);
         this.setState({
           warnings: newWarnings,
         });
       }).catch(err => {
+        this.setState({
+          loadingResolveWarning: false,
+        });
         alert(err);
       });
     }
   }
   HandleGetWarnings = () => {
+    if(!this.props.user.teams) {
+      return;
+    }
     for(let team of this.props.user.teams) {
       fetch(`/api/warning/team/${team}`,{
         method: 'get',
@@ -86,7 +104,6 @@ class AndonIntermediateContext extends Component {
           return response.json();
         }
       }).then(res => {
-        console.log(res);
         let oldWarningsState = this.state.warnings;
         this.setState({
           warnings: oldWarningsState.concat(res.data),

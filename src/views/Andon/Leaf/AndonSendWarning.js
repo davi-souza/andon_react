@@ -155,7 +155,7 @@ class AndonSendWarningContext extends Component {
     });
   }
   render() {
-    if(this.props.user.id === null) {
+    if(this.props.user.loadingUser && this.props.user.id === null) {
       return <Redirect to='/andon' />
     }
     return (
@@ -178,7 +178,7 @@ class AndonSendWarningContext extends Component {
             this.state.step===3 && this.state.sendSuccess===null &&
             <div className='ds-andon-send-warning-step-4'>
               <SimpleCard rounded>
-                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Autor:</span> {this.props.user.name}</Typography>
+                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Autor:</span> {this.props.user.firstname}</Typography>
                 <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Tipo:</span> {this.state.type}</Typography>
                 <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Razão:</span> {this.state.reason}</Typography>
                 <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Local:</span> {this.state.place}</Typography>

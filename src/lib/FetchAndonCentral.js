@@ -7,6 +7,15 @@ export const FetchCentralWarnings = async (projectId) => {
   });
   return fetchResult;
 }
+export const FetchCentralResolveWarning = async(userId,warningId) => {
+  let fetchResult = await fetch(urlInit + 'warning/resolve',{
+    method: 'put',
+    headers: jsonHeaders,
+    credentials,
+    body: JSON.stringify({userId,warningId}),
+  });
+  return fetchResult;
+}
 
 export const FetchCentralUsers = async (projectId) => {
   let fetchResult = await fetch(urlInit + 'user/central?filter=' + JSON.stringify({projectId}),{

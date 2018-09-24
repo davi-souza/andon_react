@@ -13,7 +13,7 @@ import CentralContext from '../../../contexts/CentralContext';
 import {
   FetchCentralUsers, FetchCentralDeleteUser, FetchCentralEditUser, FetchCentralAddUser,
   FetchCentralTeams, FetchCentralEditTeam, FetchCentralAddTeam,
-  FetchCentralWarnings } from '../../../lib/FetchAndonCentral';
+  FetchCentralWarnings, FetchCentralResolveWarning } from '../../../lib/FetchAndonCentral';
 
 class AndonCentralIndexContext extends Component {
   constructor(props) {
@@ -21,6 +21,7 @@ class AndonCentralIndexContext extends Component {
     this.state = {
       loadingWarnings: true,
       warnings: [],
+      resolveWarning: (warningId) => {this.ResolveWarning(warningId)},
 
       loadingUsers: true,
       users: [],
@@ -54,6 +55,14 @@ class AndonCentralIndexContext extends Component {
     }
   }
 
+  componentDidMount() {
+    if(this.props.user.id) {
+      this.FetchAllWarnings();
+      this.FetchAllUsers();
+      this.FetchAllTeams();
+    }
+  }
+
   render() {
     if(!this.props.user.loadingUser && !this.props.user.id) {
       return <Redirect to='/andon/login' />
@@ -80,6 +89,19 @@ class AndonCentralIndexContext extends Component {
     }).then(res => {
       this.state.handleChange('warnings',res.data);
       this.state.handleChange('loadingWarnings',false);
+    }).catch(err => {
+      alert(err);
+    });
+  }
+  ResolveWarning = (warningId) => {
+    FetchCentralResolveWarning(this.props.user.id,warningId).then(response => {
+      if(response.status !== 200) {
+        throw new Error('Não foi possível resolver aviso.');
+      }
+      return response.json();
+    }).then(res => {
+      this.state.handleChange('loadingWarnings',true);
+      this.FetchAllWarnings();
     }).catch(err => {
       alert(err);
     });
