@@ -41,23 +41,23 @@ class WarningTable extends Component {
           <TableBody>
             {this.props.data.map(warning => (
               <TableRow key={warning.id}>
-                <TableCell>{warning.Tipo}</TableCell>
-                <TableCell>{warning.Motivo}</TableCell>
-                <TableCell>{warning.Local}</TableCell>
-                <TableCell>{warning.Autor}</TableCell>
+                <TableCell>{warning.type}</TableCell>
+                <TableCell>{warning.reasonName}</TableCell>
+                <TableCell>{warning.placeName}</TableCell>
+                <TableCell>{warning.userThatCreated}</TableCell>
                 <TableCell>{
-                  new Date(warning['Criado em']).toLocaleString('pt-BR')
+                  new Date(warning.createdDate).toLocaleString('pt-BR')
                 }</TableCell>
                 <TableCell>{
-                  warning['Resolvido em'] ?
-                  new Date(warning['Resolvido em']).toLocaleString('pt-BR') : null
+                  warning.resolvedDate ?
+                  new Date(warning.resolvedDate).toLocaleString('pt-BR') : null
                 }</TableCell>
-                <TableCell>{warning['Resolvido por']}</TableCell>
+                <TableCell>{warning.userThatResolved}</TableCell>
                 <TableCell>
                   <Button
                     color='secondary'
                     onClick={()=>{this.HandleResolveWarning(warning.id)}}
-                    disabled={warning['Resolvido em']!==null}
+                    disabled={warning.resolvedDate!==null}
                   >
                     <i className='material-icons'>done</i>
                   </Button>

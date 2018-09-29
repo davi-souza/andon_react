@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
@@ -56,40 +57,40 @@ class AndonCentralUsersContext extends Component {
             </div>
           }
           {
-            !this.props.central.loadingUsers && this.props.central.users.length !== 0 && 
+            !this.props.central.loadingUsers && this.props.central.users.length !== 0 &&
             <div className='txt-align-center'>
-              <Grid container>
-                <Grid item xs={3}>
-                  {this.props.central.users && this.props.central.users.length !== 0 &&
-                    <TextField
-                      select
-                      name="fieldToFilter"
-                      className='w-90 margin-top-0'
-                      label="Campo"
-                      placeholder="Campo"
-                      value={this.state.fieldToFilter}
-                      onChange={this.handleFilterChange}
-                    >
-                      {
-                        ['Matrícula','Nome','Título'].map(key => (
-                          <option key={key} value={key}>{key}</option>
-                        ))
-                      }
-                    </TextField>
-                  }
+              <Paper className='margin-bottom-10 padding-top-10 padding-bottom-10'>
+                <Grid container>
+                  <Grid item xs={3}>
+                    {this.props.central.users && this.props.central.users.length !== 0 &&
+                      <TextField
+                        select
+                        name="fieldToFilter"
+                        className='w-90 margin-top-0'
+                        label="Campo"
+                        placeholder="Campo"
+                        value={this.state.fieldToFilter}
+                        onChange={this.handleFilterChange}
+                      >
+                        <option value={'login'}>Matrícula</option>
+                        <option value={'name'}>Nome</option>
+                        <option value={'jobTitle'}>Título</option>
+                      </TextField>
+                    }
+                  </Grid>
+                  <Grid item xs={9}>
+                  <TextField
+                    name="filterValue"
+                    className='w-90 margin-top-0'
+                    label='Filtro'
+                    placeholder='Filtro'
+                    value={this.state.filter}
+                    margin='normal'
+                    onChange={this.handleFilterChange}
+                  />
+                  </Grid>
                 </Grid>
-                <Grid item xs={9}>
-                <TextField
-                  name="filterValue"
-                  className='w-90 margin-top-0'
-                  label='Filtro'
-                  placeholder='Filtro'
-                  value={this.state.filter}
-                  margin='normal'
-                  onChange={this.handleFilterChange}
-                />
-                </Grid>
-              </Grid>
+              </Paper>
               <UserTable
                 data={
                   this.props.central.users.sort((a,b) => b['ID'] < a['ID']).filter(userObj => {
@@ -100,8 +101,8 @@ class AndonCentralUsersContext extends Component {
                   })
                 }
                 deleteUser={this.props.central.deleteUser}
-                editUser={this.props.central.editUser}
-                teams={this.props.central.teams.map(team => team['ID'])}
+                updateUser={this.props.central.updateUser}
+                teams={this.props.central.teams.map(team => team.id)}
               />
             </div>
           }

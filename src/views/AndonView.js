@@ -4,7 +4,7 @@ import {Switch, Route} from 'react-router-dom';
 import AndonHome from './Andon/Home/AndonHome';
 import AndonLogout from './Andon/Logout/AndonLogout';
 import AndonLogin from './Andon/Home/AndonLogin';
-import AndonSendWarning from './Andon/Leaf/AndonSendWarning';
+import AndonLeaf from './Andon/Leaf/AndonLeaf';
 import AndonIntermediate from './Andon/Intermediate/AndonIntermediate';
 import AndonCentralIndex from './Andon/Central/AndonCentralIndex';
 
@@ -69,7 +69,7 @@ class AndonView extends Component {
           <Route exact path='/andon' component={AndonHome} />
           <Route exact path='/andon/login' component={AndonLogin} />
           <Route exact path='/andon/logout' component={AndonLogout} />
-          <Route exact path='/andon/warning/send' component={AndonSendWarning} />
+          <Route exact path='/andon/leaf' component={AndonLeaf} />
           <Route exact path='/andon/intermediate' component={AndonIntermediate} />
           <Route path='/andon/central' component={AndonCentralIndex} />
         </Switch>
@@ -84,7 +84,6 @@ class AndonView extends Component {
       .then(res => {
         if(res.data) {
           console.log('[ANDON] There is a session.');
-          // console.log(res.data);
           this.state.handleLogin(res.data);
         } else {
           console.log('[ANDON] There is not a session.');

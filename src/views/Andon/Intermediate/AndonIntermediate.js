@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
+
+import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import GridPage from '../../../components/Grid/GridPage';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
-import WarningsView from '../../../components/Views/Intermediate/WarningsView';
+import WarningCard from '../../../components/Views/Intermediate/WarningCard';
+
+import {FetchIntermediateGetWarning,FetchIntermediateResolveWarning} from '../../../lib/FetchAndonIntermediate';
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -17,11 +21,18 @@ class AndonIntermediateContext extends Component {
       loadingResolveWarning: false,
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.user.id !== null) {
+  // componentWillReceiveProps(nextProps) {
+  //   if(this.props.user.id === null && nextProps.user.id !== null) {
+  //     this.HandleGetWarnings();
+  //   }
+  // }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(prevProps.user.id === null && this.props.user.id !== null) {
       this.HandleGetWarnings();
     }
   }
+
   componentDidMount() {
     if(this.props.user.id) {
       this.HandleGetWarnings();
@@ -40,79 +51,61 @@ class AndonIntermediateContext extends Component {
         />
         <GridPage viewContent appBarFixed>
           {
-            this.state.loadingWarnings && 
+            this.state.loadingWarnings ? 
             <div className='ds-circular-progress-centered'>
               <CircularProgress size={80} color='secondary' />
             </div>
-          }
-          {
-            !this.state.loadingWarnings && <WarningsView loadingResolveWarning={this.state.loadingResolveWarning} handleResolveWarning={this.handleResolveWarning} warnings={this.state.warnings} />
+            :
+            <Grid container spacing={8}>
+              {this.state.warnings.filter(warning => warning.resolvedDate === null).map(warning => (
+                <WarningCard
+                  key={warning.id}
+                  warning={warning}
+                  handleResolveWarning={this.handleResolveWarning}
+                  loadingResolveWarning={this.state.loadingResolveWarning}
+                />
+              ))}
+            </Grid>
           }
         </GridPage>
       </div>
     );
   }
-  handleResolveWarning = (warningId) => {
+  handleResolveWarning = async (warningId) => {
     if(window.confirm('Tem certeza que o aviso foi resolvido?')) {
       this.setState({
         loadingResolveWarning: true,
       });
-      fetch('/api/warning/resolve',{
-        method: 'put',
-        credentials: 'same-origin',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          warningId,
-          userId: this.props.user.id,
-        }),
-      }).then(response => {
-        if(response.status !== 200) {
-          throw new Error("Houve um erro.");
-        } else {
-          return response.json();
-        }
-      }).then(res => {
-        this.setState({
-          loadingResolveWarning: false,
-        });
-        let newWarnings = this.state.warnings.filter(w => w.id===warningId?null:w);
+      let Result = await FetchIntermediateResolveWarning({
+        warningId,
+        userId: this.props.user.id,
+      });
+      if(Result) {
+        let newWarnings = this.state.warnings.filter(warning => (warning.id !== warningId));
         this.setState({
           warnings: newWarnings,
         });
-      }).catch(err => {
-        this.setState({
-          loadingResolveWarning: false,
-        });
-        alert(err);
+      }
+      this.setState({
+        loadingResolveWarning: false,
       });
     }
   }
-  HandleGetWarnings = () => {
+
+  HandleGetWarnings = async () => {
     if(!this.props.user.teams) {
       return;
     }
     for(let team of this.props.user.teams) {
-      fetch(`/api/warning/team/${team}`,{
-        method: 'get',
-        credentials: 'same-origin',
-      }).then(response => {
-        if(response.status !== 200) {
-          throw new Error("Houve um erro.");
-        } else {
-          return response.json();
-        }
-      }).then(res => {
-        let oldWarningsState = this.state.warnings;
-        this.setState({
-          warnings: oldWarningsState.concat(res.data),
-          loadingWarnings: false,
-        });
-      }).catch(err => {
-        alert(err);
+      let Warnings = await FetchIntermediateGetWarning(team);
+      let oldWarnings = this.state.warnings;
+      this.setState({
+        warnings: oldWarnings.concat(Warnings),
       });
     }
+    this.setState({
+      loadingWarnings: false,
+    });
   }
 }
 

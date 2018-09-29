@@ -10,10 +10,9 @@ import AndonCentralTeamsAdd from './AndonCentralTeamsAdd';
 import UserContext from '../../../contexts/UserContext';
 import CentralContext from '../../../contexts/CentralContext';
 
-import {
-  FetchCentralUsers, FetchCentralDeleteUser, FetchCentralEditUser, FetchCentralAddUser,
-  FetchCentralTeams, FetchCentralEditTeam, FetchCentralAddTeam,
-  FetchCentralWarnings, FetchCentralResolveWarning } from '../../../lib/FetchAndonCentral';
+import {FetchGetWarnings,FetchResolveWarning} from '../../../lib/FetchAndonCentralWarning';
+import {FetchGetUsers, FetchUpdateUser, FetchAddUser,FetchDeleteUser} from '../../../lib/FetchAndonCentralUser';
+import {FetchGetTeams, FetchAddTeam, FetchEditTeam} from '../../../lib/FetchAndonCentralTeam';
 
 class AndonCentralIndexContext extends Component {
   constructor(props) {
@@ -21,6 +20,7 @@ class AndonCentralIndexContext extends Component {
     this.state = {
       loadingWarnings: true,
       warnings: [],
+      getAllWarnings: () => (this.GetAllWarnings()),
       resolveWarning: (warningId) => {this.ResolveWarning(warningId)},
 
       loadingUsers: true,
@@ -28,7 +28,7 @@ class AndonCentralIndexContext extends Component {
       addUser: (userObj) => {this.AddUser(userObj)},
       loadingAddUser: false,
       deleteUser: (id) => {this.DeleteUser(id)},
-      editUser: (userObj) => {this.EditUser(userObj)},
+      updateUser: (userObj) => {this.UpdateUser(userObj)},
 
       loadingTeams: true,
       teams: [],
@@ -47,18 +47,18 @@ class AndonCentralIndexContext extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.user.id !== null) {
-      this.FetchAllWarnings();
-      this.FetchAllUsers();
+  componentDidUpdate(prevProps,prevState,snapshot) {
+    if(prevProps.user.id === null && this.props.user.id !== null) {
+      this.GetAllWarnings();
+      this.GetAllUsers();
       this.FetchAllTeams();
     }
   }
 
   componentDidMount() {
     if(this.props.user.id) {
-      this.FetchAllWarnings();
-      this.FetchAllUsers();
+      this.GetAllWarnings();
+      this.GetAllUsers();
       this.FetchAllTeams();
     }
   }
@@ -80,142 +80,154 @@ class AndonCentralIndexContext extends Component {
     )
   }
 
-  FetchAllWarnings = () => {
-    FetchCentralWarnings(this.props.user.projectId).then(response => {
-      if(response.status !== 200) {
-        throw new Error('Não foi possível carregar os avisos.');
-      }
-      return response.json();
-    }).then(res => {
-      this.state.handleChange('warnings',res.data);
-      this.state.handleChange('loadingWarnings',false);
-    }).catch(err => {
-      alert(err);
-    });
+  GetAllWarnings = async() => {
+    this.state.handleChange('loadingWarnings',true);
+    let Result = await FetchGetWarnings(this.props.user.teams[0]);
+    if(Result) {
+      this.setState({
+        warnings: Result,
+      });
+    }
+    this.state.handleChange('loadingWarnings',false);
   }
-  ResolveWarning = (warningId) => {
-    FetchCentralResolveWarning(this.props.user.id,warningId).then(response => {
-      if(response.status !== 200) {
-        throw new Error('Não foi possível resolver aviso.');
-      }
-      return response.json();
-    }).then(res => {
-      this.state.handleChange('loadingWarnings',true);
-      this.FetchAllWarnings();
-    }).catch(err => {
-      alert(err);
-    });
+  ResolveWarning = async (warningId) => {
+    let Result = await FetchResolveWarning({userId:this.props.user.id,warningId});
+    if(Result) {
+      let newWarnings = this.state.warnings.map(warning => {
+        if(warning.id===warningId) {
+          warning.userThatResolved = `${this.props.user.firstname} ${this.props.user.lastname}`;
+          warning.resolvedDate = Date.now();
+        }
+        return warning;
+      });
+      this.setState({
+        warnings: newWarnings,
+      });
+    } else {
+      // ... nothing
+    }
   }
 
-  FetchAllUsers = () => {
-    FetchCentralUsers(this.props.user.projectId).then(response => {
-      if(response.status !== 200) {
-        throw new Error('Não foi possível carregar os usuários.');
+  GetAllUsers = async () => {
+    this.state.handleChange('loadingUsers',true);
+    try {
+      let Result = await FetchGetUsers(this.props.user.projectId);
+      if(Result) {
+        this.state.handleChange('users',Result);
       }
-      return response.json();
-    }).then(res => {
-      this.state.handleChange('users',res.data);
-      this.state.handleChange('loadingUsers',false);
-    }).catch(err => {
-      alert(err);
-    });
+    } catch (e) {
+      alert('Houve um erro.');
+    }
+    this.state.handleChange('loadingUsers',false);
   }
-  AddUser = (userObj) => {
+
+  AddUser = async (userObj) => {
     this.state.handleChange('loadingAddUser',true);
-    FetchCentralAddUser({...userObj,projectId:this.props.user.projectId}).then(response => {
-      if(response.status !== 201) {
-        if(response.status === 400) {
-          throw new Error('Matrícula já cadastrada.');
-        } else {
-          throw new Error('Não foi possível criar o usuário.');
-        }
+    try {
+      let Result = await FetchAddUser({...userObj,projectId:this.props.user.projectId});
+      if(Result) {
+        let newUsers = this.state.users;
+        newUsers.push({
+          id: Result.id,
+          teams: [],
+          name: `${userObj.firstname} ${userObj.lastname}`,
+          login: userObj.login,
+          jobTitle: userObj.jobTitle,
+          password: userObj.password,
+        });
+        this.state.handleChange('users',newUsers);
       }
-      return response.json();
-    }).then(res => {
-      alert(res.msg);
-      this.state.handleChange('loadingUsers',true);
-      this.FetchAllUsers();
-      this.state.handleChange('loadingAddUser',false);
-    }).catch(err => {
-      alert(err);
-      this.state.handleChange('loadingAddUser',false);
-    });
+    } catch(e) {
+      alert('Houve um erro.');
+    }
+    this.state.handleChange('loadingAddUser',false);
   }
-  EditUser = (userObj) => {
-    FetchCentralEditUser(userObj).then(response => {
-      if(response.status !== 200) {
-        if(response.status === 400) {
-          throw new Error('Nova matrícula já cadastrada.');
-        } else {
-          throw new Error('Não foi possível editar o usuário.');
+  UpdateUser = async (userObj) => {
+    this.state.handleChange('loadingUsers',true);
+    try {
+      let oldUser = this.state.users.filter(user => {
+        if(user.id === userObj.id) {
+          return true;
         }
+        return false
+      })[0];
+      let Result = await FetchUpdateUser(oldUser,userObj);
+      if(Result) {
+        let newUsers = this.state.users.map(user => {
+          if(user.id === userObj.id) {
+            return userObj;
+          } else {
+            return user;
+          }
+        });
+        this.state.handleChange('users',newUsers);
       }
-      return response.json();
-    }).then(res => {
-      this.state.handleChange('loadingUsers',true);
-      this.FetchAllUsers();
-    }).catch(err => {
-      this.state.handleChange('loadingUsers',true);
-      this.FetchAllUsers();
-      alert(err);
-    });
+    } catch (e) {
+      alert('Houve um erro.');
+    }
+    this.state.handleChange('loadingUsers',false);
   }
-  DeleteUser = (id) => {
-    FetchCentralDeleteUser(id).then(response => {
-      if(response.status !== 200) {
-        throw new Error('Não foi possível deletar o usuário.');
+  DeleteUser = async (id) => {
+    try {
+      let Result = await FetchDeleteUser(id);
+      if(Result) {
+        let newUsers = this.state.users.filter(user => {
+          if(user.id === id) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+        this.state.handleChange('users',newUsers);
       }
-      return response.json();
-    }).then(res => {
-      this.state.handleChange('loadingUsers',false);
-      this.FetchAllUsers();
-    }).catch(err => {
-      alert(err);
-    });
+    } catch (e) {
+      alert('Houve um erro.');
+    }
   }
 
-  FetchAllTeams = () => {
-    FetchCentralTeams(this.props.user.projectId).then(response => {
-      if(response.status !== 200) {
-        throw new Error('Não foi possível carregar os times.');
+  FetchAllTeams = async () => {
+    this.state.handleChange('loadingTeams',true);
+    try {
+      let Result = await FetchGetTeams(this.props.user.projectId);
+      if(Result) {
+        this.state.handleChange('teams',Result);
       }
-      return response.json();
-    }).then(res => {
-      this.state.handleChange('teams',res.data);
-      this.state.handleChange('loadingTeams',false);
-    }).catch(err => {
-      alert(err);
-    });
+    } catch (error) {
+      alert('Houve um erro.');
+    }
+    this.state.handleChange('loadingTeams',false);
   }
-  AddTeam = (teamObj) => {
+  AddTeam = async (teamObj) => {
     this.state.handleChange('loadingAddTeam',true);
-    FetchCentralAddTeam({...teamObj,projectId:this.props.user.projectId}).then(response => {
-      if(response.status !== 201) {
-        throw new Error('Não foi possível criar o time.');
+    try {
+      let Result = await FetchAddTeam({...teamObj,projectId:this.props.user.projectId});
+      if(Result) {
+        let newTeams = this.state.teams;
+        newTeams.push(Result);
+        this.state.handleChange('teams',newTeams)
       }
-      return response.json();
-    }).then(res => {
-      alert(res.msg);
-      this.state.handleChange('loadingTeams',true);
-      this.FetchAllTeams();
-      this.state.handleChange('loadingAddTeam',false);
-    }).catch(err => {
-      alert(err);
-      this.state.handleChange('loadingAddTeam',false);
-    });
+    } catch (error) {
+      alert('Houve um erro.');
+    }
+    this.state.handleChange('loadingAddTeam',false);
   }
-  EditTeam = (teamObj) => {
-    FetchCentralEditTeam(teamObj).then(response => {
-      if(response.status !== 200) {
-        throw new Error('Não foi possível editar o time.');
+  EditTeam = async (teamObj) => {
+    this.state.handleChange('loadingTeams',true);
+    try {
+      let Result = await FetchEditTeam(teamObj);
+      if(Result) {
+        let newTeams = this.state.teams.map(team => {
+          if(team.id === teamObj.id) {
+            return teamObj;
+          }
+          return team;
+        });
+        this.state.handleChange('teams',newTeams);
       }
-      return response.json();
-    }).then(res => {
-      this.state.handleChange('loadingTeams',false);
-      this.FetchAllTeams();
-    }).catch(err => {
-      alert(err);
-    });
+    } catch (error) {
+      alert("Houve um erro.");
+    }
+    this.state.handleChange('loadingTeams',false);
   }
 }
 

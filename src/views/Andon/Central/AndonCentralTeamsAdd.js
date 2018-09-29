@@ -16,6 +16,7 @@ class AndonCentralTeamsAddAddContext extends Component {
     super(props);
     this.state = {
       name: '',
+      level: 'leaf',
     };
   }
   render() {
@@ -45,13 +46,28 @@ class AndonCentralTeamsAddAddContext extends Component {
                   onChange={this.HandleFormChange}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  className='w-100 margin-bottom-20'
+                  select
+                  name='level'
+                  label='Nível de acesso do time'
+                  placeholder='Nível de acesso do time'
+                  value={this.state.level}
+                  onChange={this.HandleFormChange}
+                >
+                  <option value='leaf'>2 - Envia avisos</option>
+                  <option value='intermediate'>1 - Recebe avisos</option>
+                </TextField>
+              </Grid>
               <Grid item xs={12} className='txt-align-center'>
                 {
-                  this.props.central.loadingAddUser &&
+                  this.props.central.loadingAddTeam &&
                   <CircularProgress className='margin-top-10' size={40} color='secondary' />
                 }
                 {
-                  !this.props.central.loadingAddUser && 
+                  !this.props.central.loadingAddTeam && 
                   <Button
                     disabled={this.state.name===''}
                     variant='contained'

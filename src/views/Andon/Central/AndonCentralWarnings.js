@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 import FullGridPage from '../../../components/Grid/FullGridPage';
@@ -14,7 +16,7 @@ class AndonCentralWarningsContext extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fieldToFilter: 'Tipo',
+      fieldToFilter: 'type',
       filterValue: '',
       createdDateInit: '',
       createdDateEnd: '',
@@ -35,59 +37,61 @@ class AndonCentralWarningsContext extends Component {
           ]}  
         />
         <FullGridPage viewContent appBarFixed>
-          <Grid container>
-            <Grid item xs={12} md={6} className='txt-align-center margin-bottom-10'>
-              <TextField
-                name='createdDateInit'
-                className='w-60'
-                label="Criado em (inicío)"
-                type="date"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={this.state.createdDateInit}
-                onChange={this.HandleDateChange}
-              />
-            </Grid>
-            <Grid item xs={12} md={6} className='txt-align-center margin-bottom-10'>
-              <TextField
-                name='createdDateEnd'
-                className='w-60'
-                label="Criado em (fim)"
-                type="date"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                value={this.state.createdDateEnd}
-                onChange={this.HandleDateChange}
-              />
-            </Grid>
-            <Grid item xs={4} className='txt-align-center margin-bottom-10'>
+          <Paper className='margin-bottom-10 padding-top-10 padding-bottom-10'>
+            <Grid container>
+              <Grid item xs={12} md={6} className='txt-align-center margin-bottom-10'>
                 <TextField
-                  className='w-90'
-                  select
-                  label='Campo'
-                  placeholder='Campo'
-                  value={this.state.fieldToFilter}
-                  onChange={this.HandleFieldFilterChange}
-                >
-                  <option value='Tipo'>Tipo</option>
-                  <option value='Motivo'>Motivo</option>
-                  <option value='Local'>Local</option>
-                  <option value='Autor'>Autor</option>
-                  <option value='Resolvido por'>Resolvido por</option>
-                </TextField>
-            </Grid>
-            <Grid item xs={8} className='txt-align-center margin-bottom-10'>
-                <TextField
-                  className='w-90'
-                  label='Filtro'
-                  placeholder='Filtro'
-                  value={this.state.filterValue}
-                  onChange={this.HandleFilterValue}
+                  name='createdDateInit'
+                  className='w-60'
+                  label="Criado em (inicío)"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={this.state.createdDateInit}
+                  onChange={this.HandleDateChange}
                 />
+              </Grid>
+              <Grid item xs={12} md={6} className='txt-align-center margin-bottom-10'>
+                <TextField
+                  name='createdDateEnd'
+                  className='w-60'
+                  label="Criado em (fim)"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={this.state.createdDateEnd}
+                  onChange={this.HandleDateChange}
+                />
+              </Grid>
+              <Grid item xs={4} className='txt-align-center margin-bottom-10'>
+                  <TextField
+                    className='w-90'
+                    select
+                    label='Campo'
+                    placeholder='Campo'
+                    value={this.state.fieldToFilter}
+                    onChange={this.HandleFieldFilterChange}
+                  >
+                    <option value='type'>Tipo</option>
+                    <option value='reasonName'>Motivo</option>
+                    <option value='placeName'>Local</option>
+                    <option value='userThatCreated'>Autor</option>
+                    {/* <option value='resolvedDate'>Resolvido por</option> */}
+                  </TextField>
+              </Grid>
+              <Grid item xs={8} className='txt-align-center margin-bottom-10'>
+                  <TextField
+                    className='w-90'
+                    label='Filtro'
+                    placeholder='Filtro'
+                    value={this.state.filterValue}
+                    onChange={this.HandleFilterValue}
+                  />
+              </Grid>
             </Grid>
-          </Grid>
+          </Paper>
           {
             this.props.central.loadingWarnings && 
             <div className='txt-align-center'>
@@ -111,7 +115,7 @@ class AndonCentralWarningsContext extends Component {
                   endDate = new Date(parseInt(endFilterDate[0],10),parseInt(endFilterDate[1],10)-1,parseInt(endFilterDate[2],10),23,59,59,999);
                 }
                 if(initDate && endDate) {
-                  let createdDate = new Date(warning['Criado em']);
+                  let createdDate = new Date(warning.createdDate);
                   if(createdDate.getTime() < initDate.getTime()) {
                     return false;
                   }
@@ -127,6 +131,9 @@ class AndonCentralWarningsContext extends Component {
               resolveWarning={this.props.central.resolveWarning}
             />
           }
+          <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.props.central.getAllWarnings}>
+            <i className='material-icons'>refresh</i>
+          </Button>
         </FullGridPage>
       </div>
     );

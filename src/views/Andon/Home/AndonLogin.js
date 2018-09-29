@@ -10,6 +10,8 @@ import GridPage from '../../../components/Grid/GridPage';
 import SimpleCard from '../../../components/Card/SimpleCard';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 
+import {FetchLogin} from '../../../lib/FetchAndonHome';
+
 import UserContext from '../../../contexts/UserContext';
 
 import accessLevel from '../../../lib/accessLevel';
@@ -23,64 +25,7 @@ class AndonLoginContext extends Component {
       loadingLogin: false,
     };
   }
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  }
-  handleToggleLoading = () => {
-    this.setState((prevState,props) => {
-      return {loadingLogin: !prevState.loadingLogin};
-    });
-  }
-  handleLogin = () => {
-    if(window.navigator.geolocation) {
-      this.handleToggleLoading();
-      window.navigator.geolocation.getCurrentPosition(position => {
-        fetch('/api/user/login',{
-          method: 'post',
-          headers: {
-            'content-type': 'application/json',
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify({
-            login: this.state.login,
-            password: this.state.password,
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          }),
-        })
-        .then(response => response.json())
-        .then(res => {
-          this.props.user.handleLogin({
-            id: res.data.id,
-            login: res.data.login,
-            name: res.data.name,
-            title: res.data.title,
-            projectId: res.data.projectId,
-            teams: res.data.teams,
-            access: res.data.access,
-            lastLocation: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            },
-          });
-          if(res.data.access === accessLevel.central) {
-            this.props.history.push('/andon/central/warnings');
-          } else if(res.data.access === accessLevel.intermediate) {
-            this.props.history.push('/andon/intermediate');
-          }
-          this.handleToggleLoading();
-        })
-        .catch(err => {
-          console.log(err);
-          this.handleToggleLoading();
-        });
-      });
-    } else {
-      alert('Você precisar habilitar a localização');
-    }
-  }
+  
   render() {
     return (
       <div>
@@ -140,6 +85,48 @@ class AndonLoginContext extends Component {
         </GridPage>
       </div>
     );
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
+  handleToggleLoading = () => {
+    this.setState((prevState,props) => {
+      return {loadingLogin: !prevState.loadingLogin};
+    });
+  }
+  handleLogin = () => {
+    if(window.navigator.geolocation) {
+      if(window.navigator.geolocation) {
+        this.handleToggleLoading();
+        window.navigator.geolocation.getCurrentPosition(async position => {
+          let data = await FetchLogin({
+            login: this.state.login,
+            password: this.state.password,
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+            hour: (new Date).getHours(),
+          });
+          if(data) {
+            this.props.user.handleLogin(data);
+            if(data.access === accessLevel.central) {
+              this.props.history.push('/andon/central/warnings');
+            } else if(data.access === accessLevel.intermediate) {
+              this.props.history.push('/andon/intermediate');
+            } else if(data.access === accessLevel.leaf) {
+              this.props.history.push('/andon/leaf');
+            }
+          }
+          this.handleToggleLoading();
+        });
+      } else {
+        alert('Você precisar permitir acesso a sua localização.');
+      }
+    } else {
+      alert('Você precisar habilitar a localização');
+    }
   }
 }
 

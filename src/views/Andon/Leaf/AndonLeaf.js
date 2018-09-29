@@ -9,24 +9,26 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import GridPage from '../../../components/Grid/GridPage';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
-import StepZero from '../../../components/Views/SendWarning/StepZero';
-import StepOne from '../../../components/Views/SendWarning/StepOne';
-import StepTwo from '../../../components/Views/SendWarning/StepTwo';
+import StepZero from '../../../components/Views/Leaf/StepZero';
+import StepOne from '../../../components/Views/Leaf/StepOne';
+import StepTwo from '../../../components/Views/Leaf/StepTwo';
 import SimpleCard from '../../../components/Card/SimpleCard';
+
+import {FetchSendWarning} from '../../../lib/FetchAndonLeaf';
 
 import UserContext from '../../../contexts/UserContext';
 
 let countdown;
 
-class AndonSendWarningContext extends Component {
+class AndonLeafContext extends Component {
   constructor(props) {
     super(props);
     this.state = {
       reasons: [],
       places: [],
       type: null,
-      reason: null,
-      place: '',
+      reasonName: null,
+      placeName: '',
       step: 0,
 
       numberPanelValue: '',
@@ -62,105 +64,14 @@ class AndonSendWarningContext extends Component {
     });
   }
 
-  handleInfoClick = (key,value,nextStep) => {
-    this.setState({
-      [key]:value,
-      step: nextStep,
-    });
-    if(nextStep === 3) {
-      this.handleSendWarningCountdown();
-    }
-  }
-  handleNumberPanelButtonClick = (n) => {
-    if(this.state.numberPanelValue === '' && n === 0) {
-      // ... nothing ...
-      return;
-    }
-    else {
-      this.setState((prevState,props) => ({
-        numberPanelValue: String(prevState.numberPanelValue) + String(n),
-      }));
-    }
-  }
-  handleStepperBackButtonClick = () => {
-    if(this.state.step === 0) {
-      return;
-    }
-    else {
-      this.setState((prevState,props) => ({
-        step: prevState.step-1,
-      }));
-    }
-  }
-  handleEraseNumber = () => {
-    let aux = this.state.numberPanelValue;
-    if(aux.length !== 0) {
-      aux = aux.substring(0,aux.length-1);
-    }
-    this.setState({
-      numberPanelValue: aux,
-    });
-  }
-  handleSendWarningCountdown = () => {
-    let countdownStart = this.state.secondsToSend-1;
-    countdown = setInterval(()=>{
-      if(countdownStart >= 0) {
-        document.getElementById('ds-andon-send-warning-step-4-countdown').innerHTML = 'O aviso será enviado em '+countdownStart+' segundos.';
-        countdownStart--;
-      }
-      else {
-        this.handleSendWarning();
-        window.clearInterval(countdown);
-      }
-    },1000);
-  }
-  handleCancelSendWarning = () => {
-    window.clearInterval(countdown);
-    this.props.history.push('/andon');
-  }
-  handleSendWarning = () => {
-    this.setState({
-      sendLoading: true,
-    });
-    fetch('/api/warning/create', {
-      method: 'post',
-      credentials: 'same-origin',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        projectId: this.props.user.projectId,
-        createdBy: this.props.user.id,
-        type: this.state.type,
-        reasonName: this.state.reason,
-        placeName: this.state.place,
-      }),
-    }).then(response=>{
-      if(response.status === 201) {
-        return response.json();
-      } else {
-        throw new Error("Houve um erro.");
-      }
-    }).then(res=>{
-      this.setState({
-        sendLoading: false,
-        sendSuccess: true,
-      });
-    }).catch(err => {
-      this.setState({
-        sendLoading: false,
-        sendSuccess: false,
-      });
-      console.log(err);
-    });
-  }
+  
   render() {
     if(this.props.user.loadingUser && this.props.user.id === null) {
       return <Redirect to='/andon' />
     }
     return (
       <div className='ds-view' id='ds-view-andon-sendwarning'>
-        <AppBarComponent position='fixed' title='ANDON' toolbarLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]} />
+        <AppBarComponent position='fixed' title={this.props.user.firstname} toolbarLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]} />
         <GridPage viewContent appBarFixed>
           {
             this.state.step===0 &&
@@ -178,10 +89,10 @@ class AndonSendWarningContext extends Component {
             this.state.step===3 && this.state.sendSuccess===null &&
             <div className='ds-andon-send-warning-step-4'>
               <SimpleCard rounded>
-                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Autor:</span> {this.props.user.firstname}</Typography>
+                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Autor:</span> {this.props.user.firstname} {this.props.user.lastname}</Typography>
                 <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Tipo:</span> {this.state.type}</Typography>
-                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Razão:</span> {this.state.reason}</Typography>
-                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Local:</span> {this.state.place}</Typography>
+                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Razão:</span> {this.state.reasonName}</Typography>
+                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Local:</span> {this.state.placeName}</Typography>
                 <Grid container>
                   <Grid item xs={12} className='ds-andon-send-warning-step-4-grid-item-countdown'>
                     <span id='ds-andon-send-warning-step-4-countdown'>O aviso será enviado em {this.state.secondsToSend} segundos.</span>
@@ -242,14 +153,94 @@ class AndonSendWarningContext extends Component {
       </div>
     )
   }
+  handleInfoClick = (key,value,nextStep) => {
+    this.setState({
+      [key]:value,
+      step: nextStep,
+    });
+    if(nextStep === 3) {
+      this.handleSendWarningCountdown();
+    }
+  }
+  handleNumberPanelButtonClick = (n) => {
+    if(this.state.numberPanelValue === '' && n === 0) {
+      // ... nothing ...
+      return;
+    }
+    else {
+      this.setState((prevState,props) => ({
+        numberPanelValue: String(prevState.numberPanelValue) + String(n),
+      }));
+    }
+  }
+  handleStepperBackButtonClick = () => {
+    if(this.state.step === 0) {
+      return;
+    }
+    else {
+      this.setState((prevState,props) => ({
+        step: prevState.step-1,
+      }));
+    }
+  }
+  handleEraseNumber = () => {
+    let aux = this.state.numberPanelValue;
+    if(aux.length !== 0) {
+      aux = aux.substring(0,aux.length-1);
+    }
+    this.setState({
+      numberPanelValue: aux,
+    });
+  }
+  handleSendWarningCountdown = () => {
+    let countdownStart = this.state.secondsToSend-1;
+    countdown = setInterval(()=>{
+      if(countdownStart >= 0) {
+        document.getElementById('ds-andon-send-warning-step-4-countdown').innerHTML = 'O aviso será enviado em '+countdownStart+' segundos.';
+        countdownStart--;
+      }
+      else {
+        this.HandleSendWarning();
+        window.clearInterval(countdown);
+      }
+    },1000);
+  }
+  handleCancelSendWarning = () => {
+    window.clearInterval(countdown);
+    this.props.history.push('/andon');
+  }
+  HandleSendWarning = async () => {
+    this.setState({
+      sendLoading: true,
+    });
+    let Result = await FetchSendWarning({
+      projectId: this.props.user.projectId,
+      createdBy: this.props.user.id,
+      type: this.state.type,
+      reasonName: this.state.reasonName,
+      placeName: this.state.placeName,
+      createdDate: Date.now(),
+    });
+    if(Result) {
+      this.setState({
+        sendLoading: true,
+        sendSuccess: true,
+      });
+    } else {
+      this.setState({
+        sendLoading: true,
+        sendSuccess: false,
+      });
+    }
+  }
 }
 
-const AndonSendWarning = (props) => {
+const AndonLeaf = (props) => {
   return (
     <UserContext.Consumer>
-      {user => <AndonSendWarningContext user={user} {...props} />}
+      {user => <AndonLeafContext user={user} {...props} />}
     </UserContext.Consumer>
   )
 }
 
-export default AndonSendWarning;
+export default AndonLeaf;

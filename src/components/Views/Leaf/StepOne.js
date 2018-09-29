@@ -11,7 +11,7 @@ const StepOne = (props) => {
         else if(bN < aN) return 1;
         else return 0;
       }).map(r=>(
-        <Button className='ds-send-warning-step-1-button' onClick={()=>{props.handleInfoClick('reason',r,props.step+1)}} key={r}>{r}</Button>
+        <Button className='ds-send-warning-step-1-button' onClick={()=>{props.handleInfoClick('reasonName',r,props.step+1)}} key={r}>{r}</Button>
       ))}
       <div className='ds-space-for-fixed-footer'></div>
     </div>

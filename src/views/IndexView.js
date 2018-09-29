@@ -11,7 +11,11 @@ class IndexView extends Component {
   render() {
     return (
       <div className='ds-view' id='ds-view-index'>
-        <AppBarComponent position='static' drawerLinks={[{name:'Andon',to:'/andon',icon:'info'}]}/>
+        <AppBarComponent
+          title='Dev'
+          position='static'
+          drawerLinks={[{name:'Andon',to:'/andon',icon:'info'}]}
+        />
         <GridPage viewContent>
           <SimpleCard rounded centered>
             hi

@@ -32,50 +32,50 @@ class UserTable extends Component {
               <TableCell className='txt-align-center'>Nome</TableCell>
               <TableCell className='txt-align-center'>Título</TableCell>
               <TableCell className='txt-align-center'>Senha</TableCell>
-              <TableCell className='txt-align-center'>Times</TableCell>
+              <TableCell className='txt-align-center'>Time</TableCell>
               <TableCell className='txt-align-center'>Editar</TableCell>
               <TableCell className='txt-align-center'>Remover</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.props.data.map(user => {
-              if(user['ID'] === this.state.userSelectedToEdit['ID']) {
+              if(user.id === this.state.userSelectedToEdit.id) {
                 return (
-                  <TableRow key={user['ID']}>
+                  <TableRow key={user.id}>
                     <TableCell className='txt-align-center'>
                       <TextField
-                        name='Matrícula'
-                        value={this.state.userSelectedToEdit['Matrícula']}
+                        name='login'
+                        value={this.state.userSelectedToEdit.login}
                         onChange={this.HandleSelectedUserChanges}
                       />
                     </TableCell>
                     <TableCell className='txt-align-center'>
                       <TextField
-                        name='Nome'
-                        value={this.state.userSelectedToEdit['Nome']}
+                        name='name'
+                        value={this.state.userSelectedToEdit.name}
                         onChange={this.HandleSelectedUserChanges}
                       />
                     </TableCell>
                     <TableCell className='txt-align-center'>
                       <TextField
-                        name='Título'
-                        value={this.state.userSelectedToEdit['Título'] || ''}
+                        name='jobTitle'
+                        value={this.state.userSelectedToEdit.jobTitle || ''}
                         onChange={this.HandleSelectedUserChanges}
                       />
                     </TableCell>
                     <TableCell className='txt-align-center'>
                       <TextField
-                        name='Senha'
-                        value={this.state.userSelectedToEdit['Senha'] || ''}
+                        name='password'
+                        value={this.state.userSelectedToEdit.password || ''}
                         onChange={this.HandleSelectedUserChanges}
                       />
                     </TableCell>
                     <TableCell className='txt-align-center'>
                       <TextField
                         select
-                        name='Times'
-                        value={this.state.userSelectedToEdit['Times'][0]}    
-                        onChange={this.HandleSelectedUserChanges}                   
+                        name='teams'
+                        value={this.state.userSelectedToEdit.teams[0] ? this.state.userSelectedToEdit.teams[0] : /*this.props.teams[this.props.teams.length-1]*/0}
+                        onChange={this.HandleSelectedUserTeamChange}                   
                       >
                         {this.props.teams.map(team => (
                           <option key={team} value={team}>{team}</option>
@@ -96,14 +96,14 @@ class UserTable extends Component {
                 )
               } else {
                 return (
-                  <TableRow key={user['ID']}>
-                    <TableCell className='txt-align-center'>{user['Matrícula']}</TableCell>
-                    <TableCell className='txt-align-center'>{user['Nome']}</TableCell>
+                  <TableRow key={user.id}>
+                    <TableCell className='txt-align-center'>{user.login}</TableCell>
+                    <TableCell className='txt-align-center'>{user.name}</TableCell>
                     <TableCell className='txt-align-center'>
-                      {user['Título']? user['Título'] : 'Sem título'}
+                      {user.jobTitle ? user.jobTitle : 'Sem título'}
                     </TableCell>
-                    <TableCell className='txt-align-center'>{user.Senha}</TableCell>
-                    <TableCell className='txt-align-center'>{user.Times.map(time => String(time)+' ')}</TableCell>
+                    <TableCell className='txt-align-center'>{user.password}</TableCell>
+                    <TableCell className='txt-align-center'>{user.teams[0] || null}</TableCell>
                     <TableCell className='txt-align-center'>
                       <Button onClick={()=>{
                           this.SelectUserToEdit(user);
@@ -114,8 +114,8 @@ class UserTable extends Component {
                     </TableCell>
                     <TableCell className='txt-align-center'>
                       <Button onClick={()=>{
-                          if(window.confirm('Deletar o usuário '+user['ID']+'?')) {
-                            this.props.deleteUser(user['ID']);
+                          if(window.confirm('Deletar o usuário '+user.id+'?')) {
+                            this.props.deleteUser(user.id);
                           }
                         }}>
                         <i className='material-icons'>delete</i>
@@ -132,23 +132,27 @@ class UserTable extends Component {
   }
   SelectUserToEdit = (user) => {
     this.setState({
-      userSelectedToEdit: user
+      userSelectedToEdit: Object.assign({},user),
     });
   }
   HandleSelectedUserChanges = (event) => {
     let UserData = this.state.userSelectedToEdit;
-    if(event.target.name === 'Times') {
-      UserData['Times'][0] = event.target.value;
-    } else {
-      UserData[event.target.name] = event.target.value;
-    }
+    UserData[event.target.name] = event.target.value;
+    this.setState({
+      userSelectedToEdit: UserData,
+    });
+  }
+  HandleSelectedUserTeamChange = (event) => {
+    let UserData = this.state.userSelectedToEdit;
+    UserData.teams = []
+    UserData.teams.push(event.target.value);
     this.setState({
       userSelectedToEdit: UserData,
     });
   }
   ConfirmUserEdit = () => {
     if(window.confirm('Tem certeza das mudanças?')) {
-      this.props.editUser(this.state.userSelectedToEdit);
+      this.props.updateUser(this.state.userSelectedToEdit);
       this.CancelUserEdition();
     } 
   }

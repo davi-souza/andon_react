@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
@@ -19,7 +20,7 @@ class AndonCentralTeamsContext extends Component {
     super(props);
     this.state = {
       anchorEl: null,
-      fieldToFilter: 'ID',
+      fieldToFilter: 'id',
       filterValue: '',
     };
   }
@@ -58,39 +59,41 @@ class AndonCentralTeamsContext extends Component {
           {
             !this.props.central.loadingTeams && 
             <div className='txt-align-center'>
-              <Grid container>
-                <Grid item xs={3}>
-                  {this.props.central.teams && this.props.central.teams.length !== 0 &&
-                    <TextField
-                      name="fieldToFilter"
-                      className='w-90 margin-top-0'
-                      label="Campo"
-                      placeholder="Campo"
-                      select
-                      value={this.state.fieldToFilter}
-                      onChange={this.handleFilterChange}
-                    >
-                      {Object.keys(this.props.central.teams[0]).map(key => (
-                        <option key={key} value={key}>{key}</option>
-                      ))}
-                    </TextField>
-                  }
+              <Paper className='margin-bottom-10 padding-top-10 padding-bottom-10'>
+                <Grid container>
+                  <Grid item xs={3}>
+                    {this.props.central.teams && this.props.central.teams.length !== 0 &&
+                      <TextField
+                        name="fieldToFilter"
+                        className='w-90 margin-top-0'
+                        label="Campo"
+                        placeholder="Campo"
+                        select
+                        value={this.state.fieldToFilter}
+                        onChange={this.handleFilterChange}
+                      >
+                        <option value='id'>ID</option>
+                        <option value='name'>Nome</option>
+                        <option value='parentId'>Gerenciado por</option>
+                      </TextField>
+                    }
+                  </Grid>
+                  <Grid item xs={9}>
+                  <TextField
+                    name="filterValue"
+                    className='w-90 margin-top-0'
+                    label='Filtro'
+                    placeholder='Filtro'
+                    value={this.state.filter}
+                    margin='normal'
+                    onChange={this.handleFilterChange}
+                  />
+                  </Grid>
                 </Grid>
-                <Grid item xs={9}>
-                <TextField
-                  name="filterValue"
-                  className='w-90 margin-top-0'
-                  label='Filtro'
-                  placeholder='Filtro'
-                  value={this.state.filter}
-                  margin='normal'
-                  onChange={this.handleFilterChange}
-                />
-                </Grid>
-              </Grid>
+              </Paper>
               <TeamTable
                 data={
-                  this.props.central.teams.sort((a,b) => b['ID'] < a['ID']).filter(teamObj => {
+                  this.props.central.teams.sort((a,b) => b.id < a.id).filter(teamObj => {
                     if(this.state.filterValue === '') {
                       return true
                     }

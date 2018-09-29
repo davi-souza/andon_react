@@ -30,36 +30,42 @@ class TeamTable extends Component {
             <TableRow>
               <TableCell className='txt-align-center'>ID</TableCell>
               <TableCell className='txt-align-center'>Nome</TableCell>
-              <TableCell className='txt-align-center'>Time Gerente</TableCell>
+              <TableCell className='txt-align-center'>Nível de acesso</TableCell>
+              <TableCell className='txt-align-center'>Gerenciado por</TableCell>
               <TableCell className='txt-align-center'>Editar</TableCell>
               <TableCell className='txt-align-center'>Remover</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.props.data.map(team => {
-              if(team['ID'] === this.state.teamSelectedToEdit['ID']) {
+              if(team.id === this.state.teamSelectedToEdit.id) {
                 return (
-                  <TableRow key={team['ID']}>
-                    <TableCell className='txt-align-center'>{team['ID']}</TableCell>
+                  <TableRow key={team.id}>
+                    <TableCell className='txt-align-center'>{team.id}</TableCell>
                     <TableCell className='txt-align-center'>
                       <TextField
-                        name='Nome'
-                        value={this.state.teamSelectedToEdit['Nome']}
+                        name='name'
+                        value={this.state.teamSelectedToEdit.name}
                         onChange={this.HandleSelectedTeamChanges}
                       />
                     </TableCell>
                     <TableCell className='txt-align-center'>
+                      {team.level==='central' && 'Central'}
+                      {team.level==='intermediate' && 'Recebe Avisos'}
+                      {team.level==='leaf' && 'Envia Avisos'}
+                    </TableCell>
+                    <TableCell className='txt-align-center'>
                       <TextField
                         select
-                        name='ID do time gerente'
-                        value={this.state.teamSelectedToEdit['ID do time gerente']}
+                        name='parentId'
+                        value={this.state.teamSelectedToEdit.parentId}
                         onChange={this.HandleSelectedTeamChanges}
                       >
-                        {this.props.data.map(parentId => {
-                          if(parentId['ID'] === team['ID']) {
+                        {this.props.data.map(parent => {
+                          if(parent.id === team.id) {
                             return null;
                           } else {
-                            return <option key={parentId['ID']} value={parentId['ID']}>{parentId['ID']}</option>
+                            return <option key={parent.id} value={parent.id}>{parent.id}</option>
                           }
                         })}
                       </TextField>
@@ -78,11 +84,16 @@ class TeamTable extends Component {
                 )
               } else {
                 return (
-                  <TableRow key={team['ID']}>
-                    <TableCell className='txt-align-center'>{team['ID']}</TableCell>
-                    <TableCell className='txt-align-center'>{team['Nome']}</TableCell>
+                  <TableRow key={team.id}>
+                    <TableCell className='txt-align-center'>{team.id}</TableCell>
+                    <TableCell className='txt-align-center'>{team.name}</TableCell>
                     <TableCell className='txt-align-center'>
-                      {team['ID do time gerente'] || '' }
+                      {team.level==='central' && 'Central'}
+                      {team.level==='intermediate' && 'Recebe Avisos'}
+                      {team.level==='leaf' && 'Envia Avisos'}
+                    </TableCell>
+                    <TableCell className='txt-align-center'>
+                      {team.parentId || '' }
                     </TableCell>
                     <TableCell className='txt-align-center'>
                       <Button onClick={()=>{
@@ -94,8 +105,8 @@ class TeamTable extends Component {
                     </TableCell>
                     <TableCell className='txt-align-center'>
                       <Button disabled onClick={()=>{
-                          if(window.confirm('Deletar o usuário '+team['ID']+'?')) {
-                            this.props.deleteteam(team['ID']);
+                          if(window.confirm('Deletar o usuário '+team.id+'?')) {
+                            this.props.deleteteam(team.id);
                           }
                         }}>
                         <i className='material-icons'>delete</i>
@@ -123,6 +134,7 @@ class TeamTable extends Component {
     });
   }
   ConfirmTeamEdit = () => {
+    console.log(this.state.teamSelectedToEdit);
     if(window.confirm('Tem certeza das mudanças?')) {
       this.props.editTeam(this.state.teamSelectedToEdit);
       this.CancelTeamEdition();
