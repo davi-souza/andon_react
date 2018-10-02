@@ -20,7 +20,7 @@ class AndonCentralUsersContext extends Component {
     super(props);
     this.state = {
       anchorEl: null,
-      fieldToFilter: 'Matrícula',
+      fieldToFilter: 'login',
       filterValue: '',
     };
   }
@@ -93,7 +93,7 @@ class AndonCentralUsersContext extends Component {
               </Paper>
               <UserTable
                 data={
-                  this.props.central.users.sort((a,b) => b['ID'] < a['ID']).filter(userObj => {
+                  this.props.central.users.sort((a,b) => b.id < a.id).filter(userObj => {
                     if(this.state.filterValue === '') {
                       return true
                     }

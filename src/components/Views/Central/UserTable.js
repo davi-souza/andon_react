@@ -14,6 +14,7 @@ class UserTable extends Component {
     super(props);
     this.state = {
       userSelectedToEdit : {},
+      centralRegex: new RegExp("central"),
     };
   }
 
@@ -31,6 +32,7 @@ class UserTable extends Component {
               <TableCell className='txt-align-center'>Matrícula</TableCell>
               <TableCell className='txt-align-center'>Nome</TableCell>
               <TableCell className='txt-align-center'>Título</TableCell>
+              <TableCell className='txt-align-center'>Nível de Acesso</TableCell>
               <TableCell className='txt-align-center'>Senha</TableCell>
               <TableCell className='txt-align-center'>Time</TableCell>
               <TableCell className='txt-align-center'>Editar</TableCell>
@@ -62,6 +64,11 @@ class UserTable extends Component {
                         value={this.state.userSelectedToEdit.jobTitle || ''}
                         onChange={this.HandleSelectedUserChanges}
                       />
+                    </TableCell>
+                    <TableCell>
+                      {user.level==='central' && 'Central'}
+                      {user.level==='intermediate' && 'Recebe de avisos'}
+                      {user.level==='leaf' && 'Envia de avisos'}
                     </TableCell>
                     <TableCell className='txt-align-center'>
                       <TextField
@@ -102,10 +109,17 @@ class UserTable extends Component {
                     <TableCell className='txt-align-center'>
                       {user.jobTitle ? user.jobTitle : 'Sem título'}
                     </TableCell>
+                    <TableCell>
+                      {user.level==='central' && 'Central'}
+                      {user.level==='intermediate' && 'Recebe de avisos'}
+                      {user.level==='leaf' && 'Envia de avisos'}
+                    </TableCell>
                     <TableCell className='txt-align-center'>{user.password}</TableCell>
                     <TableCell className='txt-align-center'>{user.teams[0] || null}</TableCell>
                     <TableCell className='txt-align-center'>
-                      <Button onClick={()=>{
+                      <Button
+                        disabled={this.state.centralRegex.test(user.name.toLowerCase())}
+                        onClick={()=>{
                           this.SelectUserToEdit(user);
                         }}
                       >
@@ -113,7 +127,9 @@ class UserTable extends Component {
                       </Button>
                     </TableCell>
                     <TableCell className='txt-align-center'>
-                      <Button onClick={()=>{
+                      <Button
+                        disabled={this.state.centralRegex.test(user.name.toLowerCase())}
+                        onClick={()=>{
                           if(window.confirm('Deletar o usuário '+user.id+'?')) {
                             this.props.deleteUser(user.id);
                           }

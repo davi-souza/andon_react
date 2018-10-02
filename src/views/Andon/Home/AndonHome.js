@@ -93,7 +93,7 @@ class AndonHomeContext extends Component {
           login: this.state.numberPanelValue,
           lat: position.coords.latitude,
           lng: position.coords.longitude,
-          hour: (new Date).getHours(),
+          hour: (new Date()).getHours(),
         });
         if(data) {
           this.props.user.handleLogin(data);

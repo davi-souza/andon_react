@@ -19,6 +19,7 @@ class AndonCentralUsersAddContext extends Component {
       firstname: '',
       lastname: '',
       jobTitle: '',
+      level: 'leaf',
       password: ''
     };
   }
@@ -47,6 +48,7 @@ class AndonCentralUsersAddContext extends Component {
                   placeholder='Matrícula'
                   value={this.state.login}
                   onChange={this.HandleFormChange}
+                  helperText='Deve ser numérica'
                 />
               </Grid>
               <Grid item xs={12}>
@@ -54,9 +56,9 @@ class AndonCentralUsersAddContext extends Component {
                   required
                   className='w-100 margin-bottom-20'
                   name='firstname'
-                  label='Primeiro Nome'
-                  placeholder='Primeiro Nome'
-                  value={this.state.firstname}
+                  label='Primeiro nome'
+                  placeholder='Primeiro nome'
+                  value={this.state.name}
                   onChange={this.HandleFormChange}
                 />
               </Grid>
@@ -67,9 +69,25 @@ class AndonCentralUsersAddContext extends Component {
                   name='lastname'
                   label='Sobrenome'
                   placeholder='Sobrenome'
-                  value={this.state.lastname}
+                  value={this.state.name}
                   onChange={this.HandleFormChange}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  select
+                  className='w-100 margin-bottom-20'
+                  name='level'
+                  label='Nível de Acesso'
+                  placeholder='Nível de Acesso'
+                  value={this.state.level}
+                  onChange={this.HandleFormChange}
+                >
+                  <option value={'leaf'}>0 - Envia avisos</option>
+                  <option value={'intermediate'}>1 - Recebe avisos</option>
+                  <option value={'central'}>2 - Recebe avisos</option>
+                </TextField>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -79,6 +97,7 @@ class AndonCentralUsersAddContext extends Component {
                   placeholder='Senha'
                   value={this.state.password}
                   onChange={this.HandleFormChange}
+                  disabled={this.state.level==='leaf'}
                   helperText='Deixe este campo vazio se este usuário apenas enviará avisos'
                 />
               </Grid>
@@ -120,6 +139,11 @@ class AndonCentralUsersAddContext extends Component {
     });
   }
   HandleAddUser = () => {
+    if(this.state.level === 'leaf' && this.state.password !== '') {
+      this.setState({
+        password: '',
+      });
+    }
     if(window.confirm('Deseja criar usuário?')) {
       this.props.central.addUser(this.state);
       this.props.history.push('/andon/central/users');

@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import GridPage from '../components/Grid/GridPage';
-import AppBarComponent from '../components/Appbar/AppBarComponent';
-import SimpleCard from '../components/Card/SimpleCard';
+import {Redirect} from 'react-router-dom';
+
+// import GridPage from '../components/Grid/GridPage';
+// import AppBarComponent from '../components/Appbar/AppBarComponent';
+// import SimpleCard from '../components/Card/SimpleCard';
 
 class IndexView extends Component {
   constructor(props) {
@@ -11,7 +13,7 @@ class IndexView extends Component {
   render() {
     return (
       <div className='ds-view' id='ds-view-index'>
-        <AppBarComponent
+        {/* <AppBarComponent
           title='Dev'
           position='static'
           drawerLinks={[{name:'Andon',to:'/andon',icon:'info'}]}
@@ -20,7 +22,8 @@ class IndexView extends Component {
           <SimpleCard rounded centered>
             hi
           </SimpleCard>
-        </GridPage>
+        </GridPage> */}
+        <Redirect to='/andon' />
       </div>
     );
   }

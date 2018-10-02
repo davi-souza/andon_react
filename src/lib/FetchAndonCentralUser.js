@@ -38,7 +38,6 @@ export const FetchUpdateUser = async (oldUser,newUser) => {
       }
     }
   }
-  console.log(updates);
   try {
     let Response = await fetch(urlInit + 'user/central/update',{
       method: 'put',

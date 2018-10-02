@@ -47,7 +47,7 @@ class AndonIntermediateContext extends Component {
         <AppBarComponent
           title={this.props.user.firstname || 'ANDON'}
           position='fixed'
-          toolbarLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]}
+          drawerLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]}
         />
         <GridPage viewContent appBarFixed>
           {
