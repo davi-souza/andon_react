@@ -5,15 +5,20 @@ const StepOne = (props) => {
   return (
     <div>
       {props.reasons.sort((a,b) => {
-        let aN = a.toUpperCase();
-        let bN = b.toUpperCase();
+        let aN = a.name.toUpperCase();
+        let bN = b.name.toUpperCase();
         if(aN < bN) return -1;
         else if(bN < aN) return 1;
-        else return 0;
-      }).map(r=>(
-        <Button className='ds-send-warning-step-1-button' onClick={()=>{props.handleInfoClick('reasonName',r,props.step+1)}} key={r}>{r}</Button>
+        return 0;
+      }).map(reason=>(
+        <Button
+          variant='contained'
+          className='display-block width-perc-100 height-rem-7 txt-size-rem-2 margin-bottom-8 bg-color-dark txt-color-white'
+          onClick={()=>{props.handleInfoClick('reason',reason,props.step+1)}} key={reason.id}>
+          {reason.name}
+        </Button>
       ))}
-      <div className='ds-space-for-fixed-footer'></div>
+      <div className='height-rem-4'></div>
     </div>
   )
 }

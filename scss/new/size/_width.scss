@@ -1,0 +1,29 @@
+.width {
+  &-perc {
+    $i: 100;
+    @while $i >= 0 {
+      &-#{$i} {
+        width: $i * 1% !important;
+      }
+      $i: $i - 10;
+    }
+  }
+  &-rem {
+    $i: 18;
+    @while $i >= 0 {
+      &-#{$i} {
+        width: $i * 1rem !important;
+      }
+      $i: $i - 1;
+    }
+  }
+  &-drawer {
+    $i: 20;
+    @while $i >= 0 {
+      &-#{$i} {
+        min-width: $i * 1rem !important;
+      }
+      $i: $i - 1;
+    }
+  }
+}

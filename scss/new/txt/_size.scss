@@ -1,0 +1,9 @@
+.txt {
+  &-size {
+    @for $i from 1 through 18 {
+      &-rem-#{$i} {
+        font-size: $i * 1rem !important;
+      } 
+    }
+  }
+}

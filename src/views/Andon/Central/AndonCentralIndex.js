@@ -10,9 +10,9 @@ import AndonCentralTeamsAdd from './AndonCentralTeamsAdd';
 import UserContext from '../../../contexts/UserContext';
 import CentralContext from '../../../contexts/CentralContext';
 
-import {FetchGetWarnings,FetchResolveWarning} from '../../../lib/FetchAndonCentralWarning';
-import {FetchGetUsers, FetchUpdateUser, FetchAddUser,FetchDeleteUser} from '../../../lib/FetchAndonCentralUser';
-import {FetchGetTeams, FetchAddTeam, FetchEditTeam} from '../../../lib/FetchAndonCentralTeam';
+import {FetchGetWarnings,FetchResolveWarning} from '../../../lib/fetch/FetchAndonCentralWarning';
+import {FetchGetUsers, FetchUpdateUser, FetchAddUser,FetchDeleteUser} from '../../../lib/fetch/FetchAndonCentralUser';
+import {FetchGetTeams, FetchAddTeam, FetchEditTeam} from '../../../lib/fetch/FetchAndonCentralTeam';
 
 class AndonCentralIndexContext extends Component {
   constructor(props) {

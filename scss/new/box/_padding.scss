@@ -1,0 +1,21 @@
+.padding {
+  $i: 64;
+  @while $i >= 0 {
+    &-top-#{$i} {
+      padding-top: $i * 1px !important;
+    }
+    &-bottom-#{$i} {
+      padding-bottom: $i * 1px !important;
+    }
+    &-left-#{$i} {
+      padding-left: $i * 1px !important;
+    }
+    &-right-#{$i} {
+      padding-right: $i * 1px !important;
+    }
+    &-#{$i} {
+      padding: $i * 1px !important;
+    }
+    $i: $i - 8;
+  }
+}

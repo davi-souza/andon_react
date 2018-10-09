@@ -10,7 +10,7 @@ import GridPage from '../../../components/Grid/GridPage';
 import SimpleCard from '../../../components/Card/SimpleCard';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 
-import {FetchLogin} from '../../../lib/FetchAndonHome';
+import {FetchLogin} from '../../../lib/fetch/FetchAndonHome';
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -40,13 +40,13 @@ class AndonLoginContext extends Component {
         />
         <GridPage viewContent appBarFixed>
           <SimpleCard rounded>
-            <Grid container style={{margin: '0.5rem auto'}}>
-              <Grid item xs={12} className='ds-andon-login-grid'>
+            <Grid container>
+              <Grid item xs={12} className='txt-align-center margin-bottom-16'>
                 <Typography variant='display1'>Log In</Typography>
               </Grid>
-              <Grid item xs={12} className='ds-andon-login-grid'>
+              <Grid item xs={12}>
                 <TextField
-                  className='ds-andon-login-input'
+                  className='margin-bottom-24'
                   type='text'
                   value={this.state.login}
                   onChange={this.handleChange}
@@ -55,9 +55,9 @@ class AndonLoginContext extends Component {
                   label='Matrícula'
                 />
               </Grid>
-              <Grid item xs={12} className='ds-andon-login-grid'>
+              <Grid item xs={12}>
                 <TextField
-                  className='ds-andon-login-input'
+                  className='margin-bottom-24'
                   type='password'
                   value={this.state.password}
                   onChange={this.handleChange}
@@ -66,13 +66,13 @@ class AndonLoginContext extends Component {
                   label='Senha'
                 />
               </Grid>
-              <Grid item xs={12} className='ds-andon-login-grid-last'>
+              <Grid item xs={12} className='txt-align-center'>
                 {
                   this.state.loadingLogin ?
                   <CircularProgress size={50} color='secondary' />
                   :
                   <Button
-                    className='ds-andon-login-button'
+                    className='width-perc-50 height-rem-2 border-round'
                     color='secondary'
                     variant='contained'
                     onClick={this.handleLogin}

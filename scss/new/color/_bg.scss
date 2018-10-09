@@ -1,0 +1,16 @@
+.bg {
+  &-color {
+    &-dark {
+      background-color: $dark !important;
+    }
+    &-red {
+      background-color: $red !important;
+    }
+    &-yellow {
+      background-color: $yellow !important;
+    }
+    &-green {
+      background-color: $green !important;
+    }
+  }
+}

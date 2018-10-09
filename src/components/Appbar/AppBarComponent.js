@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 
-import FullGridPage from '../Grid/FullGridPage';
+// import FullGridPage from '../Grid/FullGridPage';
 import DrawerAppBar from '../Drawer/DrawerAppBar';
 
 class AppBarComponent extends Component {
@@ -27,34 +27,32 @@ class AppBarComponent extends Component {
     return (
       <div>
         <AppBar position={this.props.position?this.props.position:'static'}>
-          <FullGridPage>
-            <Toolbar className='ds-app-bar-toolbar'>
-              {
-                this.props.drawerLinks?
-                <IconButton className='ds-app-bar-menu-button' color="inherit" aria-label="Menu" onClick={()=>this.handleOpenCloseDrawer(true)}>
-                  <i className='material-icons'>menu</i>
-                </IconButton>
-                :
-                null
-              }
-              <Typography variant='title' color='inherit' className='ds-app-bar-title'>{ this.props.title || '' }</Typography>
-              {
-                this.props.toolbarLinks?
-                this.props.toolbarLinks.map(link => (
-                  <div className='ds-app-bar-toolbar-link' key={link.name}>
-                    <Button color='inherit' className='ds-hide-when-not-small' component={Link} to={link.to}>
-                      <i className='material-icons'>{link.icon}</i>
-                    </Button>
-                    <Button color='inherit' className='ds-hide-when-small' component={Link} to={link.to}>
-                      {link.name}
-                    </Button>
-                  </div>
-                ))
-                :
-                null
-              }
-            </Toolbar>
-          </FullGridPage>
+          <Toolbar>
+            {
+              this.props.drawerLinks?
+              <IconButton className='app-bar-menu' color="inherit" aria-label="Menu" onClick={()=>this.handleOpenCloseDrawer(true)}>
+                <i className='material-icons'>menu</i>
+              </IconButton>
+              :
+              null
+            }
+            <Typography variant='title' color='inherit' className='app-bar-title'>{ this.props.title || 'ANDON' }</Typography>
+            {
+              this.props.toolbarLinks?
+              this.props.toolbarLinks.map(link => (
+                <div key={link.name}>
+                  <Button color='inherit' className='hide-when-not-sm' component={Link} to={link.to}>
+                    <i className='material-icons'>{link.icon}</i>
+                  </Button>
+                  <Button color='inherit' className='hide-when-sm' component={Link} to={link.to}>
+                    {link.name}
+                  </Button>
+                </div>
+              ))
+              :
+              null
+            }
+          </Toolbar>
         </AppBar>
         {
           this.props.drawerLinks?

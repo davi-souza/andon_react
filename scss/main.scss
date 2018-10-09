@@ -1,17 +1,11 @@
-@import "components/variable/theme";
-
-@import "components/reset";
-@import "components/color";
-
-@import "components/often";
-
-@import "components/comp/grid";
-@import "components/comp/appbar";
-@import "components/comp/drawer";
-@import "components/comp/simplecard";
-@import "components/comp/numberpanel";
-@import "components/comp/dialog";
-
-@import "components/view/login";
-@import "components/view/sendwarning";
-@import "components/view/intermediate";
+@import "new/variable/import";
+@import "new/mixin/import";
+@import "new/reset/import";
+@import "new/color/import";
+@import "new/box/import";
+@import "new/display/import";
+@import "new/size/import";
+@import "new/border/import";
+@import "new/txt/import";
+@import "new/grid/import";
+@import "new/appbar/import";

@@ -6,19 +6,15 @@ let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'}
 const StepTwo = (props) => {
   return (
     <div>
-      {/* {props.places.sort((a,b) => {
-        let aN = a.toUpperCase();
-        let bN = b.toUpperCase();
-        if(aN < bN) return -1;
-        else if(bN < aN) return 1;
-        else return 0;
-      }).map(p=>(
-        <Button className='ds-send-warning-step-2-button' onClick={()=>{props.handleInfoClick('placeName',p,props.step+1)}} key={p}>{p}</Button>
-      ))} */}
-      {props.places.sort(collator.compare).map(p=>(
-        <Button className='ds-send-warning-step-2-button' onClick={()=>{props.handleInfoClick('placeName',p,props.step+1)}} key={p}>{p}</Button>
+      {props.places.map(place=>(
+        <Button
+          className='display-block width-perc-100 height-rem-7 txt-size-rem-2 margin-bottom-8 bg-color-dark txt-color-white'
+          onClick={()=>{props.handleInfoClick('place',place,props.step+1)}}
+          key={place.id}>
+          {place.name}
+        </Button>
       ))}
-      <div className='ds-space-for-fixed-footer'></div>
+      <div className='height-rem-4'></div>
     </div>
   )
 }

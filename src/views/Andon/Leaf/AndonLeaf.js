@@ -14,7 +14,7 @@ import StepOne from '../../../components/Views/Leaf/StepOne';
 import StepTwo from '../../../components/Views/Leaf/StepTwo';
 import SimpleCard from '../../../components/Card/SimpleCard';
 
-import {FetchSendWarning} from '../../../lib/FetchAndonLeaf';
+import {FetchSendWarning, FetchGetReasons, FetchGetPlaces} from '../../../lib/fetch/FetchAndonLeaf';
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -26,9 +26,11 @@ class AndonLeafContext extends Component {
     this.state = {
       reasons: [],
       places: [],
+
       type: null,
-      reasonName: null,
-      placeName: '',
+      reason: null,
+      place: null,
+
       step: 0,
 
       numberPanelValue: '',
@@ -40,38 +42,18 @@ class AndonLeafContext extends Component {
   }
   
   componentWillMount() {
-    fetch('/api/reason?filter='+JSON.stringify({projectId:this.props.user.projectId}),{
-      method: 'get',
-      credentials: 'same-origin',
-    }).then(response => response.json())
-    .then(res => {
-      this.setState({
-        reasons: res.data,
-      });
-    }).catch(err => {
-      console.log('Um erro ocorreu.');
-    });
-    fetch('/api/place?filter='+JSON.stringify({projectId:this.props.user.projectId}),{
-      method: 'get',
-      credentials: 'same-origin',
-    }).then(response => response.json())
-    .then(res => {
-      this.setState({
-        places: res.data,
-      });
-    }).catch(err => {
-      console.log('Um erro ocorreu.');
-    });
+    this.handleGetReasons();
+    this.handleGetPlaces();
   }
 
   
   render() {
-    if(this.props.user.loadingUser && this.props.user.id === null) {
-      return <Redirect to='/andon' />
-    }
+    // if(this.props.user.loadingUser && this.props.user.id === null) {
+    //   return <Redirect to='/andon' />
+    // }
     return (
       <div className='ds-view' id='ds-view-andon-sendwarning'>
-        <AppBarComponent position='fixed' title={this.props.user.firstname} toolbarLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]} />
+        <AppBarComponent position='fixed' title={this.props.user.firstname} drawerLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]} />
         <GridPage viewContent appBarFixed>
           {
             this.state.step===0 &&
@@ -89,20 +71,24 @@ class AndonLeafContext extends Component {
             this.state.step===3 && this.state.sendSuccess===null &&
             <div className='ds-andon-send-warning-step-4'>
               <SimpleCard rounded>
-                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Autor:</span> {this.props.user.firstname} {this.props.user.lastname}</Typography>
-                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Tipo:</span> {this.state.type}</Typography>
-                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Razão:</span> {this.state.reasonName}</Typography>
-                <Typography variant='headline' className='ds-andon-send-warning-step-4-info'><span>Local:</span> {this.state.placeName}</Typography>
+                <Typography variant='headline' className='margin-bottom-16'>Autor: {`${this.props.user.firstname} ${this.props.user.lastname}`}</Typography>
+                <Typography variant='headline' className='margin-bottom-16'>Tipo: {this.state.type}</Typography>
+                <Typography variant='headline' className='margin-bottom-16'>Razão: {this.state.reason.name}</Typography>
+                <Typography variant='headline' className='margin-bottom-24'>Local: {this.state.place.name}</Typography>
                 <Grid container>
-                  <Grid item xs={12} className='ds-andon-send-warning-step-4-grid-item-countdown'>
-                    <span id='ds-andon-send-warning-step-4-countdown'>O aviso será enviado em {this.state.secondsToSend} segundos.</span>
+                  <Grid item xs={12} className='margin-bottom-24'>
+                    <span id='countdown-time'>O aviso será enviado em {this.state.secondsToSend} segundos.</span>
                   </Grid>
-                  <Grid item xs={12} className='ds-andon-send-warning-step-4-grid-item-cancel'>
+                  <Grid item xs={12} className='txt-align-center'>
                     {
-                      !this.state.sendLoading && <Button variant='contained' disabled={this.state.sendLoading} onClick={this.handleCancelSendWarning}>Cancelar</Button>
+                      !this.state.sendLoading &&
+                      <Button
+                        className='bg-color-red txt-color-white width-perc-50 border-round'
+                        variant='contained' disabled={this.state.sendLoading}
+                        onClick={this.handleCancelSendWarning}>Cancelar</Button>
                     }
                     {
-                      this.state.sendLoading && <CircularProgress color='secondary' size={50} id='ds-andon-send-warning-step-4-button-cancel-loading' />
+                      this.state.sendLoading && <CircularProgress color='secondary' size={50} id='' />
                     }
                   </Grid>
                 </Grid>
@@ -111,33 +97,37 @@ class AndonLeafContext extends Component {
           }
           {
             this.state.step===3 && this.state.sendSuccess!==null && 
-            <div className='ds-andon-send-warning-step-4 ds-andon-send-warning-step-4-sent-warning-result'>
+            <div className=''>
               <SimpleCard rounded>
-                <div className='ds-andon-send-warning-step-4-result-div'>
+                <div className='txt-align-center'>
                   {
                     this.state.sendSuccess && 
-                    <div>
-                      <i className='material-icons success'>check_circle</i>
-                      <Typography variant='headline'>Aviso enviado com sucesso.</Typography>
+                    <div className='txt-align-center margin-bottom-16'>
+                      <i className='material-icons height-rem-8 width-perc-100 txt-size-rem-10 txt-color-green'>check_circle</i>
+                      <Typography variant='headline' className='margin-bottom-8'>Aviso enviado com sucesso.</Typography>
                       <Typography variant='headline'>Em breve um encarregado virá ajudar.</Typography>
                     </div>
                   }
                   {
                     !this.state.sendSuccess && 
-                    <div>
-                      <i className='material-icons fail'>cancel</i>
-                      <Typography variant='headline'>Não foi enviado.</Typography>
+                    <div className='txt-align-center margin-bottom-16'>
+                      <i className='material-icons height-rem-8 width-perc-100 txt-size-rem-10 txt-color-red'>cancel</i>
+                      <Typography variant='headline' className='margin-bottom-8'>Não foi enviado.</Typography>
                       <Typography variant='headline'>Entre em contato com um encarregado.</Typography>
                     </div>
                   }
-                  <Button variant='contained' color='secondary' component={Link} to={'/andon/logout'}>Sair</Button>
+                  <Button
+                    className='heigh-rem-3 border-round width-perc-50'
+                    variant='contained'
+                    color='secondary'
+                    component={Link} to={'/andon/logout'}>Sair</Button>
                 </div>
               </SimpleCard>
             </div>
           }
           {
             this.state.step <=2 &&
-            <div id='ds-andon-send-warning-mobile-stepper'>
+            <div id=''>
               <MobileStepper backButton={
                 <Button onClick={this.handleStepperBackButtonClick}>
                   <i className='material-icons'>navigate_before</i>
@@ -152,6 +142,31 @@ class AndonLeafContext extends Component {
         </GridPage>
       </div>
     )
+  }
+  handleGetReasons = async () => {
+    try {
+      let Response = await FetchGetReasons(this.props.user.projectId);
+      if(Response) {
+        this.setState({
+          reasons: Response
+        });
+      }
+    } catch (err) {
+      alert("Houve um erro em carregar os motivos.");
+    }
+  }
+  handleGetPlaces = async () => {
+    try {
+      let Response = await FetchGetPlaces(this.props.user.projectId);
+      if(Response) {
+        this.setState({
+          places: Response
+        });
+        // console.log(Response);
+      }
+    } catch (err) {
+      alert("Houve um erro em carregar os locais.");
+    }
   }
   handleInfoClick = (key,value,nextStep) => {
     this.setState({
@@ -196,7 +211,7 @@ class AndonLeafContext extends Component {
     let countdownStart = this.state.secondsToSend-1;
     countdown = setInterval(()=>{
       if(countdownStart >= 0) {
-        document.getElementById('ds-andon-send-warning-step-4-countdown').innerHTML = 'O aviso será enviado em '+countdownStart+' segundos.';
+        document.getElementById('countdown-time').innerHTML = 'O aviso será enviado em '+countdownStart+' segundos.';
         countdownStart--;
       }
       else {
@@ -213,20 +228,27 @@ class AndonLeafContext extends Component {
     this.setState({
       sendLoading: true,
     });
-    let Result = await FetchSendWarning({
-      projectId: this.props.user.projectId,
-      createdBy: this.props.user.id,
-      type: this.state.type,
-      reasonName: this.state.reasonName,
-      placeName: this.state.placeName,
-      createdDate: Date.now(),
-    });
-    if(Result) {
-      this.setState({
-        sendLoading: true,
-        sendSuccess: true,
+    try {
+      let Result = await FetchSendWarning({
+        projectId: this.props.user.projectId,
+        createdBy: this.props.user.id,
+        type: this.state.type,
+        reasonId: this.state.reason.id,
+        placeId: this.state.place.id,
+        createdDate: Date.now(),
       });
-    } else {
+      if(Result) {
+        this.setState({
+          sendLoading: true,
+          sendSuccess: true,
+        });
+      } else {
+        this.setState({
+          sendLoading: true,
+          sendSuccess: false,
+        });
+      }
+    } catch (err) {
       this.setState({
         sendLoading: true,
         sendSuccess: false,

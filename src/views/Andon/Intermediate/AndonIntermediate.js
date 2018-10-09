@@ -8,7 +8,7 @@ import GridPage from '../../../components/Grid/GridPage';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 import WarningCard from '../../../components/Views/Intermediate/WarningCard';
 
-import {FetchIntermediateGetWarning,FetchIntermediateResolveWarning} from '../../../lib/FetchAndonIntermediate';
+import {FetchIntermediateGetWarning,FetchIntermediateResolveWarning} from '../../../lib/fetch/FetchAndonIntermediate';
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -21,11 +21,6 @@ class AndonIntermediateContext extends Component {
       loadingResolveWarning: false,
     };
   }
-  // componentWillReceiveProps(nextProps) {
-  //   if(this.props.user.id === null && nextProps.user.id !== null) {
-  //     this.HandleGetWarnings();
-  //   }
-  // }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if(prevProps.user.id === null && this.props.user.id !== null) {
@@ -39,9 +34,9 @@ class AndonIntermediateContext extends Component {
     }
   }
   render() {
-    if(!this.props.user.loadingUser && this.props.user.id === null) {
-      return <Redirect to='/andon/login' />;
-    }
+    // if(!this.props.user.loadingUser && this.props.user.id === null) {
+    //   return <Redirect to='/andon/login' />;
+    // }
     return (
       <div className='ds-view' id='ds-view-andon-intermediate'>
         <AppBarComponent
@@ -57,7 +52,14 @@ class AndonIntermediateContext extends Component {
             </div>
             :
             <Grid container spacing={8}>
-              {this.state.warnings.filter(warning => warning.resolvedDate === null).map(warning => (
+              {this.state.warnings.sort((a,b) => {
+                if(a.createdDate > b.createdDate) {
+                  return 1;
+                } else if(a.createdDate < b.createdDate) {
+                  return -1;
+                }
+                return 0;
+              }).map(warning => (
                 <WarningCard
                   key={warning.id}
                   warning={warning}
@@ -93,19 +95,19 @@ class AndonIntermediateContext extends Component {
   }
 
   HandleGetWarnings = async () => {
-    if(!this.props.user.teams) {
-      return;
+    this.setState({loadingWarnings: true});
+    try {
+      let Response = await FetchIntermediateGetWarning(this.props.user.id);
+      if(Response) {
+        console.log(Response);
+        this.setState({
+          warnings: Response,
+        });
+      }
+    } catch (err) {
+      alert('Houve um erro.');
     }
-    for(let team of this.props.user.teams) {
-      let Warnings = await FetchIntermediateGetWarning(team);
-      let oldWarnings = this.state.warnings;
-      this.setState({
-        warnings: oldWarnings.concat(Warnings),
-      });
-    }
-    this.setState({
-      loadingWarnings: false,
-    });
+    this.setState({loadingWarnings: false});
   }
 }
 

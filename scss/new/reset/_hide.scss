@@ -1,0 +1,14 @@
+.hide-when {
+  &-not-sm {
+    display: inline-block !important;
+    @include breakpoint('sm') {
+      display: none !important;
+    }
+  }
+  &-sm {
+    display: none !important;
+    @include breakpoint('sm') {
+      display: inline-block !important;
+    }
+  }
+}

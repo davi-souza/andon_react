@@ -1,7 +1,7 @@
 import React from 'react';
 
 const FullGridPage = (props) => {
-  let className = 'ds-grid-page-full';
+  let className = 'grid-page-full';
   if(props.viewContent) {
     className += ' view-content';
   }

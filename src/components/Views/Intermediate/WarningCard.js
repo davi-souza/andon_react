@@ -40,19 +40,19 @@ const WarningCard = (props) => {
           />
         }
         <CardContent>
-          <div className='ds-intermediate-warning-card-content'>
+          <div className=''>
             <Typography variant="headline" component="h2">{props.warning.type}</Typography>
-            <Typography component="p">Motivo: {props.warning.reasonName}</Typography>
-            <Typography component='p'>Onde: {props.warning.placeName}</Typography>
-            <Typography component='p'>Autor: {props.warning.userThatCreated.length>=20?props.warning.userThatCreated.substring(0,20):props.warning.userThatCreated}</Typography>
+            <Typography component="p">Motivo: {props.warning.reason.name}</Typography>
+            <Typography component='p'>Onde: {props.warning.place.name}</Typography>
+            <Typography component='p'>Autor: {`${props.warning.userThatCreated.firstname} ${props.warning.userThatCreated.lastname.substring(0,10)}`}</Typography>
             <Typography component='p'>Quando: {new Date(props.warning.createdDate).toLocaleString('pt-BR')}</Typography>
           </div>
         </CardContent>
-        <CardActions className='ds-intermediate-warning-card-actions'>
+        <CardActions className='txt-align-center display-block'>
           {
             props.loadingResolveWarning?
             <CircularProgress color='secondary' size={40} /> :
-            <Button variant='contained' color='secondary' onClick={()=>{props.handleResolveWarning(props.warning.id)}}>Resolvido</Button>
+            <Button className='width-perc-50 border-round' variant='contained' color='secondary' onClick={()=>{props.handleResolveWarning(props.warning.id)}}>Resolvido</Button>
           }
         </CardActions>
       </Card>

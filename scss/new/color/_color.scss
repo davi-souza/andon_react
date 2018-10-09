@@ -1,0 +1,19 @@
+.txt {
+  &-color {
+    &-dark {
+      color: $dark !important;
+    }
+    &-black {
+      color: #000 !important;
+    }
+    &-white {
+      color: #fff !important;
+    }
+    &-green {
+      color: $green !important;
+    }
+    &-red {
+      color: $red !important;
+    }
+  }
+}

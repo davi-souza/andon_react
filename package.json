@@ -2,7 +2,7 @@
   "name": "project",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://nab:8000",
+  "proxy": "http://back:8000",
   "dependencies": {
     "@material-ui/core": "^1.4.1",
     "react": "^16.4.1",

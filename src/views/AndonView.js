@@ -10,19 +10,19 @@ import AndonCentralIndex from './Andon/Central/AndonCentralIndex';
 
 import UserContext from '../contexts/UserContext';
 
-import { FetchGetSession } from '../lib/FetchAndonRoot';
+import { FetchGetSession } from '../lib/fetch/FetchAndonRoot';
 
 class AndonView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: null,
+      id: 5,
       login: null,
       firstname: null,
       lastname: null,
       jobTitle: null,
       access: null,
-      projectId: null,
+      projectId: 1,
       teams: null,
       lastLocation: null,
       handleLogin: ({id,login,firstname,lastname,jobTitle,access,teams,projectId,lastLocation}) => {

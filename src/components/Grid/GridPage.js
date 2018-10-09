@@ -1,7 +1,7 @@
 import React from 'react';
 
 const GridPage = (props) => {
-  let className = 'ds-grid-page';
+  let className = 'grid-page';
   if(props.viewContent) {
     className += ' view-content';
   }

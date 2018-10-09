@@ -8,7 +8,7 @@ import SimpleCard from '../../../components/Card/SimpleCard';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 import NumberPanel from '../../../components/Panel/NumberPanel';
 
-import {FetchLogin} from '../../../lib/FetchAndonHome';
+import {FetchLogin} from '../../../lib/fetch/FetchAndonHome';
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -37,10 +37,10 @@ class AndonHomeContext extends Component {
         />
         <GridPage viewContent appBarFixed>
           <SimpleCard rounded>
-            <Grid container style={{margin: '0.5rem auto'}}>
+            <Grid container className='margin-bottom-24'>
               <Grid item xs={12}>
-                <div style={{height:'5rem',textAlign:'center'}}>
-                  <Typography variant='display3'>{this.state.numberPanelValue}</Typography>
+                <div className='txt-align-center height-56'>
+                  <Typography variant='display3' className='txt-color-dark'>{this.state.numberPanelValue}</Typography>
                 </div>
               </Grid>
             </Grid>
