@@ -37,12 +37,12 @@ class AndonCentralWarningsContext extends Component {
           ]}  
         />
         <FullGridPage viewContent appBarFixed>
-          <Paper className='margin-bottom-10 padding-top-10 padding-bottom-10'>
+          <Paper className='margin-bottom-8 padding-top-8 padding-bottom-8'>
             <Grid container>
-              <Grid item xs={12} md={6} className='txt-align-center margin-bottom-10'>
+              <Grid item xs={12} md={6} className='txt-align-center margin-bottom-8'>
                 <TextField
                   name='createdDateInit'
-                  className='w-60'
+                  className='width-perc-60'
                   label="Criado em (inicío)"
                   type="date"
                   InputLabelProps={{
@@ -52,10 +52,10 @@ class AndonCentralWarningsContext extends Component {
                   onChange={this.HandleDateChange}
                 />
               </Grid>
-              <Grid item xs={12} md={6} className='txt-align-center margin-bottom-10'>
+              <Grid item xs={12} md={6} className='txt-align-center margin-bottom-8'>
                 <TextField
                   name='createdDateEnd'
-                  className='w-60'
+                  className='width-perc-60'
                   label="Criado em (fim)"
                   type="date"
                   InputLabelProps={{
@@ -65,9 +65,9 @@ class AndonCentralWarningsContext extends Component {
                   onChange={this.HandleDateChange}
                 />
               </Grid>
-              <Grid item xs={4} className='txt-align-center margin-bottom-10'>
+              <Grid item xs={4} className='txt-align-center margin-bottom-8'>
                   <TextField
-                    className='w-90'
+                    className='width-perc-90'
                     select
                     label='Campo'
                     placeholder='Campo'
@@ -78,12 +78,11 @@ class AndonCentralWarningsContext extends Component {
                     <option value='reasonName'>Motivo</option>
                     <option value='placeName'>Local</option>
                     <option value='userThatCreated'>Autor</option>
-                    {/* <option value='resolvedDate'>Resolvido por</option> */}
                   </TextField>
               </Grid>
-              <Grid item xs={8} className='txt-align-center margin-bottom-10'>
+              <Grid item xs={8} className='txt-align-center margin-bottom-8'>
                   <TextField
-                    className='w-90'
+                    className='width-perc-90'
                     label='Filtro'
                     placeholder='Filtro'
                     value={this.state.filterValue}
@@ -101,7 +100,14 @@ class AndonCentralWarningsContext extends Component {
           {
             !this.props.central.loadingWarnings &&
             <WarningTable
-              data={this.props.central.warnings.filter(warning => {
+              data={this.props.central.warnings.sort((a,b) => {
+                if(a.createdDate > b.createdDate) {
+                  return -1;
+                } else if (a.createdDate < b.createdDate) {
+                  return 1;
+                }
+                return 0;
+              }).filter(warning => {
                 let initFilterDate = null;
                 let initDate = null
                 if(this.state.createdDateInit!=='') {
@@ -123,17 +129,25 @@ class AndonCentralWarningsContext extends Component {
                     return false;
                   }
                 }
-                if(this.state.filterValue!=='' && !filterRegex.test(warning[this.state.fieldToFilter].toLowerCase())) {
-                  return false;
-                }
                 return true;
+              }).filter(warning => {
+                if (this.state.fieldToFilter === '') {
+                  return true;
+                } else {
+                  if(this.state.fieldToFilter === 'reasonName') {
+                    return filterRegex.test(warning.reason.name.toLowerCase());
+                  } else if(this.state.fieldToFilter === 'placeName') {
+                    return filterRegex.test(warning.place.name.toLowerCase());
+                  } else if(this.state.fieldToFilter === 'userThatCreated') {
+                    return filterRegex.test(`${warning.userThatCreated.firstname} ${warning.userThatCreated.lastname}`.toLowerCase());
+                  } else  {
+                    return filterRegex.test(warning.type.toLowerCase());
+                  }
+                }
               })}
               resolveWarning={this.props.central.resolveWarning}
             />
           }
-          <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.props.central.getAllWarnings}>
-            <i className='material-icons'>refresh</i>
-          </Button>
         </FullGridPage>
       </div>
     );

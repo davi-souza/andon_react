@@ -70,6 +70,9 @@ body {
 .bg-color-green {
   background-color: #43A047 !important; }
 
+.overflow-auto {
+  overflow: auto !important; }
+
 .margin-top-64 {
   margin-top: 64px !important; }
 

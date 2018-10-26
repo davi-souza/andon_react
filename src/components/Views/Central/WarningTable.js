@@ -42,9 +42,9 @@ class WarningTable extends Component {
             {this.props.data.map(warning => (
               <TableRow key={warning.id}>
                 <TableCell>{warning.type}</TableCell>
-                <TableCell>{warning.reasonName}</TableCell>
-                <TableCell>{warning.placeName}</TableCell>
-                <TableCell>{warning.userThatCreated}</TableCell>
+                <TableCell>{warning.reason.name}</TableCell>
+                <TableCell>{warning.place.name}</TableCell>
+                <TableCell>{`${warning.userThatCreated.firstname} ${warning.userThatCreated.lastname}`}</TableCell>
                 <TableCell>{
                   new Date(warning.createdDate).toLocaleString('pt-BR')
                 }</TableCell>
@@ -52,7 +52,10 @@ class WarningTable extends Component {
                   warning.resolvedDate ?
                   new Date(warning.resolvedDate).toLocaleString('pt-BR') : null
                 }</TableCell>
-                <TableCell>{warning.userThatResolved}</TableCell>
+                <TableCell>{
+                  warning.userThatResolved ?
+                  `${warning.userThatResolved.firstname} ${warning.userThatResolved.lastname}` : ``
+                  }</TableCell>
                 <TableCell>
                   <Button
                     color='secondary'

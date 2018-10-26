@@ -2,7 +2,7 @@ import {urlInit,credentials, jsonHeaders, catchErro} from './fetchConst';
 
 export const FetchGetUsers = async (projectId) => {
   try {
-    let Response = await fetch(urlInit + 'user/central?filter='+JSON.stringify({projectId:projectId}),{
+    let Response = await fetch(urlInit + `central/${projectId}/users`,{
       method: 'get',
       credentials,
     });

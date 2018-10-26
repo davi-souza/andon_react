@@ -1,8 +1,8 @@
 import {urlInit,credentials, jsonHeaders, catchErro} from './fetchConst';
 
-export const FetchGetWarnings = async (teamId) => {
+export const FetchGetWarnings = async (projectId) => {
   try {
-    let Response = await fetch(urlInit + 'warning/team/'+String(teamId),{
+    let Response = await fetch(`${urlInit}central/${projectId}/warnings`,{
       method: 'get',
       credentials,
     });

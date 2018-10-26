@@ -5,14 +5,13 @@ import AndonCentralWarnings from './AndonCentralWarnings';
 import AndonCentralUsers from './AndonCentralUsers';
 import AndonCentralUsersAdd from './AndonCentralUsersAdd';
 import AndonCentralTeams from './AndonCentralTeams';
-import AndonCentralTeamsAdd from './AndonCentralTeamsAdd';
 
 import UserContext from '../../../contexts/UserContext';
 import CentralContext from '../../../contexts/CentralContext';
 
 import {FetchGetWarnings,FetchResolveWarning} from '../../../lib/fetch/FetchAndonCentralWarning';
 import {FetchGetUsers, FetchUpdateUser, FetchAddUser,FetchDeleteUser} from '../../../lib/fetch/FetchAndonCentralUser';
-import {FetchGetTeams, FetchAddTeam, FetchEditTeam} from '../../../lib/fetch/FetchAndonCentralTeam';
+import {FetchIntermediateUsers} from '../../../lib/fetch/FetchAndonCentralTeam';
 
 class AndonCentralIndexContext extends Component {
   constructor(props) {
@@ -30,11 +29,8 @@ class AndonCentralIndexContext extends Component {
       deleteUser: (id) => {this.DeleteUser(id)},
       updateUser: (userObj) => {this.UpdateUser(userObj)},
 
-      loadingTeams: true,
-      teams: [],
-      addTeam: (teamObj) => {this.AddTeam(teamObj)},
-      loadingAddTeam: false,
-      editTeam: (teamObj) => {this.EditTeam(teamObj)},
+      loadingIntermediateUsers: true,
+      intermediateUsers: [],
 
       handleChange: (key,value) => {
         if(key === 'handleChange') {
@@ -49,24 +45,20 @@ class AndonCentralIndexContext extends Component {
 
   componentDidUpdate(prevProps,prevState,snapshot) {
     if(prevProps.user.id === null && this.props.user.id !== null) {
-      this.GetAllWarnings();
-      this.GetAllUsers();
-      this.FetchAllTeams();
+      this.fetchAll();
     }
   }
 
   componentDidMount() {
     if(this.props.user.id) {
-      this.GetAllWarnings();
-      this.GetAllUsers();
-      this.FetchAllTeams();
+      this.fetchAll();
     }
   }
 
   render() {
-    if(!this.props.user.loadingUser && !this.props.user.id) {
-      return <Redirect to='/andon/login' />
-    }
+    // if(!this.props.user.loadingUser && !this.props.user.id) {
+    //   return <Redirect to='/andon/login' />
+    // }
     return (
       <CentralContext.Provider value={this.state}>
         <Switch>
@@ -74,15 +66,20 @@ class AndonCentralIndexContext extends Component {
           <Route exact path='/andon/central/users' component={AndonCentralUsers} />
           <Route exact path='/andon/central/users/add' component={AndonCentralUsersAdd} />
           <Route exact path='/andon/central/teams' component={AndonCentralTeams} />
-          <Route exact path='/andon/central/teams/add' component={AndonCentralTeamsAdd} />
         </Switch>
       </CentralContext.Provider>
     )
   }
 
+  fetchAll = () => {
+    this.GetAllWarnings();
+    this.GetAllUsers();
+    this.FetchAllIntermediates();
+  }
+
   GetAllWarnings = async() => {
     this.state.handleChange('loadingWarnings',true);
-    let Result = await FetchGetWarnings(this.props.user.teams[0]);
+    let Result = await FetchGetWarnings(this.props.user.projectId);this
     if(Result) {
       this.setState({
         warnings: Result,
@@ -95,7 +92,7 @@ class AndonCentralIndexContext extends Component {
     if(Result) {
       let newWarnings = this.state.warnings.map(warning => {
         if(warning.id===warningId) {
-          warning.userThatResolved = `${this.props.user.firstname} ${this.props.user.lastname}`;
+          warning.userThatResolved = this.props.user;
           warning.resolvedDate = Date.now();
         }
         return warning;
@@ -185,49 +182,17 @@ class AndonCentralIndexContext extends Component {
     }
   }
 
-  FetchAllTeams = async () => {
-    this.state.handleChange('loadingTeams',true);
+  FetchAllIntermediates = async () => {
+    this.state.handleChange('loadingIntermediateUsers',true);
     try {
-      let Result = await FetchGetTeams(this.props.user.projectId);
+      let Result = await FetchIntermediateUsers(this.props.user.projectId);
       if(Result) {
-        this.state.handleChange('teams',Result);
+        this.state.handleChange('intermediateUsers',Result);
       }
     } catch (error) {
       alert('Houve um erro.');
     }
-    this.state.handleChange('loadingTeams',false);
-  }
-  AddTeam = async (teamObj) => {
-    this.state.handleChange('loadingAddTeam',true);
-    try {
-      let Result = await FetchAddTeam({...teamObj,projectId:this.props.user.projectId});
-      if(Result) {
-        let newTeams = this.state.teams;
-        newTeams.push(Result);
-        this.state.handleChange('teams',newTeams)
-      }
-    } catch (error) {
-      alert('Houve um erro.');
-    }
-    this.state.handleChange('loadingAddTeam',false);
-  }
-  EditTeam = async (teamObj) => {
-    this.state.handleChange('loadingTeams',true);
-    try {
-      let Result = await FetchEditTeam(teamObj);
-      if(Result) {
-        let newTeams = this.state.teams.map(team => {
-          if(team.id === teamObj.id) {
-            return teamObj;
-          }
-          return team;
-        });
-        this.state.handleChange('teams',newTeams);
-      }
-    } catch (error) {
-      alert("Houve um erro.");
-    }
-    this.state.handleChange('loadingTeams',false);
+    this.state.handleChange('loadingIntermediateUsers',false);
   }
 }
 

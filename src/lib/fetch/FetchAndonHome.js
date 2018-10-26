@@ -1,12 +1,12 @@
 import {urlInit,credentials,jsonHeaders} from './fetchConst';
 
-export const FetchLogin = async (login) => {
+export const FetchLogin = async (data) => {
   try {
     let Response = await fetch(urlInit + 'user/login',{
       method: 'post',
       credentials,
       headers: jsonHeaders,
-      body: JSON.stringify(login),
+      body: JSON.stringify(data),
     });
     if(!Response.ok) {
       Response = await Response.json();

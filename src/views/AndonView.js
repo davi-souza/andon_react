@@ -16,7 +16,7 @@ class AndonView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 5,
+      id: null,
       login: null,
       firstname: null,
       lastname: null,
@@ -63,6 +63,7 @@ class AndonView extends Component {
     this.CheckSession();
   }
   render() {
+    console.log(this.state);
     return (
       <UserContext.Provider value={this.state}>
         <Switch>

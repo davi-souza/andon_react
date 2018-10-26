@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+// import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+// import Menu from '@material-ui/core/Menu';
+// import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -59,14 +59,14 @@ class AndonCentralUsersContext extends Component {
           {
             !this.props.central.loadingUsers && this.props.central.users.length !== 0 &&
             <div className='txt-align-center'>
-              <Paper className='margin-bottom-10 padding-top-10 padding-bottom-10'>
+              <Paper className='margin-bottom-8 padding-top-8 padding-bottom-8'>
                 <Grid container>
                   <Grid item xs={3}>
                     {this.props.central.users && this.props.central.users.length !== 0 &&
                       <TextField
                         select
                         name="fieldToFilter"
-                        className='w-90 margin-top-0'
+                        className='width-perc-90 margin-top-0'
                         label="Campo"
                         placeholder="Campo"
                         value={this.state.fieldToFilter}
@@ -81,7 +81,7 @@ class AndonCentralUsersContext extends Component {
                   <Grid item xs={9}>
                   <TextField
                     name="filterValue"
-                    className='w-90 margin-top-0'
+                    className='width-perc-90 margin-top-0'
                     label='Filtro'
                     placeholder='Filtro'
                     value={this.state.filter}
@@ -97,16 +97,19 @@ class AndonCentralUsersContext extends Component {
                     if(this.state.filterValue === '') {
                       return true
                     }
-                    return regexFilter.test(userObj[this.state.fieldToFilter]);
+                    if (this.state.fieldToFilter === 'login' || this.state.fieldToFilter === 'jobTitle') {
+                      return regexFilter.test(userObj[this.state.fieldToFilter].toLowerCase());
+                    } else {
+                      return regexFilter.test(`${userObj.firstname} ${userObj.lastname}`.toLowerCase());
+                    }
                   })
                 }
                 deleteUser={this.props.central.deleteUser}
                 updateUser={this.props.central.updateUser}
-                teams={this.props.central.teams.map(team => team.id)}
               />
             </div>
           }
-          <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
+          {/* <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
             <i className='material-icons'>add</i>
           </Button>
           <Menu
@@ -115,8 +118,7 @@ class AndonCentralUsersContext extends Component {
             onClose={this.handleMenuClose}
           >
             <MenuItem onClick={this.handleMenuClose} component={Link} to='/andon/central/users/add'>Adicionar usuário</MenuItem>
-            {/* <MenuItem onClick={this.handleMenuClose}>Adicionar múltiplos usuários</MenuItem> */}
-          </Menu>
+          </Menu> */}
         </FullGridPage>
       </div>
     );

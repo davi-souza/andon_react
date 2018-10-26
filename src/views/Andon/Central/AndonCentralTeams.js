@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+// import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+// import Menu from '@material-ui/core/Menu';
+// import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -51,21 +51,21 @@ class AndonCentralTeamsContext extends Component {
         />
         <FullGridPage viewContent appBarFixed>
           {
-            this.props.central.loadingTeams && 
+            this.props.central.loadingIntermediateUsers && 
             <div className='txt-align-center'>
               <CircularProgress color='secondary' size={60} />
             </div>
           }
           {
-            !this.props.central.loadingTeams && 
+            !this.props.central.loadingIntermediateUsers && 
             <div className='txt-align-center'>
-              <Paper className='margin-bottom-10 padding-top-10 padding-bottom-10'>
+              <Paper className='margin-bottom-8 padding-top-8 padding-bottom-8'>
                 <Grid container>
                   <Grid item xs={3}>
-                    {this.props.central.teams && this.props.central.teams.length !== 0 &&
+                    {this.props.central.intermediateUsers && this.props.central.intermediateUsers.length !== 0 &&
                       <TextField
                         name="fieldToFilter"
-                        className='w-90 margin-top-0'
+                        className='width-perc-90 margin-top-0'
                         label="Campo"
                         placeholder="Campo"
                         select
@@ -73,15 +73,14 @@ class AndonCentralTeamsContext extends Component {
                         onChange={this.handleFilterChange}
                       >
                         <option value='id'>ID</option>
-                        <option value='name'>Nome</option>
-                        <option value='parentId'>Gerenciado por</option>
+                        <option value='name'>Nome do líder</option>
                       </TextField>
                     }
                   </Grid>
                   <Grid item xs={9}>
                   <TextField
                     name="filterValue"
-                    className='w-90 margin-top-0'
+                    className='width-perc-90 margin-top-0'
                     label='Filtro'
                     placeholder='Filtro'
                     value={this.state.filter}
@@ -93,18 +92,20 @@ class AndonCentralTeamsContext extends Component {
               </Paper>
               <TeamTable
                 data={
-                  this.props.central.teams.sort((a,b) => b.id < a.id).filter(teamObj => {
+                  this.props.central.intermediateUsers.sort((a,b) => b.id < a.id).filter(intUserObj => {
                     if(this.state.filterValue === '') {
                       return true
                     }
-                    return regexFilter.test(teamObj[this.state.fieldToFilter]);
+                    if(this.state.fieldToFilter === 'name') {
+                      return regexFilter.test(`${intUserObj.firstname} ${intUserObj.lastname}`.toLowerCase());
+                    }
+                    return regexFilter.test(intUserObj[this.state.fieldToFilter].toString().toLowerCase());
                   })
                 }
-                editTeam={this.props.central.editTeam}
               />
             </div>
           }
-          <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
+          {/* <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
             <i className='material-icons'>add</i>
           </Button>
           <Menu
@@ -113,7 +114,7 @@ class AndonCentralTeamsContext extends Component {
             onClose={this.handleMenuClose}
           >
             <MenuItem onClick={this.handleMenuClose} component={Link} to='/andon/central/teams/add'>Adicionar time</MenuItem>
-          </Menu>
+          </Menu> */}
         </FullGridPage>
       </div>
     );

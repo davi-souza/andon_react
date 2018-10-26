@@ -105,10 +105,13 @@ class AndonLoginContext extends Component {
           let data = await FetchLogin({
             login: this.state.login,
             password: this.state.password,
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
+            location: {
+              lat:position.coords.latitude,
+              lng: position.coords.longitude,
+            },
             hour: (new Date()).getHours(),
           });
+          console.log(data);
           if(data) {
             this.props.user.handleLogin(data);
             if(data.access === accessLevel.central) {

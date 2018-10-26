@@ -91,8 +91,10 @@ class AndonHomeContext extends Component {
       window.navigator.geolocation.getCurrentPosition(async position => {
         let data = await FetchLogin({
           login: this.state.numberPanelValue,
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
+          location: {
+            lat:position.coords.latitude,
+            lng: position.coords.longitude,
+          },
           hour: (new Date()).getHours(),
         });
         if(data) {

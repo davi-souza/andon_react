@@ -38,7 +38,7 @@ class AndonIntermediateContext extends Component {
     //   return <Redirect to='/andon/login' />;
     // }
     return (
-      <div className='ds-view' id='ds-view-andon-intermediate'>
+      <div>
         <AppBarComponent
           title={this.props.user.firstname || 'ANDON'}
           position='fixed'
@@ -47,7 +47,7 @@ class AndonIntermediateContext extends Component {
         <GridPage viewContent appBarFixed>
           {
             this.state.loadingWarnings ? 
-            <div className='ds-circular-progress-centered'>
+            <div className='txt-align-center'>
               <CircularProgress size={80} color='secondary' />
             </div>
             :
@@ -59,7 +59,7 @@ class AndonIntermediateContext extends Component {
                   return -1;
                 }
                 return 0;
-              }).map(warning => (
+              }).filter(warning => warning.userThatCreated || false).map(warning => (
                 <WarningCard
                   key={warning.id}
                   warning={warning}
@@ -78,15 +78,19 @@ class AndonIntermediateContext extends Component {
       this.setState({
         loadingResolveWarning: true,
       });
-      let Result = await FetchIntermediateResolveWarning({
-        warningId,
-        userId: this.props.user.id,
-      });
-      if(Result) {
-        let newWarnings = this.state.warnings.filter(warning => (warning.id !== warningId));
-        this.setState({
-          warnings: newWarnings,
+      try {
+        let Result = await FetchIntermediateResolveWarning({
+          warningId,
+          userId: this.props.user.id,
         });
+        if(Result) {
+          let newWarnings = this.state.warnings.filter(warning => (warning.id !== warningId));
+          this.setState({
+            warnings: newWarnings,
+          });
+        }
+      } catch (error) {
+        alert('Houve um erro');
       }
       this.setState({
         loadingResolveWarning: false,
@@ -99,7 +103,6 @@ class AndonIntermediateContext extends Component {
     try {
       let Response = await FetchIntermediateGetWarning(this.props.user.id);
       if(Response) {
-        console.log(Response);
         this.setState({
           warnings: Response,
         });
