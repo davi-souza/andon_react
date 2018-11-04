@@ -9,6 +9,8 @@ import AndonCentralTeams from './AndonCentralTeams';
 import UserContext from '../../../contexts/UserContext';
 import CentralContext from '../../../contexts/CentralContext';
 
+import warnings from "../../../fetch/andon/central/warnings";
+
 import {FetchGetWarnings,FetchResolveWarning} from '../../../lib/fetch/FetchAndonCentralWarning';
 import {FetchGetUsers, FetchUpdateUser, FetchAddUser,FetchDeleteUser} from '../../../lib/fetch/FetchAndonCentralUser';
 import {FetchIntermediateUsers} from '../../../lib/fetch/FetchAndonCentralTeam';
@@ -72,21 +74,20 @@ class AndonCentralIndexContext extends Component {
   }
 
   fetchAll = () => {
-    this.GetAllWarnings();
+    this.getWarnings();
     this.GetAllUsers();
     this.FetchAllIntermediates();
   }
 
-  GetAllWarnings = async() => {
+  getWarnings = async() => {
     this.state.handleChange('loadingWarnings',true);
-    let Result = await FetchGetWarnings(this.props.user.projectId);this
-    if(Result) {
-      this.setState({
-        warnings: Result,
-      });
+    let response = await warnings(this.props.user.projectId);
+    if(response) {
+      this.state.handleChange("warnings",response);
     }
     this.state.handleChange('loadingWarnings',false);
   }
+  
   ResolveWarning = async (warningId) => {
     let Result = await FetchResolveWarning({userId:this.props.user.id,warningId});
     if(Result) {

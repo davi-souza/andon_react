@@ -50,9 +50,14 @@ const WarningCard = (props) => {
         </CardContent>
         <CardActions className='txt-align-center display-block'>
           {
-            props.loadingResolveWarning?
+            props.resolveLoading?
             <CircularProgress color='secondary' size={40} /> :
-            <Button className='width-perc-50 border-round' variant='contained' color='secondary' onClick={()=>{props.handleResolveWarning(props.warning.id)}}>Resolvido</Button>
+            <Button
+              className='width-perc-50 border-round'
+              variant='contained'
+              color='secondary'
+              disabled={props.resolveLoading}
+              onClick={()=>{props.resolve(props.warning.id)}}>Resolvido</Button>
           }
         </CardActions>
       </Card>

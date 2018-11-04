@@ -10,7 +10,8 @@ import AndonCentralIndex from './Andon/Central/AndonCentralIndex';
 
 import UserContext from '../contexts/UserContext';
 
-import { FetchGetSession } from '../lib/fetch/FetchAndonRoot';
+import { getProjectId } from '../localStorage/projectId';
+import session from '../fetch/andon/root/session';
 
 class AndonView extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class AndonView extends Component {
       lastname: null,
       jobTitle: null,
       access: null,
-      projectId: 1,
+      projectId: null,
       teams: null,
       lastLocation: null,
       handleLogin: ({id,login,firstname,lastname,jobTitle,access,teams,projectId,lastLocation}) => {
@@ -60,10 +61,10 @@ class AndonView extends Component {
     };
   }
   componentWillMount() {
+    this.getProjectIdFromLocalStorage();
     this.CheckSession();
   }
   render() {
-    console.log(this.state);
     return (
       <UserContext.Provider value={this.state}>
         <Switch>
@@ -78,23 +79,22 @@ class AndonView extends Component {
     );
   }
 
-  CheckSession = () => {
+  // get project id from local storage
+  getProjectIdFromLocalStorage = () => {
+    this.setState({
+      projectId: getProjectId(),
+    });
+  }
+
+  // get session if it exists
+  CheckSession = async () => {
+    // if it's not already logged in
     if(!this.state.id) {
-      console.log('[ANDON] Checking if there is a session.');
-      FetchGetSession().then(response => response.json())
-      .then(res => {
-        if(res.data) {
-          console.log('[ANDON] There is a session.');
-          this.state.handleLogin(res.data);
-        } else {
-          console.log('[ANDON] There is not a session.');
-        }
-        this.state.handleLoadingUser(false);
-      }).catch(err => {
-        console.log(err);
-      });
-    } else {
-      console.log('[ANDON] Already logged in.');
+      let sessionData = await session();
+      // if there is a session
+      if(sessionData) {
+        this.state.handleLogin(sessionData);
+      }
     }
   }
 }

@@ -100,57 +100,64 @@ class AndonCentralWarningsContext extends Component {
           {
             !this.props.central.loadingWarnings &&
             <WarningTable
-              data={this.props.central.warnings.sort((a,b) => {
-                if(a.createdDate > b.createdDate) {
-                  return -1;
-                } else if (a.createdDate < b.createdDate) {
-                  return 1;
-                }
-                return 0;
-              }).filter(warning => {
-                let initFilterDate = null;
-                let initDate = null
-                if(this.state.createdDateInit!=='') {
-                  initFilterDate = this.state.createdDateInit.split("-");
-                  initDate = new Date(parseInt(initFilterDate[0],10),parseInt(initFilterDate[1],10)-1,parseInt(initFilterDate[2],10),0,0,0,0);
-                }
-                let endFilterDate = null;
-                let endDate = null;
-                if(this.state.createdDateEnd!=='') {
-                  endFilterDate = this.state.createdDateEnd.split("-");
-                  endDate = new Date(parseInt(endFilterDate[0],10),parseInt(endFilterDate[1],10)-1,parseInt(endFilterDate[2],10),23,59,59,999);
-                }
-                if(initDate && endDate) {
-                  let createdDate = new Date(warning.createdDate);
-                  if(createdDate.getTime() < initDate.getTime()) {
-                    return false;
-                  }
-                  if(createdDate.getTime() > endDate.getTime()) {
-                    return false;
-                  }
-                }
-                return true;
-              }).filter(warning => {
-                if (this.state.fieldToFilter === '') {
-                  return true;
-                } else {
-                  if(this.state.fieldToFilter === 'reasonName') {
-                    return filterRegex.test(warning.reason.name.toLowerCase());
-                  } else if(this.state.fieldToFilter === 'placeName') {
-                    return filterRegex.test(warning.place.name.toLowerCase());
-                  } else if(this.state.fieldToFilter === 'userThatCreated') {
-                    return filterRegex.test(`${warning.userThatCreated.firstname} ${warning.userThatCreated.lastname}`.toLowerCase());
-                  } else  {
-                    return filterRegex.test(warning.type.toLowerCase());
-                  }
-                }
-              })}
+              data={this.props.central.warnings.sort(this.sortWarnings).filter(this.filterWarningsByDate).filter(this.filterWarningByField)}
               resolveWarning={this.props.central.resolveWarning}
             />
           }
         </FullGridPage>
       </div>
     );
+  }
+
+  sortWarnings = (a,b) => (a,b) => {
+    if(a.createdDate > b.createdDate) {
+      return -1;
+    } else if (a.createdDate < b.createdDate) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  filterWarningsByDate = warning => {
+    let initFilterDate = null;
+    let initDate = null
+    if(this.state.createdDateInit!=='') {
+      initFilterDate = this.state.createdDateInit.split("-");
+      initDate = new Date(parseInt(initFilterDate[0],10),parseInt(initFilterDate[1],10)-1,parseInt(initFilterDate[2],10),0,0,0,0);
+    }
+    let endFilterDate = null;
+    let endDate = null;
+    if(this.state.createdDateEnd!=='') {
+      endFilterDate = this.state.createdDateEnd.split("-");
+      endDate = new Date(parseInt(endFilterDate[0],10),parseInt(endFilterDate[1],10)-1,parseInt(endFilterDate[2],10),23,59,59,999);
+    }
+    if(initDate && endDate) {
+      let createdDate = new Date(warning.createdDate);
+      if(createdDate.getTime() < initDate.getTime()) {
+        return false;
+      }
+      if(createdDate.getTime() > endDate.getTime()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  filterWarningByField = warning => {
+    // let filterRegex = //
+    if (this.state.fieldToFilter === '') {
+      return true;
+    } else {
+      if(this.state.fieldToFilter === 'reasonName') {
+        return filterRegex.test(warning.reason.name.toLowerCase());
+      } else if(this.state.fieldToFilter === 'placeName') {
+        return filterRegex.test(warning.place.name.toLowerCase());
+      } else if(this.state.fieldToFilter === 'userThatCreated') {
+        return filterRegex.test(`${warning.userThatCreated.firstname} ${warning.userThatCreated.lastname}`.toLowerCase());
+      } else  {
+        return filterRegex.test(warning.type.toLowerCase());
+      }
+    }
   }
 
   HandleFieldFilterChange = (event) => {

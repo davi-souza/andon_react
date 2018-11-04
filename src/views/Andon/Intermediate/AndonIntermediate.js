@@ -1,24 +1,33 @@
 import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom';
+// import {Redirect} from 'react-router-dom';
 
-import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import GridPage from '../../../components/Grid/GridPage';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
-import WarningCard from '../../../components/Views/Intermediate/WarningCard';
+import Warnings from "../../../components/Views/Intermediate/Warnings";
 
-import {FetchIntermediateGetWarning,FetchIntermediateResolveWarning} from '../../../lib/fetch/FetchAndonIntermediate';
+import warnings from "../../../fetch/andon/intermediate/warnings";
+import resolveWarning from '../../../fetch/andon/intermediate/resolveWarning';
 
 import UserContext from '../../../contexts/UserContext';
+import IntermediateContext from '../../../contexts/IntermediateContext';
 
 class AndonIntermediateContext extends Component {
   constructor(props) {
     super(props);
     this.state = {
       warnings: [],
-      loadingWarnings: true,
-      loadingResolveWarning: false,
+      warningsLoading: true,
+      resolveLoading: false,
+
+      resolve: this.handleResolveWarning,
+
+      handleChange: (key,value) => {
+        this.setState({
+          [key]: value,
+        })
+      },
     };
   }
 
@@ -38,7 +47,7 @@ class AndonIntermediateContext extends Component {
     //   return <Redirect to='/andon/login' />;
     // }
     return (
-      <div>
+      <IntermediateContext.Provider value={this.state}>
         <AppBarComponent
           title={this.props.user.firstname || 'ANDON'}
           position='fixed'
@@ -46,71 +55,48 @@ class AndonIntermediateContext extends Component {
         />
         <GridPage viewContent appBarFixed>
           {
-            this.state.loadingWarnings ? 
+            this.state.warningsLoading ? 
             <div className='txt-align-center'>
               <CircularProgress size={80} color='secondary' />
             </div>
             :
-            <Grid container spacing={8}>
-              {this.state.warnings.sort((a,b) => {
-                if(a.createdDate > b.createdDate) {
-                  return 1;
-                } else if(a.createdDate < b.createdDate) {
-                  return -1;
-                }
-                return 0;
-              }).filter(warning => warning.userThatCreated || false).map(warning => (
-                <WarningCard
-                  key={warning.id}
-                  warning={warning}
-                  handleResolveWarning={this.handleResolveWarning}
-                  loadingResolveWarning={this.state.loadingResolveWarning}
-                />
-              ))}
-            </Grid>
+            <Warnings />
           }
         </GridPage>
-      </div>
+      </IntermediateContext.Provider>
     );
   }
   handleResolveWarning = async (warningId) => {
     if(window.confirm('Tem certeza que o aviso foi resolvido?')) {
-      this.setState({
-        loadingResolveWarning: true,
-      });
+      this.state.handleChange("resolveLoading", true);
+
       try {
-        let Result = await FetchIntermediateResolveWarning({
-          warningId,
-          userId: this.props.user.id,
-        });
-        if(Result) {
-          let newWarnings = this.state.warnings.filter(warning => (warning.id !== warningId));
-          this.setState({
-            warnings: newWarnings,
-          });
+        let response = await resolveWarning(this.props.user.id,warningId);
+  
+        if(response) {
+          let newWarnings = this.state.warnings.filter(warning => warning.id!==warningId);
+          this.state.handleChange("warnings",newWarnings);
         }
-      } catch (error) {
-        alert('Houve um erro');
+
+      } catch (err) {
+        alert("Houve um erro.")
       }
-      this.setState({
-        loadingResolveWarning: false,
-      });
+
+      this.state.handleChange("resolveLoading", false);
     }
   }
 
   HandleGetWarnings = async () => {
-    this.setState({loadingWarnings: true});
+    this.state.handleChange("warningsLoading",true);
     try {
-      let Response = await FetchIntermediateGetWarning(this.props.user.id);
-      if(Response) {
-        this.setState({
-          warnings: Response,
-        });
+      let response = await warnings(this.props.user.id);
+      if(response) {
+        this.state.handleChange("warnings",response);
       }
     } catch (err) {
-      alert('Houve um erro.');
+      alert("Houve um erro.");
     }
-    this.setState({loadingWarnings: false});
+    this.state.handleChange("warningsLoading",false);
   }
 }
 
