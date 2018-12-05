@@ -58,14 +58,23 @@ body {
 .txt-color-red {
   color: #F44336 !important; }
 
+.txt-color-yellow {
+  color: #FFEB3B !important; }
+  .txt-color-yellow-dark {
+    color: #FBC02D !important; }
+
 .bg-color-dark {
   background-color: #212121 !important; }
 
 .bg-color-red {
   background-color: #F44336 !important; }
+  .bg-color-red-light {
+    background-color: #EF9A9A; }
 
 .bg-color-yellow {
   background-color: #FFEB3B !important; }
+  .bg-color-yellow-light {
+    background-color: #FFF59D; }
 
 .bg-color-green {
   background-color: #43A047 !important; }
@@ -207,6 +216,10 @@ body {
 
 .margin-0 {
   margin: 0px !important; }
+
+.margin-auto {
+  margin-top: auto !important;
+  margin-bottom: auto !important; }
 
 .padding-top-64 {
   padding-top: 64px !important; }
@@ -688,6 +701,12 @@ body {
 .txt-size-rem-18 {
   font-size: 18rem !important; }
 
+.txt-shadow-black {
+  text-shadow: 1px 1px 2px #444; }
+
+.txt-shadow-yellow {
+  text-shadow: 1px 1px 1px #F9A825; }
+
 .grid-page {
   margin: auto;
   width: 95%; }
@@ -732,3 +751,10 @@ body {
 
 .app-bar-title {
   flex-grow: 1; }
+
+.highlights-paper {
+  height: 100% !important;
+  font-size: 1.25rem; }
+
+.highlight {
+  font-weight: bold; }

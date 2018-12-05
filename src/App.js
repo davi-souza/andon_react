@@ -4,6 +4,8 @@ import {Switch, Route} from 'react-router-dom';
 import IndexView from './views/IndexView';
 import AndonView from './views/AndonView';
 
+import "./bundle.css";
+
 class App extends Component {
   constructor(props) {
     super(props);

@@ -11,11 +11,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 import FullGridPage from '../../../components/Grid/FullGridPage';
-import UserTable from '../../../components/Views/Central/UserTable';
+import UserTable from '../../../components/Table/Andon/Central/UsersTable';
 
 import CentralContext from '../../../contexts/CentralContext';
 
-class AndonCentralUsersContext extends Component {
+class AndonCentralUsers extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,94 +38,97 @@ class AndonCentralUsersContext extends Component {
   render() {
     let regexFilter = new RegExp(`[a-zA-Z0-9]*${this.state.filterValue}[a-zA-Z0-9]*`);
     return (
-      <div>
-        <AppBarComponent
-          title='Central - Usuários'
-          position='fixed'
-          drawerLinks={[
-            {name:'Gerenciar Avisos',to:'/andon/central/warnings',icon:'warning'},
-            {name:'Gerenciar Usuários',to:'/andon/central/users',icon:'person'},
-            {name:'Gerenciar Times',to:'/andon/central/teams',icon:'people'},
-            {to:'/andon/logout',name:'Log Out',icon:'exit_to_app',divider:true}
-          ]}  
-        />
-        <FullGridPage viewContent appBarFixed>
-          {
-            this.props.central.loadingUsers && 
-            <div className='txt-align-center'>
-              <CircularProgress color='secondary' size={60} />
-            </div>
-          }
-          {
-            !this.props.central.loadingUsers && this.props.central.users.length !== 0 &&
-            <div className='txt-align-center'>
-              <Paper className='margin-bottom-8 padding-top-8 padding-bottom-8'>
-                <Grid container>
-                  <Grid item xs={3}>
-                    {this.props.central.users && this.props.central.users.length !== 0 &&
+      <CentralContext.Consumer>
+        { central => 
+          <div>
+            <AppBarComponent
+              title='Central - Usuários'
+              position='fixed'
+              drawerLinks={[
+                {name:'Gerenciar Avisos',to:'/andon/central/warnings',icon:'warning'},
+                {name:'Gerenciar Usuários',to:'/andon/central/users',icon:'person'},
+                {name:'Gerenciar Times',to:'/andon/central/teams',icon:'people'},
+                {name:'Painel de Controle',to:'/andon/central/dashboard',icon:'show_chart'},
+                {to:'/andon/logout',name:'Log Out',icon:'exit_to_app',divider:true}
+              ]}  
+            />
+            <FullGridPage viewContent appBarFixed>
+              {
+                central.leafUsersLoading && 
+                <div className='txt-align-center'>
+                  <CircularProgress color='secondary' size={60} />
+                </div>
+              }
+              {
+                !central.leafUsersLoading && central.leafUsers.length !== 0 &&
+                <div className='txt-align-center'>
+                  <Paper className='margin-bottom-8 padding-top-8 padding-bottom-8'>
+                    <Grid container>
+                      <Grid item xs={3}>
+                        {central.leafUsers && central.leafUsers.length !== 0 &&
+                          <TextField
+                            select
+                            name="fieldToFilter"
+                            className='width-perc-90 margin-top-0'
+                            label="Campo"
+                            placeholder="Campo"
+                            value={this.state.fieldToFilter}
+                            onChange={this.handleFilterChange}
+                          >
+                            <option value={'login'}>Matrícula</option>
+                            <option value={'name'}>Nome</option>
+                            <option value={'jobTitle'}>Título</option>
+                          </TextField>
+                        }
+                      </Grid>
+                      <Grid item xs={9}>
                       <TextField
-                        select
-                        name="fieldToFilter"
+                        name="filterValue"
                         className='width-perc-90 margin-top-0'
-                        label="Campo"
-                        placeholder="Campo"
-                        value={this.state.fieldToFilter}
+                        label='Filtro'
+                        placeholder='Filtro'
+                        value={this.state.filter}
+                        margin='normal'
                         onChange={this.handleFilterChange}
-                      >
-                        <option value={'login'}>Matrícula</option>
-                        <option value={'name'}>Nome</option>
-                        <option value={'jobTitle'}>Título</option>
-                      </TextField>
+                      />
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                  <UserTable
+                    data={
+                      central.leafUsers.sort((a,b) => b.id < a.id).filter(userObj => {
+                        if(this.state.filterValue === '') {
+                          return true
+                        }
+                        if (this.state.fieldToFilter === 'login' || this.state.fieldToFilter === 'jobTitle') {
+                          return regexFilter.test(userObj[this.state.fieldToFilter].toLowerCase());
+                        } else {
+                          return regexFilter.test(`${userObj.firstname} ${userObj.lastname}`.toLowerCase());
+                        }
+                      })
                     }
-                  </Grid>
-                  <Grid item xs={9}>
-                  <TextField
-                    name="filterValue"
-                    className='width-perc-90 margin-top-0'
-                    label='Filtro'
-                    placeholder='Filtro'
-                    value={this.state.filter}
-                    margin='normal'
-                    onChange={this.handleFilterChange}
                   />
-                  </Grid>
-                </Grid>
-              </Paper>
-              <UserTable
-                data={
-                  this.props.central.users.sort((a,b) => b.id < a.id).filter(userObj => {
-                    if(this.state.filterValue === '') {
-                      return true
-                    }
-                    if (this.state.fieldToFilter === 'login' || this.state.fieldToFilter === 'jobTitle') {
-                      return regexFilter.test(userObj[this.state.fieldToFilter].toLowerCase());
-                    } else {
-                      return regexFilter.test(`${userObj.firstname} ${userObj.lastname}`.toLowerCase());
-                    }
-                  })
-                }
-                deleteUser={this.props.central.deleteUser}
-                updateUser={this.props.central.updateUser}
-              />
-            </div>
-          }
-          {/* <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
-            <i className='material-icons'>add</i>
-          </Button>
-          <Menu
-            anchorEl={this.state.anchorEl}
-            open={Boolean(this.state.anchorEl)}
-            onClose={this.handleMenuClose}
-          >
-            <MenuItem onClick={this.handleMenuClose} component={Link} to='/andon/central/users/add'>Adicionar usuário</MenuItem>
-          </Menu> */}
-        </FullGridPage>
-      </div>
+                </div>
+              }
+              {/* <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
+                <i className='material-icons'>add</i>
+              </Button>
+              <Menu
+                anchorEl={this.state.anchorEl}
+                open={Boolean(this.state.anchorEl)}
+                onClose={this.handleMenuClose}
+              >
+                <MenuItem onClick={this.handleMenuClose} component={Link} to='/andon/central/users/add'>Adicionar usuário</MenuItem>
+              </Menu> */}
+            </FullGridPage>
+          </div>
+        }
+      </CentralContext.Consumer>
     );
   }
 }
 
-const AndonCentralUsers = (props) => {
+const AndonCentralUsersContext = (props) => {
   return (
     <CentralContext.Consumer>
       {central => <AndonCentralUsersContext central={central} {...props} />}

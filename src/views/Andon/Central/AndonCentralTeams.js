@@ -11,7 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 import FullGridPage from '../../../components/Grid/FullGridPage';
-import TeamTable from '../../../components/Views/Central/TeamTable';
+import TeamTable from '../../../components/Table/Andon/Central/TeamTable';
 
 import CentralContext from '../../../contexts/CentralContext';
 
@@ -46,6 +46,7 @@ class AndonCentralTeamsContext extends Component {
             {name:'Gerenciar Avisos',to:'/andon/central/warnings',icon:'warning'},
             {name:'Gerenciar Usuários',to:'/andon/central/users',icon:'person'},
             {name:'Gerenciar Times',to:'/andon/central/teams',icon:'people'},
+            {name:'Painel de Controle',to:'/andon/central/dashboard',icon:'show_chart'},
             {to:'/andon/logout',name:'Log Out',icon:'exit_to_app',divider:true}
           ]}  
         />

@@ -32,8 +32,8 @@ class TeamTable extends Component {
               <TableCell className='txt-align-center'>Nome do líder</TableCell>
               <TableCell className='txt-align-center'>Nível de acesso</TableCell>
               <TableCell className='txt-align-center'>Membros do time</TableCell>
-              <TableCell className='txt-align-center'>Editar</TableCell>
-              <TableCell className='txt-align-center'>Remover</TableCell>
+              {/* <TableCell className='txt-align-center'>Editar</TableCell>
+              <TableCell className='txt-align-center'>Remover</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -70,7 +70,7 @@ class TeamTable extends Component {
                         })}
                       </TextField>
                     </TableCell>
-                    <TableCell className='txt-align-center'>
+                    {/* <TableCell className='txt-align-center'>
                       <Button onClick={this.ConfirmTeamEdit}>
                         <i className='material-icons'>done</i>
                       </Button>
@@ -79,7 +79,7 @@ class TeamTable extends Component {
                       <Button onClick={this.CancelTeamEdition}>
                         <i className='material-icons'>cancel</i>
                       </Button>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 )
               } else {
@@ -98,7 +98,7 @@ class TeamTable extends Component {
                         <span key={index}>{`${member.firstname} ${member.lastname}, `}</span>
                       ))}
                     </TableCell>
-                    <TableCell className='txt-align-center'>
+                    {/* <TableCell className='txt-align-center'>
                       <Button onClick={()=>{
                           this.SelectTeamToEdit(interUser);
                         }}
@@ -116,7 +116,7 @@ class TeamTable extends Component {
                       >
                         <i className='material-icons'>delete</i>
                       </Button>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 )
               }

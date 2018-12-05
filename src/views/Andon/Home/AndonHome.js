@@ -8,7 +8,7 @@ import SimpleCard from '../../../components/Card/SimpleCard';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 import NumberPanel from '../../../components/Panel/NumberPanel';
 
-import {FetchLogin} from '../../../lib/fetch/FetchAndonHome';
+import login from "../../../fetch/andon/root/login";
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -32,7 +32,7 @@ class AndonHomeContext extends Component {
           drawerLinks={[
             {to:'/andon',name:'Painel',icon:'dialpad'},
             {to:'/andon/login',name:'Log In',icon:'person'},
-            {to:'/',name:'Sair',icon:'exit_to_app',divider:true}
+            {to:'/andon/project/set',name:'Projeto',icon:'edit',divider:true},
           ]}
         />
         <GridPage viewContent appBarFixed>
@@ -89,7 +89,7 @@ class AndonHomeContext extends Component {
     if(window.navigator.geolocation) {
       this.handleToggleLoading();
       window.navigator.geolocation.getCurrentPosition(async position => {
-        let data = await FetchLogin({
+        let data = await login({
           login: this.state.numberPanelValue,
           location: {
             lat:position.coords.latitude,

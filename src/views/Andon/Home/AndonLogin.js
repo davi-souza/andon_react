@@ -10,7 +10,7 @@ import GridPage from '../../../components/Grid/GridPage';
 import SimpleCard from '../../../components/Card/SimpleCard';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 
-import {FetchLogin} from '../../../lib/fetch/FetchAndonHome';
+import login from "../../../fetch/andon/root/login";
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -102,7 +102,7 @@ class AndonLoginContext extends Component {
       if(window.navigator.geolocation) {
         this.handleToggleLoading();
         window.navigator.geolocation.getCurrentPosition(async position => {
-          let data = await FetchLogin({
+          let data = await login({
             login: this.state.login,
             password: this.state.password,
             location: {
@@ -111,8 +111,8 @@ class AndonLoginContext extends Component {
             },
             hour: (new Date()).getHours(),
           });
-          console.log(data);
           if(data) {
+            console.log(data);
             this.props.user.handleLogin(data);
             if(data.access === accessLevel.central) {
               this.props.history.push('/andon/central/warnings');

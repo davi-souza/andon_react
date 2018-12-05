@@ -15,5 +15,11 @@
     &-red {
       color: $red !important;
     }
+    &-yellow {
+      color: $yellow !important;
+      &-dark {
+        color: $yellow-dark !important;
+      }
+    }
   }
 }

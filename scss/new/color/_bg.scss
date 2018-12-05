@@ -5,9 +5,15 @@
     }
     &-red {
       background-color: $red !important;
+      &-light {
+        background-color: $red-light;
+      }
     }
     &-yellow {
       background-color: $yellow !important;
+      &-light {
+        background-color: $yellow-light;
+      }
     }
     &-green {
       background-color: $green !important;

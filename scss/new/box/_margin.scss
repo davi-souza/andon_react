@@ -18,4 +18,8 @@
     }
     $i: $i - 8;
   }
+  &-auto {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+  }
 }

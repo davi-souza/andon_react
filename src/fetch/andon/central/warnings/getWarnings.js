@@ -1,5 +1,5 @@
-import config from "../../config";
-import get from "../../get";
+import config from "../../../config";
+import get from "../../../get";
 
 export default async (projectId) => {
   const route = [

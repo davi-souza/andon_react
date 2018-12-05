@@ -34,8 +34,8 @@ class UserTable extends Component {
               <TableCell className='txt-align-center'>Título</TableCell>
               <TableCell className='txt-align-center'>Nível de Acesso</TableCell>
               <TableCell className='txt-align-center'>Senha</TableCell>
-              <TableCell className='txt-align-center'>Editar</TableCell>
-              <TableCell className='txt-align-center'>Remover</TableCell>
+              {/* <TableCell className='txt-align-center'>Editar</TableCell>
+              <TableCell className='txt-align-center'>Remover</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -64,7 +64,7 @@ class UserTable extends Component {
                         onChange={this.HandleSelectedUserChanges}
                       />
                     </TableCell>
-                    <TableCell>
+                    <TableCell className='txt-align-center'>
                       {user.level==='central' && 'Central'}
                       {user.level==='intermediate' && 'Recebe de avisos'}
                       {user.level==='leaf' && 'Envia de avisos'}
@@ -108,13 +108,13 @@ class UserTable extends Component {
                     <TableCell className='txt-align-center'>
                       {user.jobTitle ? user.jobTitle : 'Sem título'}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className='txt-align-center'>
                       {user.level==='central' && 'Central'}
                       {user.level==='intermediate' && 'Recebe de avisos'}
                       {user.level==='leaf' && 'Envia de avisos'}
                     </TableCell>
                     <TableCell className='txt-align-center'>{user.password || ''}</TableCell>
-                    <TableCell className='txt-align-center'>
+                    {/* <TableCell className='txt-align-center'>
                       <Button
                         disabled={this.state.centralRegex.test(`${user.firstname} ${user.lastname}`) || true}
                         onClick={()=>{
@@ -134,7 +134,7 @@ class UserTable extends Component {
                         }}>
                         <i className='material-icons'>delete</i>
                       </Button>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 )
               }

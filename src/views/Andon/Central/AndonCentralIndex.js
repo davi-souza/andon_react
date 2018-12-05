@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Switch,Route, Redirect} from 'react-router-dom';
 
+import AndonCentralDashboard from './AndonCentralDashboard';
 import AndonCentralWarnings from './AndonCentralWarnings';
 import AndonCentralUsers from './AndonCentralUsers';
 import AndonCentralUsersAdd from './AndonCentralUsersAdd';
@@ -9,30 +10,23 @@ import AndonCentralTeams from './AndonCentralTeams';
 import UserContext from '../../../contexts/UserContext';
 import CentralContext from '../../../contexts/CentralContext';
 
-import warnings from "../../../fetch/andon/central/warnings";
-
-import {FetchGetWarnings,FetchResolveWarning} from '../../../lib/fetch/FetchAndonCentralWarning';
-import {FetchGetUsers, FetchUpdateUser, FetchAddUser,FetchDeleteUser} from '../../../lib/fetch/FetchAndonCentralUser';
-import {FetchIntermediateUsers} from '../../../lib/fetch/FetchAndonCentralTeam';
+import { getWarnings, resolveWarning } from "../../../fetch/andon/central/warnings/warnings";
+import { getLeafUsers, getIntermediateUsers } from "../../../fetch/andon/central/users/users";
 
 class AndonCentralIndexContext extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loadingWarnings: true,
       warnings: [],
-      getAllWarnings: () => (this.GetAllWarnings()),
-      resolveWarning: (warningId) => {this.ResolveWarning(warningId)},
+      warningsLoading: true,
+      getAllWarnings: () => (this.handleGetAllWarnings()),
+      resolveWarning: (warningId) => {this.handleResolveWarning(warningId)},
 
-      loadingUsers: true,
-      users: [],
-      addUser: (userObj) => {this.AddUser(userObj)},
-      loadingAddUser: false,
-      deleteUser: (id) => {this.DeleteUser(id)},
-      updateUser: (userObj) => {this.UpdateUser(userObj)},
+      leafUsers: [],
+      leafUsersLoading: true,
 
-      loadingIntermediateUsers: true,
       intermediateUsers: [],
+      intermediateUsersLoading: true,
 
       handleChange: (key,value) => {
         if(key === 'handleChange') {
@@ -64,6 +58,7 @@ class AndonCentralIndexContext extends Component {
     return (
       <CentralContext.Provider value={this.state}>
         <Switch>
+          <Route exact path='/andon/central/dashboard' component={AndonCentralDashboard} />
           <Route exact path='/andon/central/warnings' component={AndonCentralWarnings} />
           <Route exact path='/andon/central/users' component={AndonCentralUsers} />
           <Route exact path='/andon/central/users/add' component={AndonCentralUsersAdd} />
@@ -74,119 +69,57 @@ class AndonCentralIndexContext extends Component {
   }
 
   fetchAll = () => {
-    this.getWarnings();
-    this.GetAllUsers();
-    this.FetchAllIntermediates();
+    this.handleGetAllWarnings();
+    this.handleGetLeafUsers();
+    this.handleGetIntermediateUsers();
   }
 
-  getWarnings = async() => {
-    this.state.handleChange('loadingWarnings',true);
-    let response = await warnings(this.props.user.projectId);
+  handleGetAllWarnings = async() => {
+    this.state.handleChange('warningsLoading',true);
+    let response = await getWarnings(this.props.user.projectId);
     if(response) {
       this.state.handleChange("warnings",response);
     }
-    this.state.handleChange('loadingWarnings',false);
+    this.state.handleChange('warningsLoading',false);
   }
   
-  ResolveWarning = async (warningId) => {
-    let Result = await FetchResolveWarning({userId:this.props.user.id,warningId});
-    if(Result) {
-      let newWarnings = this.state.warnings.map(warning => {
-        if(warning.id===warningId) {
-          warning.userThatResolved = this.props.user;
-          warning.resolvedDate = Date.now();
-        }
-        return warning;
-      });
-      this.setState({
-        warnings: newWarnings,
-      });
-    } else {
-      // ... nothing
-    }
-  }
-
-  GetAllUsers = async () => {
-    this.state.handleChange('loadingUsers',true);
-    try {
-      let Result = await FetchGetUsers(this.props.user.projectId);
-      if(Result) {
-        this.state.handleChange('users',Result);
-      }
-    } catch (e) {
-      alert('Houve um erro.');
-    }
-    this.state.handleChange('loadingUsers',false);
-  }
-
-  AddUser = async (userObj) => {
-    this.state.handleChange('loadingAddUser',true);
-    try {
-      let Result = await FetchAddUser({...userObj,projectId:this.props.user.projectId});
-      if(Result) {
-        let newUsers = this.state.users;
-        newUsers.push({
-          id: Result.id,
-          teams: [],
-          name: `${userObj.firstname} ${userObj.lastname}`,
-          login: userObj.login,
-          jobTitle: userObj.jobTitle,
-          password: userObj.password,
-        });
-        this.state.handleChange('users',newUsers);
-      }
-    } catch(e) {
-      alert('Houve um erro.');
-    }
-    this.state.handleChange('loadingAddUser',false);
-  }
-  UpdateUser = async (userObj) => {
-    this.state.handleChange('loadingUsers',true);
-    try {
-      let oldUser = this.state.users.filter(user => {
-        if(user.id === userObj.id) {
-          return true;
-        }
-        return false
-      })[0];
-      let Result = await FetchUpdateUser(oldUser,userObj);
-      if(Result) {
-        let newUsers = this.state.users.map(user => {
-          if(user.id === userObj.id) {
-            return userObj;
-          } else {
-            return user;
+  handleResolveWarning = async (warningId) => {
+    if(window.confirm("Você tem certeza que este aviso foi solucionado?")) {
+      let result = await resolveWarning({userId:this.props.user.id,warningId});
+      if(result) {
+        let newWarnings = this.state.warnings.map(warning => {
+          if(warning.id===warningId) {
+            warning.userThatResolved = this.props.user;
+            warning.resolvedDate = Date.now();
           }
+          return warning;
         });
-        this.state.handleChange('users',newUsers);
-      }
-    } catch (e) {
-      alert('Houve um erro.');
-    }
-    this.state.handleChange('loadingUsers',false);
-  }
-  DeleteUser = async (id) => {
-    try {
-      let Result = await FetchDeleteUser(id);
-      if(Result) {
-        let newUsers = this.state.users.filter(user => {
-          if(user.id === id) {
-            return false;
-          } else {
-            return true;
-          }
+        this.setState({
+          warnings: newWarnings,
         });
-        this.state.handleChange('users',newUsers);
+      } else {
+        // ... nothing
       }
-    } catch (e) {
-      alert('Houve um erro.');
     }
   }
 
-  FetchAllIntermediates = async () => {
+  handleGetLeafUsers = async () => {
+    this.state.handleChange('leafUsersLoading',true);
+    try {
+      let Result = await getLeafUsers(this.props.user.projectId);
+      if(Result) {
+        this.state.handleChange('leafUsers',Result);
+      }
+    } catch (e) {
+      alert('Houve um erro.');
+    }
+    this.state.handleChange('leafUsersLoading',false);
+  }
+
+  handleGetIntermediateUsers = async () => {
     this.state.handleChange('loadingIntermediateUsers',true);
     try {
-      let Result = await FetchIntermediateUsers(this.props.user.projectId);
+      let Result = await getIntermediateUsers(this.props.user.projectId);
       if(Result) {
         this.state.handleChange('intermediateUsers',Result);
       }
@@ -195,6 +128,7 @@ class AndonCentralIndexContext extends Component {
     }
     this.state.handleChange('loadingIntermediateUsers',false);
   }
+
 }
 
 const AndonCentralIndex = (props) => (

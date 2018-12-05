@@ -16,7 +16,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "sass": "node-sass --include-path scss scss/main.scss public/bundle.css",
+    "sass": "node-sass --include-path scss scss/main.scss src/bundle.css",
     "watch-sass": "nodemon -e scss -x \"yarn run sass\""
   },
   "devDependencies": {

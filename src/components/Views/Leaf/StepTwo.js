@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
-let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
+// let collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
 
 const StepTwo = (props) => {
   return (
