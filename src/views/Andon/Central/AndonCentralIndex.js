@@ -6,6 +6,7 @@ import AndonCentralWarnings from './AndonCentralWarnings';
 import AndonCentralUsers from './AndonCentralUsers';
 import AndonCentralUsersAdd from './AndonCentralUsersAdd';
 import AndonCentralTeams from './AndonCentralTeams';
+import AddMember from './Intermediate/AddMember';
 
 import UserContext from '../../../contexts/UserContext';
 import CentralContext from '../../../contexts/CentralContext';
@@ -63,6 +64,7 @@ class AndonCentralIndexContext extends Component {
           <Route exact path='/andon/central/users' component={AndonCentralUsers} />
           <Route exact path='/andon/central/users/add' component={AndonCentralUsersAdd} />
           <Route exact path='/andon/central/teams' component={AndonCentralTeams} />
+          <Route exact path='/andon/central/teams/member/add' component={AddMember} />
         </Switch>
       </CentralContext.Provider>
     )

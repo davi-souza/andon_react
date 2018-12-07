@@ -57,15 +57,15 @@ class AndonLeafContext extends Component {
         <GridPage viewContent appBarFixed>
           {
             this.state.step===0 &&
-            <StepZero handleInfoClick={this.handleInfoClick} step={0} />
+            <StepTwo places={this.state.places} handleInfoClick={this.handleInfoClick} step={0}  />
           }
           {
             this.state.step===1 &&
-            <StepOne reasons={this.state.reasons} handleInfoClick={this.handleInfoClick} step={1}/>
+            <StepZero handleInfoClick={this.handleInfoClick} step={1} />
           }
           {
             this.state.step===2 &&
-            <StepTwo places={this.state.places} handleInfoClick={this.handleInfoClick} step={2}  />
+            <StepOne reasons={this.state.reasons} handleInfoClick={this.handleInfoClick} step={2}/>
           }
           {
             this.state.step===3 && this.state.sendSuccess===null &&

@@ -23,7 +23,7 @@ class WarningsTable extends Component {
               <TableCell className='txt-align-center'>Tipo</TableCell>
               <TableCell className='txt-align-center'>Motivo</TableCell>
               <TableCell className='txt-align-center'>Local</TableCell>
-              <TableCell className='txt-align-center'>Autor</TableCell>
+              <TableCell className='txt-align-center'>Responsáveis</TableCell>
               <TableCell className='txt-align-center'>Criado em</TableCell>
               <TableCell className='txt-align-center'>Tempo pendente</TableCell>
               <TableCell className='txt-align-center'>Resolver</TableCell>
@@ -32,11 +32,20 @@ class WarningsTable extends Component {
           </TableHead>
           <TableBody>
             {this.props.warnings.map(warning => (
-              <TableRow key={warning.id} className={this.getWarningRowColor(warning.type)}>
-                <TableCell className='txt-align-center'>{warning.type}</TableCell>
+              <TableRow key={warning.id} className="table-row-hover">
+                <TableCell className='txt-align-center'>
+                  <Button className={this.getWarningRowColor(warning.type)}>
+                    <i className="material-icons">warning</i>
+                  </Button>
+                </TableCell>
                 <TableCell className='txt-align-center'>{warning.reason.name}</TableCell>
                 <TableCell className='txt-align-center'>{warning.place.name}</TableCell>
-                <TableCell className='txt-align-center'>{`${warning.userThatCreated.firstname} ${warning.userThatCreated.lastname}`}</TableCell>
+                <TableCell className='txt-align-center'>{warning.userThatCreated.userLeaders.map((leader,index) => {
+                  if(index === warning.userThatCreated.userLeaders.length-1) {
+                    return `${leader.firstname} ${leader.lastname}`;
+                  }
+                  return `${leader.firstname} ${leader.lastname}, `;
+                })}</TableCell>
                 <TableCell className='txt-align-center'>{
                   new Date(warning.createdDate).toLocaleString('pt-BR')
                 }</TableCell>
@@ -74,10 +83,9 @@ class WarningsTable extends Component {
 
   getWarningRowColor = (type) => {
     if(type === "ALERTA") {
-      return "bg-color-yellow-light";
-    } else {
-      return "bg-color-red-light";
+      return "bg-color-yellow-dark txt-color-white";
     }
+    return "bg-color-red-dark txt-color-white";
   }
 
   handleOpenTime = (createdDate) => {

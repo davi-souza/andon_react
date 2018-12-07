@@ -6,13 +6,19 @@
     &-red {
       background-color: $red !important;
       &-light {
-        background-color: $red-light;
+        background-color: $red-light !important;
+      }
+      &-dark {
+        background-color: $red-dark !important;
       }
     }
     &-yellow {
       background-color: $yellow !important;
       &-light {
-        background-color: $yellow-light;
+        background-color: $yellow-light !important;
+      }
+      &-dark {
+        background-color: $yellow-dark !important;
       }
     }
     &-green {
