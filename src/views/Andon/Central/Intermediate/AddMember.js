@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import Typography from "@material-ui/core/Typography";
-import AppBarComponent from '../../../../components/Appbar/AppBarComponent';
-import SimpleCard from "../../../../components/Card/SimpleCard";
-import FullGridPage from '../../../../components/Grid/FullGridPage';
+import Appbar from '../../../../components/Appbar/Appbar';
+import Container from '../../../../components/Grid/Container';
 import SelectTable from "../../../../components/Table/SelectTable";
-
-import UserContext from "../../../../contexts/UserContext";
 import CentralContext from "../../../../contexts/CentralContext";
 
 class AddMember extends Component {
@@ -14,30 +10,29 @@ class AddMember extends Component {
   }
 
   render() {
-    let name = "Intermediate One";
     return (
       <div>
-        <AppBarComponent
-          title='Central - Times'
+        <Appbar
+          title='Gerenciar Equipe'
           position='fixed'
-          drawerLinks={[
-            {name:'Gerenciar Avisos',to:'/andon/central/warnings',icon:'warning'},
-            {name:'Gerenciar Usuários',to:'/andon/central/users',icon:'person'},
-            {name:'Gerenciar Times',to:'/andon/central/teams',icon:'people'},
-            {name:'Painel de Controle',to:'/andon/central/dashboard',icon:'show_chart'},
+          toolbarLinks={[
+            {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
+            {name:'Usuários',to:'/andon/central/users',icon:'person'},
+            {name:'Times',to:'/andon/central/teams',icon:'people'},
+            {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
             {to:'/andon/logout',name:'Log Out',icon:'exit_to_app',divider:true}
           ]}  
         />
-        <FullGridPage viewContent appBarFixed>
+        <Container appbarFixed>
           <CentralContext.Consumer>
             {central => (
               <SelectTable
-                // tableHead={}
-                data={central.leafUsers.filter(user => user.level === "leaf")}
+                teamLeader={central.intermediateUsers.find(user => user.id == this.props.match.params.id)}
+                leafUsers={central.leafUsers.filter(user => user.level === "leaf")}
               />
             )}
           </CentralContext.Consumer>
-        </FullGridPage>
+        </Container>
       </div>
     );
   }

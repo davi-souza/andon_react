@@ -2,15 +2,12 @@ import React, {Component} from 'react';
 // import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
-// import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-// import Menu from '@material-ui/core/Menu';
-// import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
-import FullGridPage from '../../../components/Grid/FullGridPage';
+import Container from '../../../components/Grid/Container';
 import TeamTable from '../../../components/Table/Andon/Central/TeamTable';
 
 import CentralContext from '../../../contexts/CentralContext';
@@ -40,17 +37,17 @@ class AndonCentralTeamsContext extends Component {
     return (
       <div>
         <AppBarComponent
-          title='Central - Times'
+          title='ANDON'
           position='fixed'
           drawerLinks={[
-            {name:'Gerenciar Avisos',to:'/andon/central/warnings',icon:'warning'},
-            {name:'Gerenciar Usuários',to:'/andon/central/users',icon:'person'},
-            {name:'Gerenciar Times',to:'/andon/central/teams',icon:'people'},
-            {name:'Painel de Controle',to:'/andon/central/dashboard',icon:'show_chart'},
-            {to:'/andon/logout',name:'Log Out',icon:'exit_to_app',divider:true}
+            {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
+            {name:'Usuários',to:'/andon/central/users',icon:'person'},
+            {name:'Times',to:'/andon/central/teams',icon:'people'},
+            {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
+            {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
           ]}  
         />
-        <FullGridPage viewContent appBarFixed>
+        <Container appbarFixed fullPage>
           {
             this.props.central.loadingIntermediateUsers && 
             <div className='txt-align-center'>
@@ -103,20 +100,11 @@ class AndonCentralTeamsContext extends Component {
                     return regexFilter.test(intUserObj[this.state.fieldToFilter].toString().toLowerCase());
                   })
                 }
+                {...this.props}
               />
             </div>
           }
-          {/* <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
-            <i className='material-icons'>add</i>
-          </Button>
-          <Menu
-            anchorEl={this.state.anchorEl}
-            open={Boolean(this.state.anchorEl)}
-            onClose={this.handleMenuClose}
-          >
-            <MenuItem onClick={this.handleMenuClose} component={Link} to='/andon/central/teams/add'>Adicionar time</MenuItem>
-          </Menu> */}
-        </FullGridPage>
+        </Container>
       </div>
     );
   }

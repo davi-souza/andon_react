@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import GridPage from '../../../components/Grid/GridPage';
-import AppBarComponent from '../../../components/Appbar/AppBarComponent';
+import Container from '../../../components/Grid/Container';
+import Appbar from '../../../components/Appbar/Appbar';
 import Warnings from "../../../components/Views/Intermediate/Warnings";
 
 import warnings from "../../../fetch/andon/intermediate/warnings";
@@ -33,13 +33,13 @@ class AndonIntermediateContext extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if(prevProps.user.id === null && this.props.user.id !== null) {
-      this.HandleGetWarnings();
+      this.handleGetWarnings();
     }
   }
 
   componentDidMount() {
     if(this.props.user.id) {
-      this.HandleGetWarnings();
+      this.handleGetWarnings();
     }
   }
   render() {
@@ -48,12 +48,12 @@ class AndonIntermediateContext extends Component {
     // }
     return (
       <IntermediateContext.Provider value={this.state}>
-        <AppBarComponent
+        <Appbar
           title={this.props.user.firstname || 'ANDON'}
           position='fixed'
-          drawerLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]}
+          toolbarLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]}
         />
-        <GridPage viewContent appBarFixed>
+        <Container appbarFixed>
           {
             this.state.warningsLoading ? 
             <div className='txt-align-center'>
@@ -62,7 +62,7 @@ class AndonIntermediateContext extends Component {
             :
             <Warnings />
           }
-        </GridPage>
+        </Container>
       </IntermediateContext.Provider>
     );
   }
@@ -86,7 +86,7 @@ class AndonIntermediateContext extends Component {
     }
   }
 
-  HandleGetWarnings = async () => {
+  handleGetWarnings = async () => {
     this.state.handleChange("warningsLoading",true);
     try {
       let response = await warnings(this.props.user.id);

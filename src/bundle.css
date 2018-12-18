@@ -711,49 +711,22 @@ body {
 .txt-shadow-yellow {
   text-shadow: 1px 1px 1px #F9A825; }
 
-.grid-page {
-  margin: auto;
-  width: 95%; }
-  .grid-page.view-content {
-    margin-top: 0.5rem; }
-    .grid-page.view-content.app-bar-fixed {
-      margin-top: 4rem; }
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  width: 95%;
+  max-width: 90rem; }
+  .container.full-page {
+    min-width: 98%;
+    max-width: 98%; }
+  .container.appbar-fixed {
+    margin-top: 4.5rem !important; }
 
-@media all and (min-width: 37.5rem) {
-  .grid-page {
-    width: 85%; }
-    .grid-page.view-content.app-bar-fixed {
-      margin-top: 4.5rem; } }
-
-@media all and (min-width: 60rem) {
-  .grid-page {
-    width: 75%; } }
-
-@media all and (min-width: 80rem) {
-  .grid-page {
-    width: 65%; } }
-
-@media all and (min-width: 120rem) {
-  .grid-page {
-    width: 60%; } }
-
-.grid-page-full {
-  margin: auto;
-  width: 95%; }
-  .grid-page-full.view-content {
-    margin-top: 0.5rem; }
-    .grid-page-full.view-content.app-bar-fixed {
-      margin-top: 4rem; }
-
-@media all and (min-width: 37.5rem) {
-  .grid-page-full.view-content.app-bar-fixed {
-    margin-top: 4.5rem; } }
-
-.app-bar-menu {
+.appbar-menu {
   margin-left: -12px !important;
   margin-right: 20px !important; }
 
-.app-bar-title {
+.appbar-title {
   flex-grow: 1; }
 
 .highlights-paper {

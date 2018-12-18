@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 
+import Paper from "@material-ui/core/Paper";
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-import GridPage from '../../../components/Grid/GridPage';
-import SimpleCard from '../../../components/Card/SimpleCard';
-import AppBarComponent from '../../../components/Appbar/AppBarComponent';
+import Container from '../../../components/Grid/Container';
+import Appbar from '../../../components/Appbar/Appbar';
+import GenericButton from "../../../components/Button/GenericButton";
 
 import login from "../../../fetch/andon/root/login";
 
@@ -16,7 +15,7 @@ import UserContext from '../../../contexts/UserContext';
 
 import accessLevel from '../../../lib/accessLevel';
 
-class AndonLoginContext extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,17 +28,16 @@ class AndonLoginContext extends Component {
   render() {
     return (
       <div>
-        <AppBarComponent
+        <Appbar
           position='fixed'
           title='ANDON'
-          drawerLinks={[
+          toolbarLinks={[
             {to:'/andon',name:'Painel',icon:'dialpad'},
-            {to:'/andon/login',name:'Log In',icon:'person'},
-            {to:'/',name:'Sair',icon:'exit_to_app',divider:true}
+            {to:"/andon/project/set",name:"Projeto",icon:"edit",divider:true},
           ]}
         />
-        <GridPage viewContent appBarFixed>
-          <SimpleCard rounded>
+        <Container appbarFixed>
+          <Paper className="padding-24">
             <Grid container>
               <Grid item xs={12} className='txt-align-center margin-bottom-16'>
                 <Typography variant='display1'>Log In</Typography>
@@ -67,22 +65,23 @@ class AndonLoginContext extends Component {
                 />
               </Grid>
               <Grid item xs={12} className='txt-align-center'>
-                {
-                  this.state.loadingLogin ?
-                  <CircularProgress size={50} color='secondary' />
-                  :
-                  <Button
-                    className='width-perc-50 height-rem-2 border-round'
-                    color='secondary'
-                    variant='contained'
-                    onClick={this.handleLogin}
-                    disabled={this.state.login===''||this.state.password===''||this.state.loadingLogin}
-                  >Entrar</Button>
-                }
+                <UserContext.Consumer>
+                  {user => (
+                    <GenericButton
+                      className='width-perc-50 height-rem-2 border-round'
+                      disabled={!this.state.login || !this.state.password}
+                      loading={this.state.loadingLogin}
+                      onClick={() => { this.handleLogin(user.handleLogin) }}
+                      loadingSize={50}
+                    >
+                      Entrar
+                    </GenericButton>
+                  )}
+                </UserContext.Consumer>
               </Grid>
             </Grid>
-          </SimpleCard>
-        </GridPage>
+          </Paper>
+        </Container>
       </div>
     );
   }
@@ -97,7 +96,7 @@ class AndonLoginContext extends Component {
       return {loadingLogin: !prevState.loadingLogin};
     });
   }
-  handleLogin = () => {
+  handleLogin = (userHandleLogin) => {
     if(window.navigator.geolocation) {
       if(window.navigator.geolocation) {
         this.handleToggleLoading();
@@ -112,8 +111,7 @@ class AndonLoginContext extends Component {
             hour: (new Date()).getHours(),
           });
           if(data) {
-            console.log(data);
-            this.props.user.handleLogin(data);
+            userHandleLogin(data);
             if(data.access === accessLevel.central) {
               this.props.history.push('/andon/central/warnings');
             } else if(data.access === accessLevel.intermediate) {
@@ -133,12 +131,4 @@ class AndonLoginContext extends Component {
   }
 }
 
-const AndonLogin = (props) => {
-  return (
-    <UserContext.Consumer>
-      { user => <AndonLoginContext user={user} {...props} />}
-    </UserContext.Consumer>
-  )
-}
-
-export default AndonLogin;
+export default Login;

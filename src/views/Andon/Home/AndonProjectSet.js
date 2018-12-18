@@ -4,10 +4,10 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
 
-import GridPage from '../../../components/Grid/GridPage';
-import SimpleCard from '../../../components/Card/SimpleCard';
-import AppBarComponent from '../../../components/Appbar/AppBarComponent';
+import Container from '../../../components/Grid/Container';
+import Appbar from '../../../components/Appbar/Appbar';
 
 import { setProjectId } from "../../../localStorage/projectId";
 
@@ -33,20 +33,19 @@ class AndonProjectSet extends Component {
   render() {
     return (
       <div>
-        <AppBarComponent
+        <Appbar
           position='fixed'
           title='ANDON'
-          drawerLinks={[
+          toolbarLinks={[
             {to:'/andon',name:'Painel',icon:'dialpad'},
             {to:'/andon/login',name:'Log In',icon:'person'},
-            {to:'/andon/project/set',name:'Projeto',icon:'edit',divider:true},
           ]}
         />
-        <GridPage viewContent appBarFixed>
-          <SimpleCard rounded>
+        <Container appbarFixed>
+          <Paper className="padding-24">
             <Grid container className='margin-bottom-24 txt-align-center'>
               <Grid item xs={12} className="txt-align-center">
-                <Typography variant="display2">Insira o ID do seu projeto</Typography>
+                <Typography variant="display2">ID do projeto</Typography>
               </Grid>
               <Grid item xs={12} className="txt-align-center margin-top-24">
                 <TextField
@@ -68,8 +67,8 @@ class AndonProjectSet extends Component {
                 >Inserir</Button>
               </Grid>
             </Grid>
-          </SimpleCard>
-        </GridPage>
+          </Paper>
+        </Container>
       </div>
     );
   }

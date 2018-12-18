@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
-import FullGridPage from '../../../components/Grid/FullGridPage';
+import Container from '../../../components/Grid/Container';
 import UserTable from '../../../components/Table/Andon/Central/UsersTable';
 
 import CentralContext from '../../../contexts/CentralContext';
@@ -42,17 +42,17 @@ class AndonCentralUsers extends Component {
         { central => 
           <div>
             <AppBarComponent
-              title='Central - Usuários'
+              title='ANDON'
               position='fixed'
               drawerLinks={[
-                {name:'Gerenciar Avisos',to:'/andon/central/warnings',icon:'warning'},
-                {name:'Gerenciar Usuários',to:'/andon/central/users',icon:'person'},
-                {name:'Gerenciar Times',to:'/andon/central/teams',icon:'people'},
-                {name:'Painel de Controle',to:'/andon/central/dashboard',icon:'show_chart'},
-                {to:'/andon/logout',name:'Log Out',icon:'exit_to_app',divider:true}
+                {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
+                {name:'Usuários',to:'/andon/central/users',icon:'person'},
+                {name:'Times',to:'/andon/central/teams',icon:'people'},
+                {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
+                {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
               ]}  
             />
-            <FullGridPage viewContent appBarFixed>
+            <Container appbarFixed fullPage>
               {
                 central.leafUsersLoading && 
                 <div className='txt-align-center'>
@@ -120,7 +120,7 @@ class AndonCentralUsers extends Component {
               >
                 <MenuItem onClick={this.handleMenuClose} component={Link} to='/andon/central/users/add'>Adicionar usuário</MenuItem>
               </Menu> */}
-            </FullGridPage>
+            </Container>
           </div>
         }
       </CentralContext.Consumer>

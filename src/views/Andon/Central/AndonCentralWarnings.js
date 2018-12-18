@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
-import FullGridPage from '../../../components/Grid/FullGridPage';
+import Container from '../../../components/Grid/Container';
 import WarningsTable from '../../../components/Table/Andon/Central/WarningsTable';
 
 import CentralContext from '../../../contexts/CentralContext';
@@ -35,17 +35,17 @@ class AndonCentralWarnings extends Component {
         { central =>
           <div>
             <AppBarComponent
-              title='Central - Avisos'
+              title='ANDON'
               position='fixed'
               drawerLinks={[
-                {name:'Gerenciar Avisos',to:'/andon/central/warnings',icon:'warning'},
-                {name:'Gerenciar Usuários',to:'/andon/central/users',icon:'person'},
-                {name:'Gerenciar Times',to:'/andon/central/teams',icon:'people'},
-                {name:'Painel de Controle',to:'/andon/central/dashboard',icon:'show_chart'},
+                {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
+                {name:'Usuários',to:'/andon/central/users',icon:'person'},
+                {name:'Times',to:'/andon/central/teams',icon:'people'},
+                {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
                 {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
               ]}  
             />
-            <FullGridPage viewContent appBarFixed>
+            <Container appbarFixed fullPage>
               <Paper className='margin-bottom-8 padding-top-8 padding-bottom-8'>
                 <Grid container>
                   <Grid item xs={12} md={6} className='txt-align-center margin-bottom-8'>
@@ -150,7 +150,7 @@ class AndonCentralWarnings extends Component {
                   resolve={central.resolveWarning}
                 />
               }
-            </FullGridPage>
+            </Container>
           </div>
         }
       </CentralContext.Consumer>

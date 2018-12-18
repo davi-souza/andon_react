@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 
 import Grid from '@material-ui/core/Grid';
-// import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
-import FullGridPage from '../../../components/Grid/FullGridPage';
-import SimplePaper from "../../../components/Paper/SimplePaper";
+import Container from '../../../components/Grid/Container';
 import DashboardPaper from "../../../components/Paper/DashboardPaper";
 import SimpleTable from "../../../components/Table/SimpleTable";
 
@@ -53,23 +51,22 @@ class AndonCentralDashboard extends Component {
   }
 
   render() {
-    console.log(this.state.numberOfWarningsByType);
     return (
       <CentralContext.Consumer>
         { central =>
           <div>
             <AppBarComponent
-              title='Central - Painel de Controle'
+              title='ANDON'
               position='fixed'
               drawerLinks={[
-                {name:'Gerenciar Avisos',to:'/andon/central/warnings',icon:'warning'},
-                {name:'Gerenciar Usuários',to:'/andon/central/users',icon:'person'},
-                {name:'Gerenciar Times',to:'/andon/central/teams',icon:'people'},
-                {name:'Painel de Controle',to:'/andon/central/dashboard',icon:'show_chart'},
+                {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
+                {name:'Usuários',to:'/andon/central/users',icon:'person'},
+                {name:'Times',to:'/andon/central/teams',icon:'people'},
+                {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
                 {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
               ]}  
             />
-            <FullGridPage viewContent appBarFixed>
+            <Container appbarFixed fullPage>
               <Grid container spacing={8} className="margin-bottom-8">
                 <Grid item xs={12} sm={3} lg={3}>
                   <DashboardPaper className="txt-align-center" padding={1} header="Número de avisos NÃO resolvidos">
@@ -138,7 +135,7 @@ class AndonCentralDashboard extends Component {
                   />
                 </Grid>
               </Grid>
-            </FullGridPage>
+            </Container>
           </div>
         }
       </CentralContext.Consumer>

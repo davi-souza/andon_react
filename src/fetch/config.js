@@ -4,7 +4,8 @@ export default {
   headers: {
     "content-type": "application/json",
   },
-  logError: () => {
-    console.log("Houve um erro.")
+  logError: (err) => {
+    console.log("Houve um erro.");
+    console.log(err);
   }
 }

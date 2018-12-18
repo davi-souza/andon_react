@@ -26,6 +26,7 @@ const Warnings = (props) => {
               warning={warning}
               resolve={intermediate.resolve}
               resolveLoading={intermediate.resolveLoading}
+              key={warning.id}
             />
           ))}
         </Grid>

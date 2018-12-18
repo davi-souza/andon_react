@@ -1,22 +1,24 @@
-import React, {Component} from 'react';
-import {Redirect,Link} from 'react-router-dom';
+import React, {Component} from "react";
+import {Redirect,Link} from "react-router-dom";
 
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import MobileStepper from '@material-ui/core/MobileStepper';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import MobileStepper from "@material-ui/core/MobileStepper";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import GridPage from '../../../components/Grid/GridPage';
-import AppBarComponent from '../../../components/Appbar/AppBarComponent';
-import StepZero from '../../../components/Views/Leaf/StepZero';
-import StepOne from '../../../components/Views/Leaf/StepOne';
-import StepTwo from '../../../components/Views/Leaf/StepTwo';
-import SimpleCard from '../../../components/Card/SimpleCard';
+import Container from "../../../components/Grid/Container";
+import Appbar from "../../../components/Appbar/Appbar";
+import LeafPaper from "../../../components/Paper/LeafPaper";
+import Type from "../../../components/Views/Leaf/Type";
+import Reason from "../../../components/Views/Leaf/Reason";
+import Place from "../../../components/Views/Leaf/Place";
 
-import {FetchSendWarning, FetchGetReasons, FetchGetPlaces} from '../../../lib/fetch/FetchAndonLeaf';
+import reasons from "../../../fetch/andon/leaf/reasons";
+import {FetchSendWarning, FetchGetPlaces} from "../../../lib/fetch/FetchAndonLeaf";
 
-import UserContext from '../../../contexts/UserContext';
+import UserContext from "../../../contexts/UserContext";
 
 let countdown;
 
@@ -27,13 +29,13 @@ class AndonLeafContext extends Component {
       reasons: [],
       places: [],
 
-      type: null,
-      reason: null,
-      place: null,
+      type: "",
+      reason: "",
+      place: "",
 
       step: 0,
 
-      numberPanelValue: '',
+      numberPanelValue: "",
       secondsToSend: 5,
 
       sendLoading: false,
@@ -49,106 +51,90 @@ class AndonLeafContext extends Component {
   
   render() {
     // if(this.props.user.loadingUser && this.props.user.id === null) {
-    //   return <Redirect to='/andon' />
+    //   return <Redirect to="/andon" />
     // }
     return (
-      <div className='ds-view' id='ds-view-andon-sendwarning'>
-        <AppBarComponent position='fixed' title={this.props.user.firstname} drawerLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]} />
-        <GridPage viewContent appBarFixed>
+      <div className="ds-view" id="ds-view-andon-sendwarning">
+        <Appbar position="fixed" title={this.props.user.firstname} toolbarLinks={[{name:"Sair",to:"/andon/logout",icon:"exit_to_app"}]} />
+        <Container appbarFixed>
           {
             this.state.step===0 &&
-            <StepTwo places={this.state.places} handleInfoClick={this.handleInfoClick} step={0}  />
+            <Place places={this.state.places} handleInfoClick={this.handleInfoClick} step={0}  />
           }
           {
             this.state.step===1 &&
-            <StepZero handleInfoClick={this.handleInfoClick} step={1} />
+            <Type handleInfoClick={this.handleInfoClick} step={1} />
           }
           {
             this.state.step===2 &&
-            <StepOne reasons={this.state.reasons} handleInfoClick={this.handleInfoClick} step={2}/>
+            <Reason reasons={this.state.reasons.filter(reason => reason.superReasons.length === 0)} handleInfoClick={this.handleInfoClick} step={2}/>
           }
           {
             this.state.step===3 && this.state.sendSuccess===null &&
-            <div className='ds-andon-send-warning-step-4'>
-              <SimpleCard rounded>
-                <Typography variant='headline' className='margin-bottom-16'>Autor: {`${this.props.user.firstname} ${this.props.user.lastname}`}</Typography>
-                <Typography variant='headline' className='margin-bottom-16'>Tipo: {this.state.type}</Typography>
-                <Typography variant='headline' className='margin-bottom-16'>Razão: {this.state.reason.name}</Typography>
-                <Typography variant='headline' className='margin-bottom-24'>Local: {this.state.place.name}</Typography>
-                <Grid container>
-                  <Grid item xs={12} className='margin-bottom-24'>
-                    <span id='countdown-time'>O aviso será enviado em {this.state.secondsToSend} segundos.</span>
-                  </Grid>
-                  <Grid item xs={12} className='txt-align-center'>
-                    {
-                      !this.state.sendLoading &&
-                      <Button
-                        className='bg-color-red txt-color-white width-perc-50 border-round'
-                        variant='contained' disabled={this.state.sendLoading}
-                        onClick={this.handleCancelSendWarning}>Cancelar</Button>
-                    }
-                    {
-                      this.state.sendLoading && <CircularProgress color='secondary' size={50} id='' />
-                    }
-                  </Grid>
-                </Grid>
-              </SimpleCard>
-            </div>
+            <LeafPaper
+              user={this.props.user}
+              type={this.state.type}
+              reason={this.state.reason}
+              place={this.state.place}
+              sendLoading={this.state.sendLoading}
+              secondsToSend={this.state.secondsToSend}
+              handleCancelSendWarning={this.handleCancelSendWarning}
+            />
           }
           {
             this.state.step===3 && this.state.sendSuccess!==null && 
-            <div className=''>
-              <SimpleCard rounded>
-                <div className='txt-align-center'>
+            <div className="">
+              <Paper className="padding-32">
+                <div className="txt-align-center">
                   {
                     this.state.sendSuccess && 
-                    <div className='txt-align-center margin-bottom-16'>
-                      <i className='material-icons height-rem-8 width-perc-100 txt-size-rem-10 txt-color-green'>check_circle</i>
-                      <Typography variant='headline' className='margin-bottom-8'>Aviso enviado com sucesso.</Typography>
-                      <Typography variant='headline'>Em breve um encarregado virá ajudar.</Typography>
+                    <div className="txt-align-center margin-bottom-16">
+                      <i className="material-icons height-rem-8 width-perc-100 txt-size-rem-10 txt-color-green">check_circle</i>
+                      <Typography variant="headline" className="margin-bottom-8">Aviso enviado com sucesso.</Typography>
+                      <Typography variant="headline">Em breve um encarregado virá ajudar.</Typography>
                     </div>
                   }
                   {
                     !this.state.sendSuccess && 
-                    <div className='txt-align-center margin-bottom-16'>
-                      <i className='material-icons height-rem-8 width-perc-100 txt-size-rem-10 txt-color-red'>cancel</i>
-                      <Typography variant='headline' className='margin-bottom-8'>Não foi enviado.</Typography>
-                      <Typography variant='headline'>Entre em contato com um encarregado.</Typography>
+                    <div className="txt-align-center margin-bottom-16">
+                      <i className="material-icons height-rem-8 width-perc-100 txt-size-rem-10 txt-color-red">cancel</i>
+                      <Typography variant="headline" className="margin-bottom-8">Não foi enviado.</Typography>
+                      <Typography variant="headline">Entre em contato com um encarregado.</Typography>
                     </div>
                   }
                   <Button
-                    className='heigh-rem-3 border-round width-perc-50'
-                    variant='contained'
-                    color='secondary'
-                    component={Link} to={'/andon/logout'}>Sair</Button>
+                    className="heigh-rem-3 border-round width-perc-50"
+                    variant="contained"
+                    color="secondary"
+                    component={Link} to={"/andon/logout"}>Sair</Button>
                 </div>
-              </SimpleCard>
+              </Paper>
             </div>
           }
           {
             this.state.step <=2 &&
-            <div id=''>
+            <div id="">
               <MobileStepper backButton={
                 <Button onClick={this.handleStepperBackButtonClick}>
-                  <i className='material-icons'>navigate_before</i>
+                  <i className="material-icons">navigate_before</i>
                 </Button>
               } nextButton={
                 <Button onClick={this.handleStepperBackButtonClick} disabled>
-                  <i className='material-icons'>navigate_next</i>
+                  <i className="material-icons">navigate_next</i>
                 </Button>
-              } steps={3} activeStep={this.state.step} variant='progress'/>
+              } steps={3} activeStep={this.state.step} variant="progress"/>
             </div>
           }
-        </GridPage>
+        </Container>
       </div>
     )
   }
   handleGetReasons = async () => {
     try {
-      let Response = await FetchGetReasons(this.props.user.projectId);
+      let response = await reasons();
       if(Response) {
         this.setState({
-          reasons: Response
+          reasons: response
         });
       }
     } catch (err) {
@@ -162,7 +148,6 @@ class AndonLeafContext extends Component {
         this.setState({
           places: Response
         });
-        // console.log(Response);
       }
     } catch (err) {
       alert("Houve um erro em carregar os locais.");
@@ -178,7 +163,7 @@ class AndonLeafContext extends Component {
     }
   }
   handleNumberPanelButtonClick = (n) => {
-    if(this.state.numberPanelValue === '' && n === 0) {
+    if(this.state.numberPanelValue === "" && n === 0) {
       // ... nothing ...
       return;
     }
@@ -211,7 +196,7 @@ class AndonLeafContext extends Component {
     let countdownStart = this.state.secondsToSend-1;
     countdown = setInterval(()=>{
       if(countdownStart >= 0) {
-        document.getElementById('countdown-time').innerHTML = 'O aviso será enviado em '+countdownStart+' segundos.';
+        document.getElementById("countdown-time").innerHTML = "O aviso será enviado em "+countdownStart+" segundos.";
         countdownStart--;
       }
       else {
@@ -222,7 +207,7 @@ class AndonLeafContext extends Component {
   }
   handleCancelSendWarning = () => {
     window.clearInterval(countdown);
-    this.props.history.push('/andon');
+    this.props.history.push("/andon");
   }
   HandleSendWarning = async () => {
     this.setState({

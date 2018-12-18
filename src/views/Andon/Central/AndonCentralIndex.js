@@ -64,7 +64,7 @@ class AndonCentralIndexContext extends Component {
           <Route exact path='/andon/central/users' component={AndonCentralUsers} />
           <Route exact path='/andon/central/users/add' component={AndonCentralUsersAdd} />
           <Route exact path='/andon/central/teams' component={AndonCentralTeams} />
-          <Route exact path='/andon/central/teams/member/add' component={AddMember} />
+          <Route exact path='/andon/central/teams/:id/member/add' component={AddMember} />
         </Switch>
       </CentralContext.Provider>
     )

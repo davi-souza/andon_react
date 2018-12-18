@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Switch, Route} from 'react-router-dom';
 
-import AndonHome from './Andon/Home/AndonHome';
-import AndonLogin from './Andon/Home/AndonLogin';
+import Home from './Andon/Home/Home';
+import Login from './Andon/Home/Login';
 import AndonProjectSet from './Andon/Home/AndonProjectSet';
 import AndonLeaf from './Andon/Leaf/AndonLeaf';
 import AndonIntermediate from './Andon/Intermediate/AndonIntermediate';
@@ -69,9 +69,9 @@ class AndonView extends Component {
     return (
       <UserContext.Provider value={this.state}>
         <Switch>
-          <Route exact path='/andon' component={AndonHome} />
+          <Route exact path='/andon' component={Home} />
           <Route exact path='/andon/project/set' component={AndonProjectSet} />
-          <Route exact path='/andon/login' component={AndonLogin} />
+          <Route exact path='/andon/login' component={Login} />
           <Route exact path='/andon/logout' component={AndonLogout} />
           <Route exact path='/andon/leaf' component={AndonLeaf} />
           <Route exact path='/andon/intermediate' component={AndonIntermediate} />
