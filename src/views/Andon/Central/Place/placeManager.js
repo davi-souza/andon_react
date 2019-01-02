@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import Appbar from '../../../../components/Appbar/Appbar';
+import AppBarComponent from '../../../../components/Appbar/AppBarComponent';
 import Container from '../../../../components/Grid/Container';
-import SelectTable from "../../../../components/Table/SelectTable";
+import PlaceTable from "../../../../components/Table/Andon/Central/PlaceTable";
 import CentralContext from "../../../../contexts/CentralContext";
 
-class AddMember extends Component {
+class placeManager extends Component {
   constructor(props) {
     super(props);
   }
@@ -12,23 +12,22 @@ class AddMember extends Component {
   render() {
     return (
       <div>
-        <Appbar
-          title='Gerenciar Equipe'
+        <AppBarComponent
+          title='ANDON'
           position='fixed'
-          toolbarLinks={[
+          drawerLinks={[
             {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
             {name:'Usuários',to:'/andon/central/users',icon:'person'},
             {name:'Times',to:'/andon/central/teams',icon:'people'},
             {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
-            {to:'/andon/logout',name:'Log Out',icon:'exit_to_app',divider:true}
+            {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
           ]}  
         />
         <Container appbarFixed>
           <CentralContext.Consumer>
             {central => (
-              <SelectTable
-                teamLeader={central.intermediateUsers.find(user => user.id == this.props.match.params.id)}
-                leafUsers={central.leafUsers.filter(user => user.level === "leaf")}
+              <PlaceTable
+                places={central.places}
               />
             )}
           </CentralContext.Consumer>
@@ -37,9 +36,6 @@ class AddMember extends Component {
     );
   }
 
-  nadaAVer = (leafusers) => {
-    console.log(leafusers);
-  }
 }
 
-export default AddMember;
+export default placeManager;

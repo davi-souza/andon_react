@@ -5,6 +5,8 @@ import Typography from "@material-ui/core/Typography";
 
 import ColorPalette from "./ColorPalette";
 
+import compare from "../../../util/compare";
+
 export default class Reason extends React.Component {
   constructor(props) {
     super(props);
@@ -19,23 +21,17 @@ export default class Reason extends React.Component {
     return (
       <div className="margin-bottom-64">
         <Typography variant="display2" className="margin-bottom-16">{ this.state.label }</Typography>
-        {this.state.reasons.sort((a,b) => {
-          let aN = a.name.toUpperCase();
-          let bN = b.name.toUpperCase();
-          if(aN < bN) return -1;
-          else if(bN < aN) return 1;
-          return 0;
-        }).map( (reason,index) => (
-          <Button
-            variant="contained"
-            className="display-block width-perc-100 height-rem-7 txt-size-rem-2 margin-bottom-8 txt-color-white"
-            style={{
-              backgroundColor: ColorPalette[index%ColorPalette.length],
-            }}
-            onClick={() => { this.handleReasonClick(reason) }} key={reason.id}>
-            {reason.name}
-          </Button>
-        ))}
+          {this.state.reasons.sort((reason1,reason2) => compare(reason1.name,reason2.name)).map( (reason,index) => (
+            <Button
+              variant="contained"
+              className="display-block width-perc-100 height-rem-7 txt-size-rem-2 margin-bottom-8 txt-color-white"
+              style={{
+                backgroundColor: ColorPalette[index%ColorPalette.length],
+              }}
+              onClick={() => { this.handleReasonClick(reason) }} key={reason.id}>
+              {reason.name}
+            </Button>
+          ))}
       </div>
     )
   };

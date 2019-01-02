@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-// import {Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -43,9 +43,9 @@ class AndonIntermediateContext extends Component {
     }
   }
   render() {
-    // if(!this.props.user.loadingUser && this.props.user.id === null) {
-    //   return <Redirect to='/andon/login' />;
-    // }
+    if(!this.props.user.loadingUser && this.props.user.id === null) {
+      return <Redirect to='/andon/login' />;
+    }
     return (
       <IntermediateContext.Provider value={this.state}>
         <Appbar

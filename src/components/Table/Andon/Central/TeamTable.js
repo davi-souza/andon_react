@@ -7,7 +7,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 
 class TeamTable extends Component {
   render() {
@@ -21,7 +20,7 @@ class TeamTable extends Component {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className='txt-align-center'>ID</TableCell>
+              <TableCell className='txt-align-center'>Matrícula</TableCell>
               <TableCell className='txt-align-center'>Responsável</TableCell>
               <TableCell className='txt-align-center'>Nível de acesso</TableCell>
               <TableCell className='txt-align-center'>Equipe</TableCell>
@@ -32,7 +31,7 @@ class TeamTable extends Component {
             {this.props.data.map(interUser => {
               return (
                 <TableRow key={interUser.id}>
-                  <TableCell className='txt-align-center'>{interUser.id}</TableCell>
+                  <TableCell className='txt-align-center'>{interUser.login}</TableCell>
                   <TableCell className='txt-align-center'>{`${interUser.firstname} ${interUser.lastname}`}</TableCell>
                   <TableCell className='txt-align-center'>
                     { interUser.level === 'intermediate' && 'Recebe avisos'}
@@ -46,7 +45,7 @@ class TeamTable extends Component {
                     ))}
                   </TableCell>
                   <TableCell className='txt-align-center'>
-                    <Button onClick={() => { this.props.history.push(`/andon/central/teams/${interUser.id}/member/add`) }}>
+                    <Button onClick={() => { this.props.history.push(`/andon/central/teams/${interUser.id}`) }} color="secondary">
                       <i className='material-icons'>edit</i>
                     </Button>
                   </TableCell>

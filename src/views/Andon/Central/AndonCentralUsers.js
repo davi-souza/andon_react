@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-// import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
-// import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-// import Menu from '@material-ui/core/Menu';
-// import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -45,7 +45,7 @@ class AndonCentralUsers extends Component {
               title='ANDON'
               position='fixed'
               drawerLinks={[
-                {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
+                {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},
                 {name:'Usuários',to:'/andon/central/users',icon:'person'},
                 {name:'Times',to:'/andon/central/teams',icon:'people'},
                 {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
@@ -110,7 +110,7 @@ class AndonCentralUsers extends Component {
                   />
                 </div>
               }
-              {/* <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
+              <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
                 <i className='material-icons'>add</i>
               </Button>
               <Menu
@@ -119,7 +119,7 @@ class AndonCentralUsers extends Component {
                 onClose={this.handleMenuClose}
               >
                 <MenuItem onClick={this.handleMenuClose} component={Link} to='/andon/central/users/add'>Adicionar usuário</MenuItem>
-              </Menu> */}
+              </Menu>
             </Container>
           </div>
         }

@@ -66,6 +66,9 @@ body {
 .bg-color-dark {
   background-color: #212121 !important; }
 
+.bg-color-gray {
+  background-color: #B0BEC5 !important; }
+
 .bg-color-red {
   background-color: #F44336 !important; }
   .bg-color-red-light {
@@ -738,3 +741,8 @@ body {
 
 .table-row-hover:hover {
   background-color: #f6f6f6 !important; }
+
+.corner-right-bottom {
+  position: absolute !important;
+  right: 1.5rem !important;
+  bottom: 1.5rem !important; }

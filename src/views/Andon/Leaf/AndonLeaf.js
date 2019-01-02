@@ -2,11 +2,9 @@ import React, {Component} from "react";
 import {Redirect,Link} from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import MobileStepper from "@material-ui/core/MobileStepper";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Container from "../../../components/Grid/Container";
 import Appbar from "../../../components/Appbar/Appbar";
@@ -50,9 +48,9 @@ class AndonLeafContext extends Component {
 
   
   render() {
-    // if(this.props.user.loadingUser && this.props.user.id === null) {
-    //   return <Redirect to="/andon" />
-    // }
+    if(this.props.user.loadingUser && this.props.user.id === null) {
+      return <Redirect to="/andon" />
+    }
     return (
       <div className="ds-view" id="ds-view-andon-sendwarning">
         <Appbar position="fixed" title={this.props.user.firstname} toolbarLinks={[{name:"Sair",to:"/andon/logout",icon:"exit_to_app"}]} />

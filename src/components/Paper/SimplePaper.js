@@ -1,5 +1,6 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 const SimplePaper = (props) => {
   let style = {
@@ -13,6 +14,7 @@ const SimplePaper = (props) => {
   }
   return (
     <Paper style={style} elevation={1} className={props.className}>
+      {props.paperTitle && <Typography variant="title">{ props.paperTitle }</Typography>}
       {props.children}
     </Paper>
   );

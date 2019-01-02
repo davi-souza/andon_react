@@ -57,7 +57,7 @@ class WarningsTable extends Component {
                 <TableCell className="txt-align-center">
                   <Button
                     variant="contained"
-                    color='secondary'
+                    className='bg-color-gray txt-color-black'
                     onClick={()=>{this.props.resolve(warning.id)}}
                     disabled={warning.resolvedDate!==null}
                   >

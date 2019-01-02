@@ -1,0 +1,9 @@
+.corner {
+  &-right {
+    &-bottom {
+      position: absolute !important;
+      right: 1.5rem !important;
+      bottom: 1.5rem !important;
+    }
+  }
+}

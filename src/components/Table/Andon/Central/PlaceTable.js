@@ -9,31 +9,29 @@ import Paper from '@material-ui/core/Paper';
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 
-const SimpleTable = (props) => {
-  if(!props.data /*|| props.data.length === 0*/) {
+const PlaceTable = (props) => {
+  if(!props.places) {
     return null;
   }
   return (
     <Paper className='overflow-auto'>
-      {props.title && 
-        <Toolbar>
-          <Typography variant="title">{props.title}</Typography>
-        </Toolbar>
-      }
+      <Toolbar>
+        <Typography variant="title">Locais</Typography>
+      </Toolbar>
       <Table>
         <TableHead>
           <TableRow>
-            {props.data[0] && Object.keys(props.data[0]).map((column,index) => (
-              <TableCell className='txt-align-center' key={index}>{ column }</TableCell>
-            ))}
+            <TableCell className='txt-align-center'>ID</TableCell>
+            <TableCell className='txt-align-center'>Nome</TableCell>
+            <TableCell className='txt-align-center'>Ativo</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.data.map((row,index) => (
+          {props.places.map((place,index) => (
             <TableRow key={index}>
-              {Object.keys(row).map((column,i) => (
-                <TableCell className='txt-align-center' key={i}>{ row[column] }</TableCell>
-              ))}
+              <TableCell className='txt-align-center'>{place.id}</TableCell>
+              <TableCell className='txt-align-center'>{place.name}</TableCell>
+              <TableCell className='txt-align-center'>{`${place.active? 'Sim' : 'Não'}`}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -42,4 +40,4 @@ const SimpleTable = (props) => {
   );
 }
 
-export default SimpleTable;
+export default PlaceTable;

@@ -97,6 +97,9 @@ class AndonView extends Component {
       if(sessionData) {
         this.state.handleLogin(sessionData);
       }
+
+      this.state.handleLoadingUser(false);
+
     }
   }
 }

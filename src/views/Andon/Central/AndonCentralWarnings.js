@@ -38,7 +38,7 @@ class AndonCentralWarnings extends Component {
               title='ANDON'
               position='fixed'
               drawerLinks={[
-                {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
+                {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},
                 {name:'Usuários',to:'/andon/central/users',icon:'person'},
                 {name:'Times',to:'/andon/central/teams',icon:'people'},
                 {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},

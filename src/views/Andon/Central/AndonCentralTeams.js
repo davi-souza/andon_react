@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-// import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -17,7 +16,7 @@ class AndonCentralTeamsContext extends Component {
     super(props);
     this.state = {
       anchorEl: null,
-      fieldToFilter: 'id',
+      fieldToFilter: 'login',
       filterValue: '',
     };
   }
@@ -40,7 +39,7 @@ class AndonCentralTeamsContext extends Component {
           title='ANDON'
           position='fixed'
           drawerLinks={[
-            {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
+            {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},
             {name:'Usuários',to:'/andon/central/users',icon:'person'},
             {name:'Times',to:'/andon/central/teams',icon:'people'},
             {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
@@ -70,7 +69,7 @@ class AndonCentralTeamsContext extends Component {
                         value={this.state.fieldToFilter}
                         onChange={this.handleFilterChange}
                       >
-                        <option value='id'>ID</option>
+                        <option value='login'>Matrícula</option>
                         <option value='name'>Nome do líder</option>
                       </TextField>
                     }

@@ -5,13 +5,13 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import AppBarComponent from '../../../components/Appbar/AppBarComponent';
-import GridPage from '../../../components/Grid/GridPage';
-import SimpleCard from '../../../components/Card/SimpleCard';
+import AppBarComponent from '../../../../components/Appbar/AppBarComponent';
+import Container from '../../../../components/Grid/Container';
+import SimplePaper from '../../../../components/Paper/SimplePaper';
 
-import CentralContext from '../../../contexts/CentralContext';
+import CentralContext from '../../../../contexts/CentralContext';
 
-class AndonCentralUsersAddContext extends Component {
+class UserAddContext extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,13 +36,13 @@ class AndonCentralUsersAddContext extends Component {
             {to:'/andon/logout',name:'Log Out',icon:'exit_to_app',divider:true}
           ]}  
         />
-        <GridPage viewContent appBarFixed>
-          <SimpleCard rounded>
+        <Container appbarFixed>
+          <SimplePaper paperTitle="Adicionar usuário" padding="2">
             <Grid container>
               <Grid item xs={12}>
                 <TextField
                   required
-                  className='w-100 margin-bottom-20'
+                  className='width-perc-100 margin-bottom-24'
                   name='login'
                   label='Matrícula'
                   placeholder='Matrícula'
@@ -54,7 +54,7 @@ class AndonCentralUsersAddContext extends Component {
               <Grid item xs={12}>
                 <TextField
                   required
-                  className='w-100 margin-bottom-20'
+                  className='width-perc-100 margin-bottom-24'
                   name='firstname'
                   label='Primeiro nome'
                   placeholder='Primeiro nome'
@@ -65,7 +65,7 @@ class AndonCentralUsersAddContext extends Component {
               <Grid item xs={12}>
                 <TextField
                   required
-                  className='w-100 margin-bottom-20'
+                  className='width-perc-100 margin-bottom-24'
                   name='lastname'
                   label='Sobrenome'
                   placeholder='Sobrenome'
@@ -77,7 +77,7 @@ class AndonCentralUsersAddContext extends Component {
                 <TextField
                   required
                   select
-                  className='w-100 margin-bottom-20'
+                  className='width-perc-100 margin-bottom-24'
                   name='level'
                   label='Nível de Acesso'
                   placeholder='Nível de Acesso'
@@ -86,12 +86,11 @@ class AndonCentralUsersAddContext extends Component {
                 >
                   <option value={'leaf'}>0 - Envia avisos</option>
                   <option value={'intermediate'}>1 - Recebe avisos</option>
-                  <option value={'central'}>2 - Recebe avisos</option>
                 </TextField>
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  className='w-100 margin-bottom-20'
+                  className='width-perc-100 margin-bottom-24'
                   name='password'
                   label='Senha'
                   placeholder='Senha'
@@ -103,7 +102,7 @@ class AndonCentralUsersAddContext extends Component {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  className='w-100 margin-bottom-20'
+                  className='width-perc-100 margin-bottom-24'
                   name='jobTitle'
                   label='Título'
                   placeholder='Título'
@@ -117,19 +116,19 @@ class AndonCentralUsersAddContext extends Component {
                   <CircularProgress className='margin-top-10' size={40} color='secondary' />
                 }
                 {
-                  !this.props.central.loadingAddUser && 
+                  !this.props.central.loadingAddUser &&
                   <Button
                     disabled={this.state.login==='' || this.state.firstname==='' || this.state.lastname===''}
                     variant='contained'
                     color='secondary'
-                    className='w-60 margin-top-10 border-round'
+                    className='width-perc-60 margin-top-8 border-round'
                     onClick={this.HandleAddUser}
                   >Criar</Button>
                 }
               </Grid>
             </Grid>
-          </SimpleCard>
-        </GridPage>
+          </SimplePaper>
+        </Container>
       </div>
     );
   }
@@ -146,17 +145,16 @@ class AndonCentralUsersAddContext extends Component {
     }
     if(window.confirm('Deseja criar usuário?')) {
       this.props.central.addUser(this.state);
-      this.props.history.push('/andon/central/users');
     }
   }
 }
 
-const AndonCentralUsersAdd = (props) => {
+const UserAdd = (props) => {
   return (
     <CentralContext.Consumer>
-      {central => <AndonCentralUsersAddContext central={central} {...props} />}
+      {central => <UserAddContext central={central} {...props} />}
     </CentralContext.Consumer>
   );
 }
 
-export default AndonCentralUsersAdd;
+export default UserAdd;

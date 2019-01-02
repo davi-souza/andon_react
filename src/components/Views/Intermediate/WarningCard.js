@@ -53,11 +53,10 @@ const WarningCard = (props) => {
             props.resolveLoading?
             <CircularProgress color='secondary' size={40} /> :
             <Button
-              className='width-perc-50 border-round'
+              className='width-perc-50 border-round bg-color-gray txt-color-black'
               variant='contained'
-              color='secondary'
               disabled={props.resolveLoading}
-              onClick={()=>{props.resolve(props.warning.id)}}>Resolvido</Button>
+              onClick={()=>{props.resolve(props.warning.id)}}>Resolver</Button>
           }
         </CardActions>
       </Card>

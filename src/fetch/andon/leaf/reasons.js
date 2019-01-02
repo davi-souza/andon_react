@@ -1,5 +1,4 @@
 import get from "../../get";
-import config from "../../config";
 import { getProjectId } from "../../../localStorage/projectId";
 
 export default async () => {
