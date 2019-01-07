@@ -13,7 +13,7 @@ class teamManager extends Component {
     return (
       <div>
         <AppBarComponent
-          title='ANDON'
+              title="Central - Gerenciar Time"
           position='fixed'
           drawerLinks={[
             {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},

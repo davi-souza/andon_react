@@ -35,7 +35,7 @@ class AndonCentralWarnings extends Component {
         { central =>
           <div>
             <AppBarComponent
-              title='ANDON'
+              title="Central - Avisos correntes"
               position='fixed'
               drawerLinks={[
                 {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},

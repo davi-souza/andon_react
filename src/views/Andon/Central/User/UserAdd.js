@@ -27,13 +27,14 @@ class UserAddContext extends Component {
     return (
       <div>
         <AppBarComponent
-          title='Central - Usuários - Adicionar'
+          title='Central - Adicionar Usuário'
           position='fixed'
           drawerLinks={[
-            {name:'Gerenciar Avisos',to:'/andon/central/warnings',icon:'warning'},
-            {name:'Gerenciar Usuários',to:'/andon/central/users',icon:'person'},
-            {name:'Gerenciar Times',to:'/andon/central/teams',icon:'people'},
-            {to:'/andon/logout',name:'Log Out',icon:'exit_to_app',divider:true}
+            {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},
+            {name:'Usuários',to:'/andon/central/users',icon:'person'},
+            {name:'Times',to:'/andon/central/teams',icon:'people'},
+            {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
+            {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
           ]}  
         />
         <Container appbarFixed>

@@ -36,7 +36,7 @@ class AndonCentralTeamsContext extends Component {
     return (
       <div>
         <AppBarComponent
-          title='ANDON'
+              title="Central - Times"
           position='fixed'
           drawerLinks={[
             {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},
