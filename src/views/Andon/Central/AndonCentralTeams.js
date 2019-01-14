@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import AppBarComponent from '../../../components/Appbar/AppBarComponent';
+import AppBarCentral from '../../../components/Appbar/AppBarCentral';
 import Container from '../../../components/Grid/Container';
 import TeamTable from '../../../components/Table/Andon/Central/TeamTable';
 
@@ -35,17 +35,7 @@ class AndonCentralTeamsContext extends Component {
     let regexFilter = new RegExp(`[a-zA-Z0-9]*${this.state.filterValue}[a-zA-Z0-9]*`);
     return (
       <div>
-        <AppBarComponent
-              title="Central - Times"
-          position='fixed'
-          drawerLinks={[
-            {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},
-            {name:'Usuários',to:'/andon/central/users',icon:'person'},
-            {name:'Times',to:'/andon/central/teams',icon:'people'},
-            {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
-            {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
-          ]}  
-        />
+        <AppBarCentral />
         <Container appbarFixed fullPage>
           {
             this.props.central.loadingIntermediateUsers && 

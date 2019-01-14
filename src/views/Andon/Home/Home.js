@@ -23,7 +23,7 @@ class Home extends Component {
   }
   
   render() {
-    let buttonsHeight = 6;
+    let buttonsHeight = 5;
     return (
       <div>
         <Appbar

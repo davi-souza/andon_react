@@ -11,7 +11,7 @@ import WarningsTable from '../../../components/Table/Andon/Central/WarningsTable
 
 import CentralContext from '../../../contexts/CentralContext';
 
-class AndonCentralWarnings extends Component {
+class AndonCentralAllWarnings extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,9 +97,8 @@ class AndonCentralWarnings extends Component {
                 </div>
                 :
                 <WarningsTable
-                  warnings={central.warnings.filter(warning => {
-                    return !warning.resolvedDate
-                  }).sort(this.sortWarnings).filter(warning => {
+                  warnings={central.warnings
+                    .sort(this.sortWarnings).filter(warning => {
                     let initFilterDate = null;
                     let initDate = null
                     if(this.state.createdDateInit!=='') {
@@ -214,4 +213,4 @@ class AndonCentralWarnings extends Component {
   }
 }
 
-export default AndonCentralWarnings;
+export default AndonCentralAllWarnings;

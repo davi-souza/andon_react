@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import AppBarComponent from '../../../../components/Appbar/AppBarComponent';
+import {Link} from 'react-router-dom';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+import AppBarCentral from '../../../../components/Appbar/AppBarCentral';
 import Container from '../../../../components/Grid/Container';
 import PlaceTable from "../../../../components/Table/Andon/Central/PlaceTable";
 import CentralContext from "../../../../contexts/CentralContext";
@@ -7,31 +11,46 @@ import CentralContext from "../../../../contexts/CentralContext";
 class placeManager extends Component {
   constructor(props) {
     super(props);
+    super(props);
+    this.state = {
+      anchorEl: null,
+    };
   }
-
+  handleMenuOpen = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  }
+  handleMenuClose = () => {
+    this.setState({ anchorEl: null });
+  }
   render() {
     return (
       <div>
-        <AppBarComponent
-          title='ANDON'
-          position='fixed'
-          drawerLinks={[
-            {name:'Avisos',to:'/andon/central/warnings',icon:'warning'},
-            {name:'Usuários',to:'/andon/central/users',icon:'person'},
-            {name:'Times',to:'/andon/central/teams',icon:'people'},
-            {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
-            {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
-          ]}  
-        />
+        <AppBarCentral />
         <Container appbarFixed>
           <CentralContext.Consumer>
             {central => (
               <PlaceTable
-                places={central.places}
+                places={central.places.sort((a,b) => {
+                  if(a.id <= b.id) {
+                    return -1;
+                  }
+                  return 1;
+                })}
+                {...this.props}
               />
             )}
           </CentralContext.Consumer>
         </Container>
+        <Button className='corner-right-bottom' variant='fab' color='secondary' onClick={this.handleMenuOpen}>
+          <i className='material-icons'>add</i>
+        </Button>
+        <Menu
+          anchorEl={this.state.anchorEl}
+          open={Boolean(this.state.anchorEl)}
+          onClose={this.handleMenuClose}
+        >
+          <MenuItem onClick={this.handleMenuClose} component={Link} to='/andon/central/places/add'>Adicionar local</MenuItem>
+        </Menu>
       </div>
     );
   }

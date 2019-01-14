@@ -34,7 +34,7 @@ class WarningsTable extends Component {
             {this.props.warnings.map(warning => (
               <TableRow key={warning.id} className="table-row-hover">
                 <TableCell className='txt-align-center'>
-                  <Button className={this.getWarningRowColor(warning.type)}>
+                  <Button className={this.getWarningRowColor(warning)}>
                     <i className="material-icons">warning</i>
                   </Button>
                 </TableCell>
@@ -51,7 +51,7 @@ class WarningsTable extends Component {
                 }</TableCell>
                 <TableCell className='txt-align-center'>
                   {
-                    this.handleOpenTime(warning.createdDate)
+                    warning.resolvedDate ? "-" : this.handleOpenTime(warning.createdDate)
                   }
                 </TableCell>
                 <TableCell className="txt-align-center">
@@ -81,8 +81,11 @@ class WarningsTable extends Component {
     );
   }
 
-  getWarningRowColor = (type) => {
-    if(type === "ALERTA") {
+  getWarningRowColor = (warning) => {
+    // if(warning.resolvedDate) {
+    //   return "bg-color-green txt-color-white"
+    // }
+    if(warning.type === "ALERTA") {
       return "bg-color-yellow-dark txt-color-white";
     }
     return "bg-color-red-dark txt-color-white";
@@ -91,15 +94,15 @@ class WarningsTable extends Component {
   handleOpenTime = (createdDate) => {
     let label = "segundo";
     let openTime = (Date.now() - (new Date(createdDate)).getTime())/1000;
-    if(openTime > 60) {
+    if(openTime > 60 && label === "segundo") {
       label = "minuto";
       openTime /= 60;
     }
-    if(openTime > 60) {
+    if(openTime > 60 && label === "minuto") {
       label = "hora";
       openTime /= 60;
     }
-    if(openTime > 24) {
+    if(openTime > 24 && label === "hora") {
       label = "dia";
       openTime /= 24;
     }

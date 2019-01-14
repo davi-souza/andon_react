@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import Grid from '@material-ui/core/Grid';
 
-import AppBarComponent from '../../../components/Appbar/AppBarComponent';
+import AppBarCentral from '../../../components/Appbar/AppBarCentral';
 import Container from '../../../components/Grid/Container';
 import DashboardPaper from "../../../components/Paper/DashboardPaper";
 import SimpleTable from "../../../components/Table/SimpleTable";
@@ -55,17 +55,7 @@ class AndonCentralDashboard extends Component {
       <CentralContext.Consumer>
         { central =>
           <div>
-            <AppBarComponent
-              title="Central - Dashboard"
-              position='fixed'
-              drawerLinks={[
-                {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},
-                {name:'Usuários',to:'/andon/central/users',icon:'person'},
-                {name:'Times',to:'/andon/central/teams',icon:'people'},
-                {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
-                {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
-              ]}  
-            />
+            <AppBarCentral />
             <Container appbarFixed fullPage>
               <Grid container spacing={8} className="margin-bottom-8">
                 <Grid item xs={12} sm={3} lg={3}>

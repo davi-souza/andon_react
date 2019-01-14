@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import AppBarComponent from '../../../../components/Appbar/AppBarComponent';
+import AppBarCentral from '../../../../components/Appbar/AppBarCentral';
 import Container from '../../../../components/Grid/Container';
 import SimplePaper from '../../../../components/Paper/SimplePaper';
 
@@ -26,17 +26,7 @@ class UserAddContext extends Component {
   render() {
     return (
       <div>
-        <AppBarComponent
-          title='Central - Adicionar Usuário'
-          position='fixed'
-          drawerLinks={[
-            {name:'Avisos correntes',to:'/andon/central/warnings',icon:'warning'},
-            {name:'Usuários',to:'/andon/central/users',icon:'person'},
-            {name:'Times',to:'/andon/central/teams',icon:'people'},
-            {name:'Dashboard',to:'/andon/central/dashboard',icon:'show_chart'},
-            {name:'Log Out',to:'/andon/logout',icon:'exit_to_app',divider:true}
-          ]}  
-        />
+        <AppBarCentral />
         <Container appbarFixed>
           <SimplePaper paperTitle="Adicionar usuário" padding="2">
             <Grid container>
