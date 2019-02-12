@@ -21,8 +21,10 @@ const Warnings = (props) => {
               return 0;
             })
             .filter(warning => warning.userThatCreated || false)
+            .filter(warning => !warning.reason.onlyCentral)
             .map(warning => (
             <WarningCard
+              places={props.places}
               warning={warning}
               resolve={intermediate.resolve}
               resolveLoading={intermediate.resolveLoading}

@@ -21,6 +21,7 @@ const styles = {
 
 class SelectTablePlace extends Component {
   render() {
+    console.log(this.props.places);
     return (
       <Paper>
         <Toolbar>

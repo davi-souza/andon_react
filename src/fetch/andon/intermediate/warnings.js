@@ -9,7 +9,7 @@ export default async (userId) => {
   ].join("");
 
   try {
-    let response = await get(route, {});
+    let response = await get(route);
   
     if(!response.ok) {
       response = await response.json();

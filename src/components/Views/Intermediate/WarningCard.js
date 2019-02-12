@@ -43,8 +43,9 @@ const WarningCard = (props) => {
           <div className=''>
             <Typography variant="headline" component="h2">{props.warning.type}</Typography>
             <Typography component="p">Motivo: {props.warning.reason.name}</Typography>
-            <Typography component='p'>Onde: {props.warning.place.name}</Typography>
+            <Typography component='p'>Onde: {renderPlace(props.places, props.warning.place)}</Typography>
             <Typography component='p'>Autor: {`${props.warning.userThatCreated.firstname} ${props.warning.userThatCreated.lastname.substring(0,10)}`}</Typography>
+            <Typography component='p'>Função do Autor: {props.warning.userThatCreated.jobTitle}</Typography>
             <Typography component='p'>Quando: {new Date(props.warning.createdDate).toLocaleString('pt-BR')}</Typography>
           </div>
         </CardContent>
@@ -63,5 +64,19 @@ const WarningCard = (props) => {
     </Grid>
   );
 }
+
+const renderPlace = (places, place) => {
+  if (places) {
+    let array = [place];
+    while(place.superPlaceId !== null) {
+      const superPlace = places.find(placeAux => placeAux.id === place.superPlaceId);
+      array = [superPlace, ...array];
+      place = superPlace;
+    }
+    return array.map(p => p.name).join(", ");
+  }
+  return place.name;
+};
+
 
 export default WarningCard;

@@ -24,7 +24,8 @@ const PlaceTable = (props) => {
           <TableRow>
             <TableCell className='txt-align-center'>ID</TableCell>
             <TableCell className='txt-align-center'>Nome</TableCell>
-            <TableCell className='txt-align-center'>Sub Locais</TableCell>
+            <TableCell className='txt-align-center'>Super Local(s)</TableCell>
+            <TableCell className='txt-align-center'>Sub Local(s)</TableCell>
             <TableCell className='txt-align-center'>Ativo</TableCell>
             <TableCell className='txt-align-center'>Editar</TableCell>
           </TableRow>
@@ -34,12 +35,10 @@ const PlaceTable = (props) => {
             <TableRow key={index}>
               <TableCell className='txt-align-center'>{place.id}</TableCell>
               <TableCell className='txt-align-center'>{place.name}</TableCell>
-              <TableCell className='txt-align-center'>{place.subPlaces.map((sub,index) => {
-                if(index+1 === place.subPlaces.length) {
-                  return sub.id.toString();
-                }
-                return sub.id + ", ";
-              })}</TableCell>
+              <TableCell className='txt-align-center'>
+                {renderSuperPlace(props.places, place)}
+              </TableCell>
+              <TableCell className='txt-align-center'>{place.subPlaces.map(sub => sub.name).join(", ")}</TableCell>
               <TableCell className='txt-align-center'>{`${place.active? 'Sim' : 'Não'}`}</TableCell>
               <TableCell className='txt-align-center'>
                 <Button onClick={() => { props.history.push(`/andon/central/places/${place.id}`) }} color="secondary">
@@ -53,5 +52,13 @@ const PlaceTable = (props) => {
     </Paper>
   );
 }
+
+const renderSuperPlace = (places, place) => {
+  const superPlace = places.find(p => p.id===place.superPlaceId);
+  if (superPlace) {
+    return superPlace.id + " - " + superPlace.name;
+  }
+  return "";
+};
 
 export default PlaceTable;

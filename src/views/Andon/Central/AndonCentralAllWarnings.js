@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AppBarCentral from '../../../components/Appbar/AppBarCentral';
 import Container from '../../../components/Grid/Container';
-import WarningsTable from '../../../components/Table/Andon/Central/WarningsTable';
+import AllWarningsTable from '../../../components/Table/Andon/Central/AllWarningsTable';
 
 import CentralContext from '../../../contexts/CentralContext';
 
@@ -96,7 +96,8 @@ class AndonCentralAllWarnings extends Component {
                   <CircularProgress color='secondary' size={60} />
                 </div>
                 :
-                <WarningsTable
+                <AllWarningsTable
+                  places={central.places}
                   warnings={central.warnings
                     .sort(this.sortWarnings).filter(warning => {
                     let initFilterDate = null;

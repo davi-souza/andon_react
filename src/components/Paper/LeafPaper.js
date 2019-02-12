@@ -12,7 +12,7 @@ export default (props) => {
       <Typography variant="headline" className="margin-bottom-16">Autor: {`${props.user.firstname} ${props.user.lastname}`}</Typography>
       <Typography variant="headline" className="margin-bottom-16">Tipo: {props.type}</Typography>
       <Typography variant="headline" className="margin-bottom-16">Razão: {props.reason.name}</Typography>
-      <Typography variant="headline" className="margin-bottom-24">Local: {props.place.name}</Typography>
+      <Typography variant="headline" className="margin-bottom-24">Local: {renderPlace(props.places, props.place)}</Typography>
       <Grid container>
         <Grid item xs={12} className="margin-bottom-24">
           <span id="countdown-time">O aviso será enviado em {props.secondsToSend} segundos.</span>
@@ -32,4 +32,14 @@ export default (props) => {
       </Grid>
     </Paper>
   )
-}
+};
+
+const renderPlace = (places, place) => {
+  let array = [place];
+  while(place.superPlaceId !== null) {
+    const superPlace = places.find(placeAux => placeAux.id === place.superPlaceId);
+    array = [superPlace, ...array];
+    place = superPlace;
+  }
+  return array.map(p => p.name).join(", ");
+};

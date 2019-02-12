@@ -13,6 +13,8 @@ import resolveWarning from '../../../fetch/andon/intermediate/resolveWarning';
 import UserContext from '../../../contexts/UserContext';
 import IntermediateContext from '../../../contexts/IntermediateContext';
 
+import { getPlaces } from '../../../fetch/andon/central/places';
+
 class AndonIntermediateContext extends Component {
   constructor(props) {
     super(props);
@@ -20,6 +22,8 @@ class AndonIntermediateContext extends Component {
       warnings: [],
       warningsLoading: true,
       resolveLoading: false,
+
+      places: [],
 
       resolve: this.handleResolveWarning,
 
@@ -35,6 +39,10 @@ class AndonIntermediateContext extends Component {
     if(prevProps.user.id === null && this.props.user.id !== null) {
       this.handleGetWarnings();
     }
+  }
+
+  componentWillMount() {
+    this.handleGetAllPlaces();
   }
 
   componentDidMount() {
@@ -60,12 +68,27 @@ class AndonIntermediateContext extends Component {
               <CircularProgress size={80} color='secondary' />
             </div>
             :
-            <Warnings />
+            <Warnings places={this.state.places} />
           }
         </Container>
       </IntermediateContext.Provider>
     );
   }
+
+
+  handleGetAllPlaces = async () => {
+    try {
+      let result = await getPlaces();
+      if(result) {
+        this.setState({
+          places: result,
+        });
+      }
+    } catch (err) {
+      // ...
+    }
+  }
+
   handleResolveWarning = async (warningId) => {
     if(window.confirm('Tem certeza que o aviso foi resolvido?')) {
       this.state.handleChange("resolveLoading", true);

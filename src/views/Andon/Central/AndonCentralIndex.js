@@ -239,6 +239,8 @@ class AndonCentralIndexContext extends Component {
             place.subPlaces = place.subPlaces.concat([
               places.find(sp => sp.id === subPlaceId)
             ]);
+          } else if(place.id === subPlaceId) {
+            place.superPlaceId = placeId;
           }
           return place;
         });
@@ -259,6 +261,8 @@ class AndonCentralIndexContext extends Component {
         places = places.map(place => {
           if(place.id === placeId) {
             place.subPlaces = place.subPlaces.filter(sp => sp.id !== subPlaceId);
+          } else if (place.id === subPlaceId) {
+            place.superPlaceId = null;
           }
           return place;
         });

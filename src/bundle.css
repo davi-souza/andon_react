@@ -743,6 +743,6 @@ body {
   background-color: #f6f6f6 !important; }
 
 .corner-right-bottom {
-  position: absolute !important;
+  position: fixed !important;
   right: 1.5rem !important;
   bottom: 1.5rem !important; }

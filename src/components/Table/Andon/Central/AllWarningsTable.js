@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
-class WarningsTable extends Component {
+class AllWarningsTable extends Component {
   render() {
     if(this.props.warnings.length === 0) {
       return (
@@ -25,10 +25,10 @@ class WarningsTable extends Component {
               <TableCell className='txt-align-center'>Local</TableCell>
               <TableCell className='txt-align-center'>Criado por</TableCell>
               <TableCell className='txt-align-center'>Responsáveis</TableCell>
-              <TableCell className='txt-align-center'>Profissão/serviço do autor</TableCell>
               <TableCell className='txt-align-center'>Criado em</TableCell>
-              <TableCell className='txt-align-center'>Tempo pendente</TableCell>
-              <TableCell className='txt-align-center'>Resolver</TableCell>
+              <TableCell className='txt-align-center'>Resolvido em</TableCell>
+              <TableCell className='txt-align-center'>Tempo em aberto</TableCell>
+              {/* <TableCell className='txt-align-center'>Resolver</TableCell> */}
               {/* <TableCell className='txt-align-center'>Apagar</TableCell> */}
             </TableRow>
           </TableHead>
@@ -41,7 +41,7 @@ class WarningsTable extends Component {
                   </Button>
                 </TableCell>
                 <TableCell className='txt-align-center'>{warning.reason.name}</TableCell>
-                <TableCell className='txt-align-center'>{this.renderPlace(this.props.places, warning.place)}</TableCell>
+                <TableCell className='txt-align-center'>{warning && this.renderPlace(this.props.places, warning.place)}</TableCell>
                 <TableCell className='txt-align-center'>{`${warning.userThatCreated.firstname} ${warning.userThatCreated.lastname}`}</TableCell>
                 <TableCell className='txt-align-center'>{warning.userThatCreated.userLeaders.map((leader,index) => {
                   if(index === warning.userThatCreated.userLeaders.length-1) {
@@ -49,18 +49,18 @@ class WarningsTable extends Component {
                   }
                   return `${leader.firstname} ${leader.lastname}, `;
                 })}</TableCell>
-                <TableCell className='txt-align-center'>
-                  {warning.userThatCreated.jobTitle}
-                </TableCell>
                 <TableCell className='txt-align-center'>{
                   new Date(warning.createdDate).toLocaleString('pt-BR')
                 }</TableCell>
+                <TableCell className='txt-align-center'>{
+                  warning.resolvedDate ? new Date(warning.resolvedDate).toLocaleString('pt-BR') : "-"
+                }</TableCell>
                 <TableCell className='txt-align-center'>
                   {
-                    warning.resolvedDate ? "-" : this.handleOpenTime(warning.createdDate)
+                    this.handleOpenTime(warning.createdDate,warning.resolvedDate)
                   }
                 </TableCell>
-                <TableCell className="txt-align-center">
+                {/* <TableCell className="txt-align-center">
                   <Button
                     variant="contained"
                     className='bg-color-gray txt-color-black'
@@ -73,7 +73,7 @@ class WarningsTable extends Component {
                       }
                     </i>
                   </Button>
-                </TableCell>
+                </TableCell> */}
                 {/* <TableCell className='txt-align-center'>
                   <Button color='secondary' disabled>
                     <i className='material-icons'>delete</i>
@@ -97,9 +97,10 @@ class WarningsTable extends Component {
     return "bg-color-red-dark txt-color-white";
   }
 
-  handleOpenTime = (createdDate) => {
+  handleOpenTime = (createdDate,resolvedDate) => {
+    let now = (new Date(resolvedDate)).getTime() || Date.now();
     let label = "segundo";
-    let openTime = (Date.now() - (new Date(createdDate)).getTime())/1000;
+    let openTime = (now - (new Date(createdDate)).getTime())/1000;
     if(openTime > 60 && label === "segundo") {
       label = "minuto";
       openTime /= 60;
@@ -133,4 +134,4 @@ class WarningsTable extends Component {
   }
 }
 
-export default WarningsTable;
+export default AllWarningsTable;

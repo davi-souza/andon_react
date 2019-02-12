@@ -10,6 +10,7 @@ class placeUpdate extends Component {
   }
 
   render() {
+    const placeId = parseInt(this.props.match.params.id,10);
     return (
       <div>
         <AppBarCentral />
@@ -17,8 +18,18 @@ class placeUpdate extends Component {
           <CentralContext.Consumer>
             {central => (
               <SelectTablePlace
-                placeLeader={central.places.find(place => place.id === parseInt(this.props.match.params.id,10))}
-                places={central.places.filter(place => place.id !== parseInt(this.props.match.params.id,10))}
+                placeLeader={central.places.find(place => place.id === placeId)}
+                places={central.places.filter(place => place.id !== placeId)
+                  .filter(place => place.superPlaceId === null || place.superPlaceId === placeId)
+                  .sort((place1,place2) => {
+                    if (place1.id < place2.id) {
+                      return -1;
+                    }
+                    if (place1.id > place2.id) {
+                      return 1;
+                    }
+                    return 0;
+                  })}
                 updatePlaceLoading={central.updatePlaceLoading}
                 addSubPlace={central.addSubPlace}
                 removeSubPlace={central.removeSubPlace}
@@ -29,6 +40,7 @@ class placeUpdate extends Component {
       </div>
     );
   }
+
 }
 
 export default placeUpdate;

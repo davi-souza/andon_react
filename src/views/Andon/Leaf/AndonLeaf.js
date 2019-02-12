@@ -65,7 +65,7 @@ class AndonLeafContext extends Component {
           }
           {
             this.state.step===2 &&
-            <Reason reasons={this.state.reasons.filter(reason => reason.superReasons.length === 0)} handleInfoClick={this.handleInfoClick} step={2}/>
+            <Reason reasons={this.state.reasons.filter(reason => reason.superReasonId === null)} handleInfoClick={this.handleInfoClick} step={2}/>
           }
           {
             this.state.step===3 && this.state.sendSuccess===null &&
@@ -73,6 +73,7 @@ class AndonLeafContext extends Component {
               user={this.props.user}
               type={this.state.type}
               reason={this.state.reason}
+              places={this.state.places}
               place={this.state.place}
               sendLoading={this.state.sendLoading}
               secondsToSend={this.state.secondsToSend}

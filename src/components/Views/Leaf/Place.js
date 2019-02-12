@@ -1,13 +1,10 @@
 import React from "react";
 
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 
-import ColorPalette from "./ColorPalette";
 import NumberPanel from "../../Panel/NumberPanel";
 
-import compare from "../../../util/compare";
 
 export default class Place extends React.Component {
   constructor(props) {
@@ -16,6 +13,7 @@ export default class Place extends React.Component {
       numberPanelValue: "",
       suggestedPlace: null,
       placeId: null,
+      whatPlaceState: 0,
     };
   }
 
@@ -23,12 +21,12 @@ export default class Place extends React.Component {
     let buttonsHeight = 4;
     return (
       <div>
-        <Typography variant="display1" className="margin-bottom-16">Localização. Procurando por: {this.state.numberPanelValue}</Typography>
+        <Typography variant="display1" className="margin-bottom-16">Localização {this.renderWhatIsLookingfor()}. Procurando por: {this.state.numberPanelValue}</Typography>
         <Grid container className="margin-bottom-24">
           <Grid item xs={12}>
             <div className="txt-align-center height-56">
               <Typography variant="display3" className="txt-color-dark">
-                {this.state.suggestedPlace ? `${this.state.suggestedPlace.id} - ${this.state.suggestedPlace.name}` : "-"}
+                {this.state.suggestedPlace ? `${this.state.suggestedPlace.name}` : "-"}
               </Typography>
             </div>
           </Grid>
@@ -44,6 +42,13 @@ export default class Place extends React.Component {
         />
       </div>
     );
+  }
+
+  renderWhatIsLookingfor = () => {
+    if (this.state.whatPlaceState !== 0) {
+      return "(Casa)";
+    }
+    return "(Quadra)";
   }
 
   handleNumberPanelButtonClick = (n) => {
@@ -66,19 +71,16 @@ export default class Place extends React.Component {
   handleConfirmClick = () => {
     // if there is a suggested place
     if(this.state.suggestedPlace) {
-      console.log(this.state.suggestedPlace);
       // get the place
       let place = this.props.places.find(place => place.id === this.state.suggestedPlace.id);
-      console.log('place',place);
       // if place exists
       if(place) {
         // if place doesnt have sub places
         if(place.subPlaces.length === 0) {
-          console.log('doesnt have sub places');
           // go to the next step
           this.props.handleInfoClick("place",place,this.props.step+1);
         } else {
-          console.log('does have sub places');
+          const whatPlaceState = this.state.whatPlaceState + 1;
           // if the place does have sub places
           // reset numberPanelValue and suggestedPlace
           // updated placeId
@@ -86,6 +88,7 @@ export default class Place extends React.Component {
             numberPanelValue: "",
             suggestedPlace: null,
             placeId: place.id,
+            whatPlaceState,
           });
         }
       }
@@ -112,8 +115,8 @@ export default class Place extends React.Component {
     if(this.state.placeId) {
       places = places.find(place => place.id === this.state.placeId).subPlaces;
     } else {
-      places = places.filter(place => place.superPlaces.length === 0);
+      places = places.filter(place => place.superPlaceId === null);
     }
-    return places.filter(place => (new RegExp(`[a-zA-Z0-9\s\-]*${numberPanelValue}[a-zA-Z0-9\s\-]*`)).test(`${place.id} - ${place.name}`))[0];
+    return places.filter(place => (new RegExp(`[a-zA-Z]* ${numberPanelValue}$`)).test(`${place.name}`))[0];
   }
 }

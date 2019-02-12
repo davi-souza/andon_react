@@ -97,6 +97,7 @@ class AndonCentralWarnings extends Component {
                 </div>
                 :
                 <WarningsTable
+                  places={central.places}
                   warnings={central.warnings.filter(warning => {
                     return !warning.resolvedDate
                   }).sort(this.sortWarnings).filter(warning => {
