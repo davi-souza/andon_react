@@ -90,6 +90,7 @@ class AndonLeafContext extends Component {
                     <div className="txt-align-center margin-bottom-16">
                       <i className="material-icons height-rem-8 width-perc-100 txt-size-rem-10 txt-color-green">check_circle</i>
                       <Typography variant="headline" className="margin-bottom-8">Aviso enviado com sucesso.</Typography>
+                      <Typography variant="headline" className="margin-bottom-8">Problemas com DP, favor se dirija a sala nos horários: 7-9 e 13-14:30.</Typography>
                       <Typography variant="headline">Em breve um encarregado virá ajudar.</Typography>
                     </div>
                   }
