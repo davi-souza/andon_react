@@ -1,4 +1,4 @@
-import {urlInit,credentials, jsonHeaders, catchErro} from './fetchConst';
+import {urlInit,credentials, jsonHeaders, catchError} from './fetchConst';
 
 export const FetchIntermediateUsers = async (projectId) => {
   try {
@@ -14,6 +14,6 @@ export const FetchIntermediateUsers = async (projectId) => {
     Response = await Response.json();
     return Response.data;
   } catch (error) {
-    return catchErro();
+    return catchError();
   }
 }

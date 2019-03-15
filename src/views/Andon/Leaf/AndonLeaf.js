@@ -40,13 +40,12 @@ class AndonLeafContext extends Component {
       sendSuccess: null,
     }
   }
-  
+
   componentWillMount() {
     this.handleGetReasons();
     this.handleGetPlaces();
   }
 
-  
   render() {
     // if(this.props.user.loadingUser && this.props.user.id === null) {
     //   return <Redirect to='/andon' />
@@ -96,12 +95,12 @@ class AndonLeafContext extends Component {
             </div>
           }
           {
-            this.state.step===3 && this.state.sendSuccess!==null && 
+            this.state.step===3 && this.state.sendSuccess!==null &&
             <div className=''>
               <SimpleCard rounded>
                 <div className='txt-align-center'>
                   {
-                    this.state.sendSuccess && 
+                    this.state.sendSuccess &&
                     <div className='txt-align-center margin-bottom-16'>
                       <i className='material-icons height-rem-8 width-perc-100 txt-size-rem-10 txt-color-green'>check_circle</i>
                       <Typography variant='headline' className='margin-bottom-8'>Aviso enviado com sucesso.</Typography>
@@ -109,7 +108,7 @@ class AndonLeafContext extends Component {
                     </div>
                   }
                   {
-                    !this.state.sendSuccess && 
+                    !this.state.sendSuccess &&
                     <div className='txt-align-center margin-bottom-16'>
                       <i className='material-icons height-rem-8 width-perc-100 txt-size-rem-10 txt-color-red'>cancel</i>
                       <Typography variant='headline' className='margin-bottom-8'>Não foi enviado.</Typography>
@@ -157,7 +156,7 @@ class AndonLeafContext extends Component {
   }
   handleGetPlaces = async () => {
     try {
-      let Response = await FetchGetPlaces(this.props.user.projectId);
+      let Response = await FetchGetPlaces(this.props.user.login, this.props.user.projectId);
       if(Response) {
         this.setState({
           places: Response

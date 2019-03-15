@@ -8,7 +8,7 @@ import SimpleCard from '../../../components/Card/SimpleCard';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 import NumberPanel from '../../../components/Panel/NumberPanel';
 
-import login from "../../../fetch/andon/root/login";
+import { stepOne } from "../../../fetch/andon/leaf/warningSetup";
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -21,7 +21,7 @@ class AndonHomeContext extends Component {
       redirect: false,
     };
   }
-  
+
   render() {
     let buttonsHeight = 6;
     return (
@@ -46,7 +46,7 @@ class AndonHomeContext extends Component {
             </Grid>
             <NumberPanel color='dark'
               buttonClick={this.handleNumberPanelButtonClick}
-              confirmClick={this.HandleLogin}
+              confirmClick={this.HandleStartWarningSetup}
               eraseClick={this.handleEraseNumber}
               confirmEraseDisabled={this.state.numberPanelValue===''}
               loading={this.state.loadingLogin}
@@ -71,6 +71,7 @@ class AndonHomeContext extends Component {
       }));
     }
   }
+
   handleEraseNumber = () => {
     let aux = this.state.numberPanelValue;
     if(aux.length !== 0) {
@@ -80,16 +81,18 @@ class AndonHomeContext extends Component {
       numberPanelValue: aux,
     });
   }
+
   handleToggleLoading = () => {
     this.setState((prevState,props) => {
       return {loadingLogin: !prevState.loadingLogin};
     });
   }
-  HandleLogin = () => {
+
+  HandleStartWarningSetup = () => {
     if(window.navigator.geolocation) {
       this.handleToggleLoading();
       window.navigator.geolocation.getCurrentPosition(async position => {
-        let data = await login({
+        let data = await stepOne({
           login: this.state.numberPanelValue,
           location: {
             lat:position.coords.latitude,

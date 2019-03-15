@@ -1,4 +1,4 @@
-import {urlInit,credentials, jsonHeaders, catchErro} from './fetchConst';
+import {urlInit,credentials, jsonHeaders, catchError} from './fetchConst';
 
 export const FetchGetUsers = async (projectId) => {
   try {
@@ -15,7 +15,7 @@ export const FetchGetUsers = async (projectId) => {
       return Response.data;
     }
   } catch (e) {
-    catchErro();
+    catchError();
   } 
 }
 
@@ -55,7 +55,7 @@ export const FetchUpdateUser = async (oldUser,newUser) => {
       return true;
     }
   } catch (e) {
-    return catchErro();
+    return catchError();
   }
 }
 
@@ -76,7 +76,7 @@ export const FetchAddUser = async (newUser) => {
       return Response.data;
     }
   } catch(e) {
-    return catchErro();
+    return catchError();
   }
 }
 
@@ -94,6 +94,6 @@ export const FetchDeleteUser = async (userId) => {
       return true;
     }
   } catch(e) {
-    return catchErro();
+    return catchError();
   }
 }

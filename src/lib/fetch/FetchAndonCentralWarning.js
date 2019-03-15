@@ -1,4 +1,4 @@
-import {urlInit,credentials, jsonHeaders, catchErro} from './fetchConst';
+import {urlInit,credentials, jsonHeaders, catchError} from './fetchConst';
 
 export const FetchGetWarnings = async (projectId) => {
   try {
@@ -15,7 +15,7 @@ export const FetchGetWarnings = async (projectId) => {
       return Response.data;
     }
   } catch (e) {
-    catchErro();
+    catchError();
   } 
 }
 
@@ -39,6 +39,6 @@ export const FetchResolveWarning = async ({userId,warningId}) => {
       return true;
     }
   } catch (e) {
-    return catchErro();
+    return catchError();
   } 
 }

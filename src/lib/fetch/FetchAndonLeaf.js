@@ -40,11 +40,13 @@ export const FetchGetReasons = async (projectId) => {
   }
 }
 
-export const FetchGetPlaces = async (projectId) => {
+export const FetchGetPlaces = async (userLogin, projectId) => {
   try {
-    let Response = await fetch(`${urlInit}place?filter=${JSON.stringify({projectId,active:true})}`,{
-      method: 'get',
+    let Response = await fetch(`${urlInit}warning/setup/1`,{
+      method: 'post',
       credentials,
+      headers: jsonHeaders,
+      body: JSON.stringify({projectId, userLogin})
     });
     if(!Response.ok) {
       Response = await Response.json();
