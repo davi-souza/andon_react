@@ -22,7 +22,6 @@ export default async (payload) => {
       alert(response.msg);
       return null;
     }
-    // registerToken(response.data.id);
     return response.data;
   } catch (e) {
     config.logError(e);

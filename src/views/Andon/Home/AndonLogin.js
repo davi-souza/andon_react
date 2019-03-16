@@ -112,12 +112,11 @@ class AndonLoginContext extends Component {
             hour: (new Date()).getHours(),
           });
           if(data) {
-            this.props.user.handleLogin(data);
-            if(data.access === accessLevel.central) {
+            if(data.level === accessLevel.central) {
               this.props.history.push('/andon/central/warnings');
-            } else if(data.access === accessLevel.intermediate) {
+            } else if(data.level === accessLevel.intermediate) {
               this.props.history.push('/andon/intermediate');
-            } else if(data.access === accessLevel.leaf) {
+            } else if(data.level === accessLevel.leaf) {
               this.props.history.push('/andon/leaf');
             }
           }
