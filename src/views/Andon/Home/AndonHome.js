@@ -8,7 +8,7 @@ import SimpleCard from '../../../components/Card/SimpleCard';
 import AppBarComponent from '../../../components/Appbar/AppBarComponent';
 import NumberPanel from '../../../components/Panel/NumberPanel';
 
-import { stepOne } from "../../../fetch/andon/leaf/warningSetup";
+import { FetchGetLeaf } from '../../../lib/fetch/FetchAndonLeaf';
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -18,7 +18,6 @@ class AndonHomeContext extends Component {
     this.state = {
       numberPanelValue: '',
       loadingLogin: false,
-      redirect: false,
     };
   }
 
@@ -92,16 +91,19 @@ class AndonHomeContext extends Component {
     if(window.navigator.geolocation) {
       this.handleToggleLoading();
       window.navigator.geolocation.getCurrentPosition(async position => {
-        let data = await stepOne({
-          login: this.state.numberPanelValue,
-          location: {
-            lat:position.coords.latitude,
-            lng: position.coords.longitude,
-          },
-          hour: (new Date()).getHours(),
-        });
+        let location = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        let data = await FetchGetLeaf(
+          this.state.numberPanelValue,
+          location
+        );
         if(data) {
-          this.props.user.handleLogin(data);
+          this.props.user.handleLogin({
+            ...data,
+            location
+          });
           this.props.history.push('/andon/leaf');
         }
         this.handleToggleLoading();

@@ -25,7 +25,7 @@ class AndonLoginContext extends Component {
       loadingLogin: false,
     };
   }
-  
+
   render() {
     return (
       <div>
@@ -106,13 +106,12 @@ class AndonLoginContext extends Component {
             login: this.state.login,
             password: this.state.password,
             location: {
-              lat:position.coords.latitude,
+              lat: position.coords.latitude,
               lng: position.coords.longitude,
             },
             hour: (new Date()).getHours(),
           });
           if(data) {
-            console.log(data);
             this.props.user.handleLogin(data);
             if(data.access === accessLevel.central) {
               this.props.history.push('/andon/central/warnings');

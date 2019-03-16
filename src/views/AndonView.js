@@ -17,18 +17,26 @@ class AndonView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lastLocation: null,
+      location: null,
       token: null,
+      login: null,
       loadingUser: true,
+      firstname: null,
+      lastname: null,
+      userID: null,
       handleLoadingUser: (status) => {
         this.setState({
           loadingUser: status,
         });
       },
-      handleLogin: ({token,lastLocation}) => {
+      handleLogin: ({ token, location, login, firstname, lastname, id }) => {
         this.setState({
           token,
-          lastLocation,
+          location,
+          login,
+          firstname,
+          lastname,
+          userId: id
         });
       },
       handleLogout: () => {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Redirect,Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -14,7 +14,7 @@ import StepOne from '../../../components/Views/Leaf/StepOne';
 import StepTwo from '../../../components/Views/Leaf/StepTwo';
 import SimpleCard from '../../../components/Card/SimpleCard';
 
-import {FetchSendWarning, FetchGetReasons, FetchGetPlaces} from '../../../lib/fetch/FetchAndonLeaf';
+import { FetchSendWarning, FetchGetReasons, FetchGetPlaces } from '../../../lib/fetch/FetchAndonLeaf';
 
 import UserContext from '../../../contexts/UserContext';
 
@@ -47,9 +47,6 @@ class AndonLeafContext extends Component {
   }
 
   render() {
-    // if(this.props.user.loadingUser && this.props.user.id === null) {
-    //   return <Redirect to='/andon' />
-    // }
     return (
       <div className='ds-view' id='ds-view-andon-sendwarning'>
         <AppBarComponent position='fixed' title={this.props.user.firstname} drawerLinks={[{name:'Sair',to:'/andon/logout',icon:'exit_to_app'}]} />
@@ -144,7 +141,7 @@ class AndonLeafContext extends Component {
   }
   handleGetReasons = async () => {
     try {
-      let Response = await FetchGetReasons(this.props.user.projectId);
+      let Response = await FetchGetReasons(this.props.user);
       if(Response) {
         this.setState({
           reasons: Response
@@ -156,12 +153,11 @@ class AndonLeafContext extends Component {
   }
   handleGetPlaces = async () => {
     try {
-      let Response = await FetchGetPlaces(this.props.user.login, this.props.user.projectId);
+      let Response = await FetchGetPlaces(this.props.user);
       if(Response) {
         this.setState({
           places: Response
         });
-        // console.log(Response);
       }
     } catch (err) {
       alert("Houve um erro em carregar os locais.");
@@ -217,7 +213,7 @@ class AndonLeafContext extends Component {
         this.HandleSendWarning();
         window.clearInterval(countdown);
       }
-    },1000);
+    }, 1000);
   }
   handleCancelSendWarning = () => {
     window.clearInterval(countdown);
@@ -229,8 +225,8 @@ class AndonLeafContext extends Component {
     });
     try {
       let Result = await FetchSendWarning({
-        projectId: this.props.user.projectId,
-        createdBy: this.props.user.id,
+        ...this.props.user,
+        createdBy: this.props.user.userId,
         type: this.state.type,
         reasonId: this.state.reason.id,
         placeId: this.state.place.id,
