@@ -16,7 +16,7 @@ export default async (userId,warningId) => {
     return false;
 
   } catch (error) {
-    config.logError();
+    config.logError(error);
     return false;
   }
 }

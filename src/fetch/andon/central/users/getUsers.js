@@ -19,7 +19,7 @@ export const getLeafUsers = async (projectId) => {
     alert(response.msg);
     return null;
   } catch (err) {
-    config.logError();
+    config.logError(err);
     return null;
   }
 }
@@ -42,7 +42,7 @@ export const getIntermediateUsers = async (projectId) => {
     alert(response.msg);
     return null;
   } catch (err) {
-    config.logError();
+    config.logError(err);
     return null;
   }
 }

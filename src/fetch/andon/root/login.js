@@ -1,7 +1,6 @@
 import post from "../../post";
 import config from "../../config";
 import { getProjectId } from "../../../localStorage/projectId";
-// import registerToken from "../../../firebase/registerToken";
 import getToken from "../../../firebase/getToken";
 
 const route = "user/login";
@@ -26,7 +25,7 @@ export default async (payload) => {
     // registerToken(response.data.id);
     return response.data;
   } catch (e) {
-    config.logError();
+    config.logError(e);
     return null;
   }
 }

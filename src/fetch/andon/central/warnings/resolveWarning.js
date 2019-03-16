@@ -20,7 +20,7 @@ export default async ({userId,warningId}) => {
     alert(response.msg);
     return false;
   } catch (err) {
-    config.logError();
+    config.logError(err);
     return false;
   }
 }

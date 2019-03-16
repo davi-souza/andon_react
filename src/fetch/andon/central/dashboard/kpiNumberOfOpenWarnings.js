@@ -8,12 +8,12 @@ export default async () => {
     const ok = response.ok;
     response = await response.json();
     if(!ok) {
-      config.logError();
+      config.logError(null);
       return null;
     }
     return response.data;
   } catch (error) {
-    config.logError();
+    config.logError(error);
     return null
   }
 }

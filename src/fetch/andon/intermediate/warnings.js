@@ -10,7 +10,7 @@ export default async (userId) => {
 
   try {
     let response = await get(route, {});
-  
+
     if(!response.ok) {
       response = await response.json();
       alert(response.msg);
@@ -21,7 +21,7 @@ export default async (userId) => {
     return response.data;
 
   } catch (error) {
-    config.logError();
+    config.logError(error);
     return null;
   }
 }
