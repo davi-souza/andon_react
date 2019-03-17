@@ -25,6 +25,7 @@ class AllWarningsTable extends Component {
               <TableCell className='txt-align-center'>Local</TableCell>
               <TableCell className='txt-align-center'>Criado por</TableCell>
               <TableCell className='txt-align-center'>Responsáveis</TableCell>
+              <TableCell className='txt-align-center'>Profissão/serviço do autor</TableCell>
               <TableCell className='txt-align-center'>Criado em</TableCell>
               <TableCell className='txt-align-center'>Resolvido em</TableCell>
               <TableCell className='txt-align-center'>Tempo em aberto</TableCell>
@@ -49,6 +50,9 @@ class AllWarningsTable extends Component {
                   }
                   return `${leader.firstname} ${leader.lastname}, `;
                 })}</TableCell>
+                <TableCell className='txt-align-center'>
+                  {warning.userThatCreated.jobTitle}
+                </TableCell>
                 <TableCell className='txt-align-center'>{
                   new Date(warning.createdDate).toLocaleString('pt-BR')
                 }</TableCell>

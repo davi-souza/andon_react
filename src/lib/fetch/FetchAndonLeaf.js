@@ -42,7 +42,7 @@ export const FetchGetReasons = async (projectId) => {
 
 export const FetchGetPlaces = async (projectId) => {
   try {
-    let Response = await fetch(`${urlInit}place?filter=${JSON.stringify({projectId,active:true})}`,{
+    let Response = await fetch(`${urlInit}place?filter=${JSON.stringify({projectId})}`,{
       method: 'get',
       credentials,
     });

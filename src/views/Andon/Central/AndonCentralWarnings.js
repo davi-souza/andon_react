@@ -19,14 +19,17 @@ class AndonCentralWarnings extends Component {
       filterValue: '',
       createdDateInit: '',
       createdDateEnd: '',
+      reloadTimer: null,
     }
   }
 
-  // componentWillMount() {
-  //   this.setState({
-  //     regex: new RegExp(`[a-zA-Z0-9 ]*${this.state.filterValue.toLowerCase()}[a-zA-Z0-9 ]*`),
-  //   });
-  // }
+  componentDidMount() {
+    this.setState({
+      reloadTimer: window.setInterval(() => {
+        window.location.reload(true);
+      }, 1000*60*5),
+    });
+  }
 
   render() {
     let regex = new RegExp(`[a-zA-Z0-9 ]*${this.state.filterValue.toLowerCase()}[a-zA-Z0-9 ]*`);

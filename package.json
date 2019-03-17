@@ -2,9 +2,10 @@
   "name": "project",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://andon-back:8000",
+  "proxy": "http://back:8000",
   "dependencies": {
     "@material-ui/core": "^1.4.1",
+    "firebase": "^5.8.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router": "^4.3.1",
