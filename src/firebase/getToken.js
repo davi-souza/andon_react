@@ -3,9 +3,19 @@ import config from "./config";
 import requestPermission from "./requestPermission";
 
 export default async () => {
-  firebase.initializeApp(config);
+  let initializedNow = false;
+
+  if (!firebase.apps[0]) {
+    firebase.initializeApp(config);
+    initializedNow = true;
+  }
+
   const messaging = firebase.messaging();
-  messaging.usePublicVapidKey("BOVKFI-Ff1MGnZG2zahfTA4ZiC_ezv0UpLCuS-NKNbFPrZaRxMKGaqFRVpxmPeWzpuEOI4Xc5vNGxRNuELP63Eg");
+
+  if (initializedNow) {
+    messaging.usePublicVapidKey("BOVKFI-Ff1MGnZG2zahfTA4ZiC_ezv0UpLCuS-NKNbFPrZaRxMKGaqFRVpxmPeWzpuEOI4Xc5vNGxRNuELP63Eg");
+  }
+
   requestPermission(messaging);
   return await messaging.getToken();
 }

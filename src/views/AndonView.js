@@ -41,8 +41,12 @@ class AndonView extends Component {
       },
       handleLogout: () => {
         this.setState({
+          location: null,
           token: null,
-          lastLocation: null,
+          login: null,
+          firstname: null,
+          lastname: null,
+          userID: null,
         });
       },
     };
