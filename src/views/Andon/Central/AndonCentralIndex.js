@@ -40,21 +40,18 @@ class AndonCentralIndexContext extends Component {
   }
 
   componentDidUpdate(prevProps,prevState,snapshot) {
-    if(prevProps.user.id === null && this.props.user.id !== null) {
+    if(prevProps.user.userId === null && this.props.user.userId !== null) {
       this.fetchAll();
     }
   }
 
   componentDidMount() {
-    if(this.props.user.id) {
+    if(this.props.user.userId) {
       this.fetchAll();
     }
   }
 
   render() {
-    // if(!this.props.user.loadingUser && !this.props.user.id) {
-    //   return <Redirect to='/andon/login' />
-    // }
     return (
       <CentralContext.Provider value={this.state}>
         <Switch>
@@ -82,10 +79,10 @@ class AndonCentralIndexContext extends Component {
     }
     this.state.handleChange('warningsLoading',false);
   }
-  
+
   handleResolveWarning = async (warningId) => {
     if(window.confirm("Você tem certeza que este aviso foi solucionado?")) {
-      let result = await resolveWarning({userId:this.props.user.id,warningId});
+      let result = await resolveWarning({userId:this.props.user.userId,warningId});
       if(result) {
         let newWarnings = this.state.warnings.map(warning => {
           if(warning.id===warningId) {

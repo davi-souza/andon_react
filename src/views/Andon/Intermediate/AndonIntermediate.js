@@ -32,20 +32,18 @@ class AndonIntermediateContext extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if(prevProps.user.id === null && this.props.user.id !== null) {
+    if(prevProps.user.userId === null && this.props.user.userId !== null) {
       this.HandleGetWarnings();
     }
   }
 
   componentDidMount() {
-    if(this.props.user.id) {
+    if(this.props.user.userId) {
       this.HandleGetWarnings();
     }
   }
+  
   render() {
-    // if(!this.props.user.loadingUser && this.props.user.id === null) {
-    //   return <Redirect to='/andon/login' />;
-    // }
     return (
       <IntermediateContext.Provider value={this.state}>
         <AppBarComponent
@@ -55,7 +53,7 @@ class AndonIntermediateContext extends Component {
         />
         <GridPage viewContent appBarFixed>
           {
-            this.state.warningsLoading ? 
+            this.state.warningsLoading ?
             <div className='txt-align-center'>
               <CircularProgress size={80} color='secondary' />
             </div>
@@ -71,8 +69,8 @@ class AndonIntermediateContext extends Component {
       this.state.handleChange("resolveLoading", true);
 
       try {
-        let response = await resolveWarning(this.props.user.id,warningId);
-  
+        let response = await resolveWarning(this.props.user.userId,warningId);
+
         if(response) {
           let newWarnings = this.state.warnings.filter(warning => warning.id!==warningId);
           this.state.handleChange("warnings",newWarnings);
@@ -89,7 +87,7 @@ class AndonIntermediateContext extends Component {
   HandleGetWarnings = async () => {
     this.state.handleChange("warningsLoading",true);
     try {
-      let response = await warnings(this.props.user.id);
+      let response = await warnings(this.props.user.userId);
       if(response) {
         this.state.handleChange("warnings",response);
       }
