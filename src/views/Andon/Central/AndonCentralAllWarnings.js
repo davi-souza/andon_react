@@ -22,12 +22,6 @@ class AndonCentralAllWarnings extends Component {
     }
   }
 
-  // componentWillMount() {
-  //   this.setState({
-  //     regex: new RegExp(`[a-zA-Z0-9 ]*${this.state.filterValue.toLowerCase()}[a-zA-Z0-9 ]*`),
-  //   });
-  // }
-
   render() {
     let regex = new RegExp(`[a-zA-Z0-9 ]*${this.state.filterValue.toLowerCase()}[a-zA-Z0-9 ]*`);
     return (
@@ -77,6 +71,8 @@ class AndonCentralAllWarnings extends Component {
                       <option value='reasonName'>Motivo</option>
                       <option value='placeName'>Local</option>
                       <option value='userThatCreated'>Autor</option>
+                      <option value='userThatCreatedJobTitle'>Profissão/serviço do autor</option>
+                      <option value='responsibles'>Responsáveis</option>
                     </TextField>
                   </Grid>
                   <Grid item xs={8} className='txt-align-center margin-bottom-8'>
@@ -99,44 +95,58 @@ class AndonCentralAllWarnings extends Component {
                 <AllWarningsTable
                   places={central.places}
                   warnings={central.warnings
-                    .sort(this.sortWarnings).filter(warning => {
-                    let initFilterDate = null;
-                    let initDate = null
-                    if(this.state.createdDateInit!=='') {
-                      initFilterDate = this.state.createdDateInit.split("-");
-                      initDate = new Date(parseInt(initFilterDate[0],10),parseInt(initFilterDate[1],10)-1,parseInt(initFilterDate[2],10),0,0,0,0);
-                    }
-                    let endFilterDate = null;
-                    let endDate = null;
-                    if(this.state.createdDateEnd!=='') {
-                      endFilterDate = this.state.createdDateEnd.split("-");
-                      endDate = new Date(parseInt(endFilterDate[0],10),parseInt(endFilterDate[1],10)-1,parseInt(endFilterDate[2],10),23,59,59,999);
-                    }
-                    if(initDate && endDate) {
-                      let createdDate = new Date(warning.createdDate);
-                      if(createdDate.getTime() < initDate.getTime()) {
-                        return false;
+                    .sort(this.sortWarnings)
+                    .filter(warning => {
+                      let initFilterDate = null;
+                      let initDate = null
+                      if(this.state.createdDateInit!=='') {
+                        initFilterDate = this.state.createdDateInit.split("-");
+                        initDate = new Date(parseInt(initFilterDate[0],10),parseInt(initFilterDate[1],10)-1,parseInt(initFilterDate[2],10),0,0,0,0);
                       }
-                      if(createdDate.getTime() > endDate.getTime()) {
-                        return false;
+                      let endFilterDate = null;
+                      let endDate = null;
+                      if(this.state.createdDateEnd!=='') {
+                        endFilterDate = this.state.createdDateEnd.split("-");
+                        endDate = new Date(parseInt(endFilterDate[0],10),parseInt(endFilterDate[1],10)-1,parseInt(endFilterDate[2],10),23,59,59,999);
                       }
-                    }
-                    return true;
-                  }).filter(warning => {
-                    if (this.state.fieldToFilter === '') {
+                      if(initDate && endDate) {
+                        let createdDate = new Date(warning.createdDate);
+                        if(createdDate.getTime() < initDate.getTime()) {
+                          return false;
+                        }
+                        if(createdDate.getTime() > endDate.getTime()) {
+                          return false;
+                        }
+                      }
                       return true;
-                    } else {
-                      if(this.state.fieldToFilter === 'reasonName') {
-                        return regex.test(warning.reason.name.toLowerCase());
-                      } else if(this.state.fieldToFilter === 'placeName') {
-                        return regex.test(warning.place.name.toLowerCase());
-                      } else if(this.state.fieldToFilter === 'userThatCreated') {
-                        return regex.test(`${warning.userThatCreated.firstname} ${warning.userThatCreated.lastname}`.toLowerCase());
-                      } else  {
-                        return regex.test(warning.type.toLowerCase());
+                    })
+                    .filter(warning => {
+                      if (this.state.fieldToFilter === '') {
+                        return true;
+                      } else {
+                        if(this.state.fieldToFilter === 'reasonName') {
+                          return regex.test(warning.reason.name.toLowerCase());
+                        } else if(this.state.fieldToFilter === 'placeName') {
+                          return regex.test([
+                            warning.place.superPlace.name.toLowerCase(),
+                            warning.place.name.toLowerCase(),
+                          ].join(', '));
+                        } else if(this.state.fieldToFilter === 'userThatCreated') {
+                          return regex.test(`${warning.userThatCreated.firstname} ${warning.userThatCreated.lastname}`.toLowerCase());
+                        } else if (this.state.fieldToFilter === 'userThatCreatedJobTitle') {
+                          return regex.test(warning.userThatCreated.jobTitle.toLowerCase());
+                        } else if (this.state.fieldToFilter === 'responsibles') {
+                          return regex.test([
+                            ...new Set(warning.userThatCreated.userLeaders.map(leader => {
+                              return `${leader.firstname} ${leader.lastname}`.toLowerCase();
+                            }))
+                          ].join(', '));
+                        } else  {
+                          return regex.test(warning.type.toLowerCase());
+                        }
                       }
-                    }
-                  })}
+                    })
+                  }
                   resolve={central.resolveWarning}
                 />
               }

@@ -44,12 +44,15 @@ class AllWarningsTable extends Component {
                 <TableCell className='txt-align-center'>{warning.reason.name}</TableCell>
                 <TableCell className='txt-align-center'>{warning && this.renderPlace(this.props.places, warning.place)}</TableCell>
                 <TableCell className='txt-align-center'>{`${warning.userThatCreated.firstname} ${warning.userThatCreated.lastname}`}</TableCell>
-                <TableCell className='txt-align-center'>{warning.userThatCreated.userLeaders.map((leader,index) => {
-                  if(index === warning.userThatCreated.userLeaders.length-1) {
-                    return `${leader.firstname} ${leader.lastname}`;
-                  }
-                  return `${leader.firstname} ${leader.lastname}, `;
-                })}</TableCell>
+                <TableCell className='txt-align-center'>
+                {
+                  [
+                    ...new Set(warning.userThatCreated.userLeaders.map(leader => (
+                      `${leader.firstname} ${leader.lastname}`
+                    )))
+                  ].join(', ')
+                }
+                </TableCell>
                 <TableCell className='txt-align-center'>
                   {warning.userThatCreated.jobTitle}
                 </TableCell>

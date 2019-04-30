@@ -51,7 +51,6 @@ class AndonCentralDashboard extends Component {
   }
 
   render() {
-    console.log(this.state.warningNumberByPlace);
     return (
       <CentralContext.Consumer>
         { central =>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,8 +13,13 @@ const SimpleTable = (props) => {
   if(!props.data /*|| props.data.length === 0*/) {
     return null;
   }
+  const paperStyle = {
+    height: '100%',
+    maxHeight: '400px',
+    overflowY: 'auto',
+  };
   return (
-    <Paper className='overflow-auto'>
+    <Paper className='overflow-auto' style={paperStyle}>
       {props.title && 
         <Toolbar>
           <Typography variant="title">{props.title}</Typography>
